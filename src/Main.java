@@ -12,6 +12,7 @@ public class Main {
 
         while(!validateLogin){
             mainMenu();
+            //testing commit
             loginChoice = ExtraFunction.menuInput(3);
 
             switch(loginChoice){
