@@ -57,5 +57,9 @@ public class ExtraFunction {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
+    public static boolean checkPattern(String str, String pattern) {
+        return str.matches(pattern);
+    }
 
 }
+

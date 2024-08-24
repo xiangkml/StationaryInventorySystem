@@ -1,2 +1,2 @@
 Ding Dong Sdn Bhd|SUP001|dingdong@gmail.com|03-2155 4788|Jalan Setapak,87000 Kuala Lumpur|Tan Ding Ding|016-278 6900|PLPEN001|FBBOK002|CFRUL007
-Tang Tang Sdn Bhd|SUP002|tantan@gmail.com|03-9995 4777|Jalan Langkawi,85200 Kuala Lumpur|Tan Tang Tang|017-558 2000|OPBOK009|OLPEN888
+Tang Tang Sdn Bhd|SUP002|tantan@gmail.com|Jalan Langkawi,85200 Kuala Lumpur|017-558 2000|OPBOK009|PLPEN001

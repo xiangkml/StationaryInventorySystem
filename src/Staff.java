@@ -23,10 +23,7 @@ public class Staff {
     }
 
     public Staff() {
-        this.name = "";
-        this.ic = "";
-        this.id = "";
-        this.password = "";
+
     }
 
     public String getName() {
@@ -45,7 +42,7 @@ public class Staff {
         return id;
     }
 
-    public static boolean login() {
+    public boolean login() {
 
         int validate = 0;
         boolean validLogin = false;
@@ -102,13 +99,13 @@ public class Staff {
         System.out.println("------- [-1 for -> previous page] -------");
 
         System.out.println("Enter your Full Name [THAI KU LA]: ");
-        newStfName = sc.nextLine().toUpperCase();
+        newStfName = sc.nextLine().toUpperCase().trim();
         if (newStfName.equals("-1"))
             return;
 
         do {
             System.out.println("Enter your IC number [xxxxxx-xx-xxxx]: ");
-            newStfIc = sc.nextLine();
+            newStfIc = sc.nextLine().trim();
             if (newStfIc.equals("-1"))
                 return;
             validIc = validateIC(newStfIc);
@@ -122,11 +119,11 @@ public class Staff {
 
         do {
             System.out.println("Setting your password [length:8-12, contains character & digit]: ");
-            newStfPw1 = sc.nextLine();
+            newStfPw1 = sc.nextLine().trim();
             if (newStfPw1.equals("-1"))
                 return;
             System.out.println("Please Re-enter your password again:");
-            newStfPw2 = sc.nextLine();
+            newStfPw2 = sc.nextLine().trim();
             if (newStfPw2.equals("-1"))
                 return;
 
@@ -250,5 +247,6 @@ public class Staff {
         ArrayList<Staff> stf = readStaffFile();
         return stf.size();
     }
+
 
 }

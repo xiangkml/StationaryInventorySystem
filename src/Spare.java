@@ -3,7 +3,7 @@
 page and word design
 forgot pw function
 
-validate sku code when add supplier
+
 
 */
 
@@ -11,4 +11,6 @@ validate sku code when add supplier
 /*
 baobei :
 add staff validate all input
+add space between word
+add header and design
 */
