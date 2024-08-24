@@ -174,7 +174,7 @@ public class Staff {
 
         File file = new File(pathName);
         ArrayList<Staff> staffList = new ArrayList<>();
-        Scanner scanFile = null;
+        Scanner scanFile;
         try {
             scanFile = new Scanner(file);
             scanFile.useDelimiter("\\|");

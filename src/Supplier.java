@@ -76,11 +76,10 @@ public class Supplier {
     }
 
     public void addSupplier() {
-        String supName = "", email = "", address = "", tel = "";
+        String supName , email = "", address = "", tel = "";
         boolean exitPage = false;
         int numOfSupplyProduct = 0;
         ArrayList<String> supplyProduct = new ArrayList<>();
-        ArrayList<Product> masterProduct = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("----------- Supplier Registration -----------");
@@ -153,7 +152,7 @@ public class Supplier {
                     exitPage = (skuCode.equals("-1"));
 
                     if (ExtraFunction.checkPattern(skuCode, "^[A-Za-z]{5}\\d{3}$")) {
-                        masterProduct = Product.readMasterProductFile();
+                        ArrayList<Product> masterProduct = Product.readMasterProductFile();
                         for (Product prod : masterProduct) {
                             if (prod.getProdSKU().equals(skuCode)) {
                                 validProd = true;
@@ -192,7 +191,7 @@ public class Supplier {
         File file = new File(pathName);
         ArrayList<Supplier> supplierList = new ArrayList<>();
         ArrayList<String> productSkuList = new ArrayList<>();
-        Scanner scanFile = null;
+        Scanner scanFile;
         try {
             scanFile = new Scanner(file);
             scanFile.useDelimiter("\\|");

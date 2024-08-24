@@ -59,7 +59,7 @@ public class Product {
 
         File file = new File(pathName);
         ArrayList<Product> productList = new ArrayList<>();
-        Scanner scanFile = null;
+        Scanner scanFile;
         try {
             scanFile = new Scanner(file);
             scanFile.useDelimiter("\\|");
