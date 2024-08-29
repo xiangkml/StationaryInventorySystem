@@ -76,7 +76,7 @@ public class Supplier {
     }
 
     public void addSupplier() {
-        String supName , email = "", address = "", tel = "";
+        String supName, email = "", address = "", tel = "";
         boolean exitPage = false;
         int numOfSupplyProduct = 0;
         ArrayList<String> supplyProduct = new ArrayList<>();
@@ -151,19 +151,17 @@ public class Supplier {
                     skuCode = sc.nextLine().trim();
                     exitPage = (skuCode.equals("-1"));
 
-                    if (ExtraFunction.checkPattern(skuCode, "^[A-Za-z]{5}\\d{3}$")) {
-                        ArrayList<Product> masterProduct = Product.readMasterProductFile();
-                        for (Product prod : masterProduct) {
-                            if (prod.getProdSKU().equals(skuCode)) {
-                                validProd = true;
-                                supplyProduct.add(skuCode);
-                                break;
-                            }
+                    ArrayList<Product> masterProduct = Product.readMasterProductFile();
+                    for (Product prod : masterProduct) {
+                        if (prod.getProdSKU().equals(skuCode)) {
+                            validProd = true;
+                            supplyProduct.add(skuCode);
+                            break;
                         }
-                        if (!validProd) {
-                            System.out.println("Invalid product SKU code");
-                            System.out.println("Please register new product before register a new supplier");
-                        }
+                    }
+                    if (!validProd) {
+                        System.out.println("Invalid product SKU code");
+                        System.out.println("Please register new product before register a new supplier");
                     }
 
                 } while ((!validProd) && (!exitPage));
@@ -171,6 +169,11 @@ public class Supplier {
                 if (!exitPage) {
 
                     Supplier newSupplier = new Supplier(name, email, address, tel, supplyProduct);
+
+                    // display new supplier info
+                    // double confirm from the user
+
+                    // if user confirm then process below
                     ArrayList<Supplier> supplierList = readSupplierFile();
                     supplierList.add(newSupplier);
                     writeSupplierFile(supplierList);
@@ -184,8 +187,354 @@ public class Supplier {
 
     }
 
+    public void deleteSupplier() {
 
-    public static ArrayList<Supplier> readSupplierFile() {
+        String supID;
+        Supplier supDel = null;
+        boolean exitPage, validID = false;
+        ArrayList<Supplier> supplierList;
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("----------- Delete Supplier -----------");
+        System.out.println("Enter '-1' to exit");
+        if (sc.nextLine().equals("-1")) {
+            return;
+        }
+
+        do {
+            System.out.println("Enter the supplier's id that you wish to delete [SUP001]: ");
+            supID = sc.nextLine().trim();
+            exitPage = supID.equals("-1");
+
+            if (!exitPage) {
+
+                supplierList = readSupplierFile();
+                for (Supplier supplier : supplierList) {
+                    if (supID.equals(supplier.getId())) {
+                        validID = true;
+                        supDel = supplier;
+                        break;
+                    }
+                }
+                if (!validID) {
+                    System.out.println("Invalid supplier ID");
+                    System.out.println("Please re-enter a valid supplier ID");
+                } else {
+                    // display supplier information that need to be deleted
+                    // double confirm from user
+
+                    // if user confirm
+                    supplierList.remove(supDel);
+                    writeSupplierFile(supplierList);
+                    System.out.println("Successfully deleted the supplier");
+                    System.out.println("Press Enter to continue...");
+                    sc.nextLine();
+                }
+            }
+        } while ((!validID) && (!exitPage));
+
+    }
+
+    public void viewSupplier() {
+        int menuInput;
+        boolean returnPage = false;
+
+        do {
+            Main.viewSupplierMenu();
+            menuInput = ExtraFunction.menuInput(3);
+            switch (menuInput) {
+
+                case 1:
+                    viewAllSupplier();
+                    break;
+
+                case 2:
+                    viewOneSupplier();
+                    break;
+
+                default:
+                    returnPage = true;
+            }
+        } while (!returnPage);
+
+    }
+
+    public void viewAllSupplier() {
+        ArrayList<Supplier> supplierList = readSupplierFile();
+        for (Supplier supplier : supplierList) {
+            // display all information for each supplier
+        }
+
+        System.out.println("Successfully display all the supplier");
+        System.out.println("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
+    }
+
+    public void viewOneSupplier() {
+
+        Scanner sc = new Scanner(System.in);
+        String supID;
+        boolean validID = false;
+        Supplier viewSup = null;
+        ArrayList<Supplier> supplierList;
+
+        System.out.println("----------- View Specific Supplier -----------");
+        System.out.println("Enter '-1' to exit");
+        if (sc.nextLine().equals("-1")) {
+            return;
+        }
+
+        do {
+            System.out.println("Enter the supplier's id that you wish to view [SUP001]: ");
+            supID = sc.nextLine().trim();
+            if (supID.equals("-1")) {
+                return;
+            }
+            supplierList = readSupplierFile();
+            for (Supplier supplier : supplierList) {
+                if (supID.equals(supplier.getId())) {
+                    validID = true;
+                    viewSup = supplier;
+                    break;
+                }
+            }
+
+            if (validID) {
+                // display information for supplier
+            }
+
+
+        } while (!validID);
+
+        System.out.println("Successfully display all the supplier");
+        System.out.println("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
+
+    }
+
+    public void editSupplier() {
+
+        Scanner sc = new Scanner(System.in);
+        String supID;
+        boolean validID = false, confirmationBefore = false, confirmationAfter = false, continueEdit = false;
+        Supplier editSup = null;
+        ArrayList<Supplier> supplierList;
+
+        System.out.println("----------- Edit Supplier -----------");
+        System.out.println("Enter '-1' to exit");
+        if (sc.nextLine().equals("-1")) {
+            return;
+        }
+
+        do {
+            System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");
+            supID = sc.nextLine().trim();
+            if (supID.equals("-1")) {
+                return;
+            }
+
+            supplierList = readSupplierFile();
+            for (Supplier supplier : supplierList) {
+                if (supID.equals(supplier.getId())) {
+                    validID = true;
+                    editSup = supplier;
+                    break;
+                }
+            }
+
+        } while (!validID);
+
+        // information before edit
+        System.out.println("Supplier Information Before Edited: ");
+        editSup.displaySup();
+        System.out.println("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]");
+        confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
+
+        if (confirmationBefore) {
+
+            do{
+                Main.editSupplierMenu();
+                int menuInput = ExtraFunction.menuInput(6);
+
+                switch (menuInput) {
+                    case 1:
+                        // edit name
+                        editSup.editName();
+                        break;
+
+                    case 2:
+                        //edit email
+                        editSup.editEmail();
+                        break;
+
+                    case 3:
+                        // edit tel
+                        editSup.editTel();
+                        break;
+
+                    case 4:
+                        // edit address
+                        editSup.editAddress();
+                        break;
+
+                    case 5:
+                        // edit supplied product
+                        editSup.editSuppliedProd();
+                        break;
+
+                    default:
+                        // return
+                        return;
+                }
+
+                System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
+                continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
+            }while(continueEdit);
+
+        }
+
+        // information after edit
+            System.out.println("Supplier Information After Edited: ");
+            editSup.displaySup();
+            System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
+            confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
+            if (confirmationAfter) {
+                for (Supplier supplier : supplierList) {
+                    if (id.equals(editSup.getId())) {
+                        supplier = editSup;
+                        break;
+                    }
+                }
+                writeSupplierFile(supplierList);
+                System.out.println("Successfully updated the latest supplier information");
+                System.out.println("Press Enter to continue...");
+                sc.nextLine();
+            }
+
+    }
+
+    public void editName() {
+
+        System.out.println("Enter a new name for supplier [" + id + "]: ");
+        this.id = new Scanner(System.in).nextLine().trim();
+
+    }
+
+    public void editEmail() {
+
+        Scanner sc = new Scanner(System.in);
+        boolean validEmail;
+        do {
+            System.out.println("Enter a new email for supplier [" + id + "]: ");
+            String email = sc.nextLine().trim();
+            validEmail = ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$");
+            if (validEmail) {
+                this.email = email;
+            } else {
+                System.out.println("Invalid email");
+                System.out.println("Please re-enter a valid email");
+            }
+        } while (!validEmail);
+
+    }
+
+    public void editTel() {
+
+        Scanner sc = new Scanner(System.in);
+        boolean validTel;
+        do {
+            System.out.println("Enter a new tel for supplier [" + id + "]: ");
+            String tel = sc.nextLine().trim();
+            validTel = ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$");
+            if (validTel) {
+                this.tel = tel;
+            } else {
+                System.out.println("Invalid email");
+                System.out.println("Please re-enter a valid email");
+            }
+        } while (!validTel);
+    }
+
+    public void editAddress() {
+
+        System.out.println("Enter a new address for supplier [" + id + "]: ");
+        this.address = new Scanner(System.in).nextLine().trim();
+
+    }
+
+    public void editSuppliedProd() {
+
+        Scanner sc = new Scanner(System.in);
+        String oldSKU, newSKU;
+        boolean validOldSKU = false, validNewSKU = false;
+
+
+        do {
+            System.out.println("Enter the old Product SKU you wish to edit for supplier [" + id + "]: ");
+            oldSKU = sc.nextLine().trim().toUpperCase();
+
+            for (String prodSKU : supplyProduct) {
+                if (prodSKU.equals(oldSKU)) {
+                    validOldSKU = true;
+                    break;
+                }
+            }
+            if (validOldSKU) {
+                do {
+                    System.out.println("Enter the new Product SKU to replace it: ");
+                    newSKU = sc.nextLine().trim().toUpperCase();
+                    ArrayList<Product> allProd = Product.readMasterProductFile();
+                    for (Product prod : allProd) {
+                        if (prod.getProdSKU().equals(newSKU)) {
+                            validNewSKU = true;
+                            this.supplyProduct.remove(oldSKU);
+                            this.supplyProduct.add(newSKU);
+                            break;
+                        }
+                    }
+
+                    if (!validNewSKU) {
+                        System.out.println("Invalid Product SKU");
+                        System.out.println("Please re-enter a valid Product SKU");
+                    }
+
+                } while (!validNewSKU);
+
+            } else {
+                System.out.println("Invalid Product SKU");
+                System.out.println("Please re-enter a valid Product SKU");
+            }
+
+        } while (!validOldSKU);
+
+    }
+
+    public void displaySup() {
+        System.out.println("Supplier ID: " + id);
+        System.out.println("Supplier Name: " + name);
+        System.out.println("Supplier Email: " + email);
+        System.out.println("Supplier Address: " + address);
+        System.out.println("Supplier Tel: " + tel);
+        System.out.println("Product Supplied: ");
+        for (String prod : supplyProduct) {
+            System.out.print(prod + ", ");
+        }
+        System.out.println("\b\b");
+    }
+
+    public boolean validSupplierID() {
+        ArrayList<Supplier> supplierList = readSupplierFile();
+        boolean validID = false;
+        for (Supplier supplier : supplierList) {
+            if (id.equals(supplier.getId())) {
+                validID = true;
+                break;
+            }
+        }
+        return validID;
+    }
+
+    public ArrayList<Supplier> readSupplierFile() {
         String pathName = "supplier.txt";
 
         File file = new File(pathName);
@@ -223,7 +572,7 @@ public class Supplier {
         return supplierList;
     }
 
-    public static void writeSupplierFile(ArrayList<Supplier> supplierList) {
+    public void writeSupplierFile(ArrayList<Supplier> supplierList) {
         String pathName = "supplier.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathName))) {
@@ -255,4 +604,5 @@ public class Supplier {
         ArrayList<Supplier> supplier = readSupplierFile();
         return supplier.size();
     }
+
 }
