@@ -140,6 +140,13 @@ public class Main {
         System.out.println("5. Product Supplied");
         System.out.println("6. Return to Previous Menu");
     }
+
+    public static void viewWarehouseMenu() {
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("1. View All Warehouse Details");
+        System.out.println("2. View Specific Warehouse Details");
+        System.out.println("3. Return to Previous Menu");
+    }
 }
 
 

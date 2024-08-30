@@ -286,7 +286,7 @@ public class Supplier {
 
         do {
             System.out.println("Enter the supplier's id that you wish to view [SUP001]: ");
-            supID = sc.nextLine().trim();
+            supID = sc.nextLine().trim().toUpperCase();
             if (supID.equals("-1")) {
                 return;
             }
@@ -306,7 +306,7 @@ public class Supplier {
 
         } while (!validID);
 
-        System.out.println("Successfully display all the supplier");
+        System.out.println("Successfully display supplier details");
         System.out.println("Press Enter to continue...");
         new Scanner(System.in).nextLine();
 
@@ -328,7 +328,7 @@ public class Supplier {
 
         do {
             System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");
-            supID = sc.nextLine().trim();
+            supID = sc.nextLine().trim().toUpperCase();
             if (supID.equals("-1")) {
                 return;
             }

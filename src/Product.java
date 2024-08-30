@@ -6,24 +6,21 @@ import java.util.Scanner;
 
 public class Product {
 
-    private String prodName,prodSKU;
-    private int prodQty,reorderLV;
+    protected String prodName,prodSKU;
 
     /* Constructor */
 
-    /* product list use for master file that only store name and quantity*/
+    /* product list use for master file that only store name and product sku*/
     public Product(String prodName, String prodSKU) {
+        this(prodSKU);
         this.prodName = prodName;
+    }
+
+    public Product(String prodSKU){
         this.prodSKU = prodSKU;
     }
 
-    /* product list use for warehouse branches store their product */
-    public Product(String prodName, int prodQty, String prodSKU, int reorderLV){
-        this.prodName = prodName;
-        this.prodQty = prodQty;
-        this.prodSKU = prodSKU;
-        this.reorderLV = reorderLV;
-    }
+    public Product(){}
 
     /*Getter & Setter*/
     public String getProdName() {
@@ -33,25 +30,11 @@ public class Product {
         this.prodName = prodName;
     }
 
-    public int getProdQty() {
-        return prodQty;
-    }
-    public void setProdQty(int prodQty){
-        this.prodQty = prodQty;
-    }
-
     public String getProdSKU() {
         return prodSKU;
     }
     public void setProdSKU(String prodSKU) {
         this.prodSKU = prodSKU;
-    }
-
-    public int getReorderLV(){
-        return reorderLV;
-    }
-    public void setReorderLV(int reorderLV){
-        this.reorderLV = reorderLV;
     }
 
     public static ArrayList<Product> readMasterProductFile() {
@@ -102,6 +85,4 @@ public class Product {
         }
     }
 
-  //  public static ArrayList<Product> readWarehouseProductFile() {}
-  //  public static void writeWarehouseProductFile(ArrayList<Product> prodList) {}
 }
