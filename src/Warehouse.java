@@ -105,7 +105,7 @@ public class Warehouse {
         do {
             System.out.println("Enter the warehouse's id that you wish to delete [KLG001]: ");
             whID = sc.nextLine().trim().toUpperCase();
-            if(whID.equals("-1")){
+            if (whID.equals("-1")) {
                 return;
             }
 
@@ -162,11 +162,21 @@ public class Warehouse {
 
     public void viewAllWarehouse() {
         ArrayList<Warehouse> whList = readMasterWarehouseFile();
+        ArrayList<WhProd> prodList = WhProd.readWarehouseProductFile();
+
         for (Warehouse wh : whList) {
-            // display all information for each supplier
+            // display all information for each warehouse
+
+            // design product listed
+            System.out.println("--------------------------------------- Warehouse Product ---------------------------------------");
+            for (WhProd whP : prodList) {
+                if(whP.getWhId().equals(wh.getWhID())){
+                    System.out.println(whP.getProductSKU() + " " + whP.getProdName() + " " + whP.getQuantity() + " " + whP.getReorderLv());
+                }
+            }
         }
 
-        System.out.println("Successfully display all the warehouse");
+        System.out.println("Successfully display all the warehouse detail");
         System.out.println("Press Enter to continue...");
         new Scanner(System.in).nextLine();
     }
@@ -202,6 +212,16 @@ public class Warehouse {
 
             if (validID) {
                 // display information for warehouse
+
+                // design product listed
+                System.out.println("--------------------------------------- Warehouse Product ---------------------------------------");
+                ArrayList<WhProd> prodList = WhProd.readWarehouseProductFile();
+
+                for (WhProd whP : prodList) {
+                    if(whP.getWhId().equals(whID)){
+                        System.out.println(whP.getProductSKU() + " " + whP.getProdName() + " " + whP.getQuantity() + " " + whP.getReorderLv());
+                    }
+                }
             }
 
 
@@ -218,7 +238,7 @@ public class Warehouse {
         Scanner sc = new Scanner(System.in);
         String whID;
         boolean validID = false, confirmationBefore = false, confirmationAfter = false, continueEdit = false;
-        Warehouse editWh = null;
+        Warehouse editWh = null, oriWh = null;
         ArrayList<Warehouse> whList;
 
         System.out.println("----------- Edit Warehouse -----------");
@@ -239,48 +259,44 @@ public class Warehouse {
                 if (whID.equals(wh.getWhID())) {
                     validID = true;
                     editWh = wh;
+                    oriWh = wh;
                     break;
                 }
+            }
+
+            if(!validID){
+                System.out.println("Invalid warehouse ID!");
+                System.out.println("Please re-enter warehouse's ID");
             }
 
         } while (!validID);
 
         // information before edit
-        System.out.println("Supplier Information Before Edited: ");
-        editSup.displaySup();
-        System.out.println("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]");
+        System.out.println("Warehouse Information Before Edited: ");
+        editWh.displayWh();
+        System.out.println("Do you sure you want to edit this warehouse information? [Y = YES || Others = NO]");
         confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
 
         if (confirmationBefore) {
 
-            do{
-                Main.editSupplierMenu();
-                int menuInput = ExtraFunction.menuInput(6);
+            do {
+                Main.editWarehouseMenu();
+                int menuInput = ExtraFunction.menuInput(4);
 
                 switch (menuInput) {
                     case 1:
                         // edit name
-                        editSup.editName();
+                        editWh.editName();
                         break;
 
                     case 2:
-                        //edit email
-                        editSup.editEmail();
+                        //edit id
+                        editWh.editID();
                         break;
 
                     case 3:
-                        // edit tel
-                        editSup.editTel();
-                        break;
-
-                    case 4:
                         // edit address
-                        editSup.editAddress();
-                        break;
-
-                    case 5:
-                        // edit supplied product
-                        editSup.editSuppliedProd();
+                        editWh.editAddress();
                         break;
 
                     default:
@@ -288,30 +304,80 @@ public class Warehouse {
                         return;
                 }
 
-                System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
+                System.out.println("Do you want to continue edit this Warehouse information? [Y = YES || Others = NO]");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
-            }while(continueEdit);
-
-        }
-
-        // information after edit
-        System.out.println("Supplier Information After Edited: ");
-        editSup.displaySup();
-        System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
-        confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
-        if (confirmationAfter) {
-            for (Supplier supplier : supplierList) {
-                if (id.equals(editSup.getId())) {
-                    supplier = editSup;
-                    break;
+            } while (continueEdit);
+            // information after edit
+            System.out.println("Warehouse Information After Edited: ");
+            editWh.displayWh();
+            System.out.println("Do you sure you want to save this warehouse information? [Y = YES || Others = NO]");
+            confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
+            if (confirmationAfter) {
+                for (Warehouse wh : whList) {
+                    if (wh.getWhID().equals(oriWh.getWhID())) {
+                        wh = editWh;
+                        break;
+                    }
                 }
+                writeMasterWarehouseFile(whList);
+                System.out.println("Successfully updated the latest warehouse information");
             }
-            writeSupplierFile(supplierList);
-            System.out.println("Successfully updated the latest supplier information");
-            System.out.println("Press Enter to continue...");
-            sc.nextLine();
         }
 
+        System.out.println("Press Enter to continue...");
+        sc.nextLine();
+    }
+
+    public void editName() {
+
+        System.out.println("Enter a new name for warehouse [" + whID + "]: ");
+        this.whID = new Scanner(System.in).nextLine().trim();
+
+    }
+
+    public void editID() {
+
+        Scanner sc = new Scanner(System.in);
+        boolean validID = true;
+        do {
+            System.out.println("Enter a new id for warehouse [" + whID + "]: ");
+            String newID = sc.nextLine().trim().toUpperCase();
+            if (ExtraFunction.checkPattern(newID, "^[A-Z]{3}\\d{3}$")) {
+
+                ArrayList<Warehouse> whList = readMasterWarehouseFile();
+                for (Warehouse wh : whList) {
+                    if (newID.equals(wh.getWhID())) {
+                        validID = false;
+                        break;
+                    }
+                }
+
+                if (validID) {
+                    this.whID = newID;
+                }else{
+                    System.out.println("The id has been used.");
+                    System.out.println("Please re-enter a valid ID");
+                }
+
+            } else {
+                System.out.println("Invalid id format.");
+                System.out.println("Please re-enter a valid ID");
+            }
+        } while (!validID);
+
+    }
+
+    public void editAddress() {
+
+        System.out.println("Enter a new address for warehouse [" + whID + "]: ");
+        this.address = new Scanner(System.in).nextLine().trim();
+
+    }
+
+    public void displayWh() {
+        System.out.println("Warehouse ID: " + whID);
+        System.out.println("Warehouse Name: " + whName);
+        System.out.println("Warehouse Address: " + address);
     }
 
     public static ArrayList<Warehouse> readMasterWarehouseFile() {

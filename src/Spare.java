@@ -3,11 +3,15 @@
 page and word design
 forgot pw function
 display rules for each input
+link stock receives with po
+list out the product instead of user input
+
+doing: let user set reorder lv/
 
 supplier crud /
-
-warehouse add del view /
-doing warehouse edit
+warehouse crud /
+warehouse & product/
+product crud/
 
 */
 
@@ -18,6 +22,8 @@ add staff validate all input
 add space between word
 add header and design
 add subtitle for each menu
+
+******* have a function to display , find it!!
 
 for supplier method: add supplier
 - display supplier info to user before save
@@ -43,9 +49,12 @@ for warehouse method: delete warehouse
 
 for warehouse method: viewAllWarehouse
 - display all warehouse info
+- design product listed
 
 for warehouse method: viewOneWarehouse
 - display warehouse info
+- design product listed
+
 
 */
 
@@ -55,6 +64,10 @@ for warehouse method: viewOneWarehouse
  1. when add new product, all warehouse will automatically add the product but the quantity will be zero
  2. all product import from supplier will store in main warehouse which is KL warehouse
  3. other branches will import the stock from the main warehouse
+ 4. when user add new supplier and product supplied, must add the product first
+ 5. same things apply to goods receives
+ 6. all branch can only perform the stock transfer and stock return between main warehouse and itself
+ 7. reorder level must at least 5
 
 */
 

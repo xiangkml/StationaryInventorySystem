@@ -352,7 +352,7 @@ public class Supplier {
 
         if (confirmationBefore) {
 
-            do{
+            do {
                 Main.editSupplierMenu();
                 int menuInput = ExtraFunction.menuInput(6);
 
@@ -389,27 +389,27 @@ public class Supplier {
 
                 System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
-            }while(continueEdit);
+            } while (continueEdit);
 
         }
 
         // information after edit
-            System.out.println("Supplier Information After Edited: ");
-            editSup.displaySup();
-            System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
-            confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
-            if (confirmationAfter) {
-                for (Supplier supplier : supplierList) {
-                    if (id.equals(editSup.getId())) {
-                        supplier = editSup;
-                        break;
-                    }
+        System.out.println("Supplier Information After Edited: ");
+        editSup.displaySup();
+        System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
+        confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
+        if (confirmationAfter) {
+            for (Supplier supplier : supplierList) {
+                if (id.equals(editSup.getId())) {
+                    supplier = editSup;
+                    break;
                 }
-                writeSupplierFile(supplierList);
-                System.out.println("Successfully updated the latest supplier information");
-                System.out.println("Press Enter to continue...");
-                sc.nextLine();
             }
+            writeSupplierFile(supplierList);
+            System.out.println("Successfully updated the latest supplier information");
+            System.out.println("Press Enter to continue...");
+            sc.nextLine();
+        }
 
     }
 
@@ -534,7 +534,7 @@ public class Supplier {
         return validID;
     }
 
-    public ArrayList<Supplier> readSupplierFile() {
+    public static ArrayList<Supplier> readSupplierFile() {
         String pathName = "supplier.txt";
 
         File file = new File(pathName);
@@ -572,7 +572,7 @@ public class Supplier {
         return supplierList;
     }
 
-    public void writeSupplierFile(ArrayList<Supplier> supplierList) {
+    public static void writeSupplierFile(ArrayList<Supplier> supplierList) {
         String pathName = "supplier.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathName))) {

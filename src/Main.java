@@ -82,14 +82,23 @@ public class Main {
     public static void supplierMenu() {
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
         System.out.println("-------------------- [ Supplier Menu ] -------------------");
+        System.out.println("1. Add Supplier");
+        System.out.println("2. Edit Supplier");
+        System.out.println("3. Delete Supplier");
+        System.out.println("4. Search & Display Supplier");
+        System.out.println("5. Return to Previous Menu");
+    }
+
+    public static void whProdMenu(){
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("-------------------- [ Supplier Menu ] -------------------");
         System.out.println("1. Purchase Order");
-        System.out.println("2. Good Receive from Supplier");
-        System.out.println("3. Good Return to Supplier");
-        System.out.println("4. Add Supplier");
-        System.out.println("5. Edit Supplier");
-        System.out.println("6. Delete Supplier");
-        System.out.println("7. Search & Display Supplier");
-        System.out.println("8. Return to Previous Menu");
+        System.out.println("2. Goods Receive from Supplier");
+        System.out.println("3. Goods Return to Supplier");
+        System.out.println("4. Stock Transfer to Other Branches");
+        System.out.println("5. Stock Return from Other Branches");
+        System.out.println("6. Reset Reorder Level");
+        System.out.println("7. Return to Previous Menu");
     }
 
     public static void productMenu() { //Jiayu
@@ -101,20 +110,20 @@ public class Main {
         System.out.println("5. Return to Previous Menu");
     }
 
+    public static void summaryReportMenu() { //Jiayu
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("1. Generate Report for All Branches");
+        System.out.println("2. Generate Report for Specific Branches");
+        System.out.println("3. Return to Previous Menu");
+    }
+
     public static void warehouseMenu() {
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
         System.out.println("1. Add Warehouse");
         System.out.println("2. Edit Warehouse");
         System.out.println("3. Delete Warehouse");
-        System.out.println("4. Search & Display Warehouse");
-        System.out.println("5. Stock Transfer to Other Branches");
-        System.out.println("6. Stock Return from Other Branches");
-        System.out.println("7. Return to Previous Menu");
-    }
-
-    public static void productWarehouseMenu() {
-        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
-        System.out.println("4. Search & Display");
+        System.out.println("4. Search & Display Warehouse Details");
+        System.out.println("5. Return to Previous Menu");
     }
 
     public static void poMenu() {
@@ -141,10 +150,32 @@ public class Main {
         System.out.println("6. Return to Previous Menu");
     }
 
+    public static void editWarehouseMenu() {
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("1. Warehouse Name");
+        System.out.println("2. Warehouse Id");
+        System.out.println("3. Warehouse Address");
+        System.out.println("4. Return to Previous Menu");
+    }
+
+    public static void editProductMenu() {
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("1. Product Name");
+        System.out.println("2. Product SKU");
+        System.out.println("3. Return to Previous Menu");
+    }
+
     public static void viewWarehouseMenu() {
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
         System.out.println("1. View All Warehouse Details");
         System.out.println("2. View Specific Warehouse Details");
+        System.out.println("3. Return to Previous Menu");
+    }
+
+    public static void viewProductMenu() {
+        System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
+        System.out.println("1. View All Product Details");
+        System.out.println("2. View Specific Product Details");
         System.out.println("3. Return to Previous Menu");
     }
 }
