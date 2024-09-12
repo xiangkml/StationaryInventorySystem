@@ -260,13 +260,24 @@ public class Supplier {
     }
 
     public void viewAllSupplier() {
+
+        int noSup = 1;
+
+        System.out.println(" ========================================================== ");
+        System.out.println("|                            Supplier List                             |");
+        System.out.println(" ========================================================== ");
+
         ArrayList<Supplier> supplierList = readSupplierFile();
         for (Supplier supplier : supplierList) {
             // display all information for each supplier
+            System.out.printf("| %02d. | %-6s | %-41s |\n", noSup, supplier.getId(), supplier.getName());
+            noSup++;
         }
+        System.out.println(" ========================================================== \n");
 
-        System.out.println("Successfully display all the supplier");
-        System.out.println("Press Enter to continue...");
+
+        System.out.println("            Successfully display all the supplier            ");
+        System.out.print("                   Press Enter to Continue...");
         new Scanner(System.in).nextLine();
     }
 

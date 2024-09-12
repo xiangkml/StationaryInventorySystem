@@ -18,10 +18,11 @@ product crud/
 
 /*
 baobei :
+add header and menu design /  IN MAIN
 add staff validate all input
 add space between word
 add header and design
-add subtitle for each menu
+add subtitle for each menu / IN MAIN
 
 ******* have a function to display , find it!!
 
