@@ -162,6 +162,10 @@ public class Staff {
         writeStaffFile(staffList);
 
         System.out.println("Successfully registered!");
+        System.out.println("----------- Staff Information -----------");
+        System.out.println("Staff ID: " + newStf.getId());
+        System.out.println("Staff Name: " + newStf.getName());
+        System.out.println("Staff IC: " + newStf.getIc());
         System.out.println("Welcome to ThaiKuLa Company!");
         System.out.println("Hope you have a nice day!");
 

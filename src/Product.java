@@ -80,7 +80,7 @@ public class Product {
         ArrayList<Warehouse> whList = Warehouse.readMasterWarehouseFile();
         ArrayList<WhProd> whProduct = WhProd.readWarehouseProductFile();
         for (Warehouse w : whList) {
-            WhProd newWhProd = new WhProd(w.getWhID(), prodSKU, 0, 20);
+            WhProd newWhProd = new WhProd(w.getWhID(), prodSKU);
             whProduct.add(newWhProd);
         }
 

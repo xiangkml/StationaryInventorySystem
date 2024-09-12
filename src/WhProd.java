@@ -26,6 +26,12 @@ public class WhProd extends Product {
         // use when add a new product to master file and all warehouse will automatically add the product
     }
 
+    public WhProd(String prodSKU, int quantity,String prodName) {
+        super(prodName,prodSKU);
+        this.quantity = quantity;
+        // use for purchase order , only need sku quantity and name
+       }
+
     public int getQuantity() {
         return quantity;
     }

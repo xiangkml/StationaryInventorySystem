@@ -75,8 +75,9 @@ public class Main {
         System.out.println("1. Supplier");
         System.out.println("2. Product");
         System.out.println("3. Warehouse");
-        System.out.println("4. Generate Summary Report");
-        System.out.println("5. Return to Previous Menu");
+        System.out.println("4. Stock Management");
+        System.out.println("5. Generate Summary Report");
+        System.out.println("6. Return to Previous Menu");
     }
 
     public static void supplierMenu() {
@@ -91,7 +92,7 @@ public class Main {
 
     public static void whProdMenu(){
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
-        System.out.println("-------------------- [ Supplier Menu ] -------------------");
+        System.out.println("-------------------- [ Stock Management ] -------------------");
         System.out.println("1. Purchase Order");
         System.out.println("2. Goods Receive from Supplier");
         System.out.println("3. Goods Return to Supplier");
@@ -101,7 +102,7 @@ public class Main {
         System.out.println("7. Return to Previous Menu");
     }
 
-    public static void productMenu() { //Jiayu
+    public static void productMenu() {
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
         System.out.println("1. Add Product");
         System.out.println("2. Edit Product");
@@ -110,7 +111,7 @@ public class Main {
         System.out.println("5. Return to Previous Menu");
     }
 
-    public static void summaryReportMenu() { //Jiayu
+    public static void summaryReportMenu() {
         System.out.println("---------- ThaiKuLa Warehouse Management System ----------");
         System.out.println("1. Generate Report for All Branches");
         System.out.println("2. Generate Report for Specific Branches");

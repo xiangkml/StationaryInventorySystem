@@ -5,9 +5,9 @@ forgot pw function
 display rules for each input
 link stock receives with po
 list out the product instead of user input
+edit staff
 
 doing: let user set reorder lv/
-
 supplier crud /
 warehouse crud /
 warehouse & product/
@@ -54,7 +54,8 @@ for warehouse method: viewAllWarehouse
 for warehouse method: viewOneWarehouse
 - display warehouse info
 - design product listed
-
+                      ^
+same thing for product|
 
 */
 
