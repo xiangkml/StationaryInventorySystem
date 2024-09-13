@@ -38,7 +38,7 @@ public class Warehouse {
         this.address = address;
     }
 
-    public void addWarehouse() {
+    public static void addWarehouse() {
         String whName, whID = "", address = "";
         Scanner sc = new Scanner(System.in);
         boolean validId = true;
@@ -88,7 +88,7 @@ public class Warehouse {
 
     }
 
-    public void deleteWarehouse() {
+    public static void deleteWarehouse() {
 
         String whID;
         Warehouse whDel = null;
@@ -136,7 +136,7 @@ public class Warehouse {
 
     }
 
-    public void viewWarehouse() {
+    public static void viewWarehouse() {
         int menuInput;
         boolean returnPage = false;
 
@@ -160,7 +160,7 @@ public class Warehouse {
 
     }
 
-    public void viewAllWarehouse() {
+    public static void viewAllWarehouse() {
         ArrayList<Warehouse> whList = readMasterWarehouseFile();
         ArrayList<WhProd> prodList = WhProd.readWarehouseProductFile();
 
@@ -181,7 +181,7 @@ public class Warehouse {
         new Scanner(System.in).nextLine();
     }
 
-    public void viewOneWarehouse() {
+    public static void viewOneWarehouse() {
 
         Scanner sc = new Scanner(System.in);
         String whID;
@@ -233,7 +233,7 @@ public class Warehouse {
 
     }
 
-    public void editWarehouse() {
+    public static void editWarehouse() {
 
         Scanner sc = new Scanner(System.in);
         String whID;

@@ -40,7 +40,7 @@ public class Product {
         this.prodSKU = prodSKU;
     }
 
-    public void addProduct() {
+    public static void addProduct() {
         String prodName, prodSKU;
         Scanner sc = new Scanner(System.in);
 
@@ -90,7 +90,7 @@ public class Product {
 
     }
 
-    public void editProduct() {
+    public static void editProduct() {
 
         Scanner sc = new Scanner(System.in);
         String prodID;
@@ -227,7 +227,7 @@ public class Product {
 
     }
 
-    public void deleteProduct() {
+    public static void deleteProduct() {
 
         String prodSKU;
         boolean validID = false;
@@ -275,7 +275,7 @@ public class Product {
 
     }
 
-    public void viewProduct() {
+    public static void viewProduct() {
         int menuInput;
         boolean returnPage = false;
 
@@ -299,7 +299,7 @@ public class Product {
 
     }
 
-    public void viewAllProduct() {
+    public static void viewAllProduct() {
         ArrayList<Product> prodList = readMasterProductFile();
 
         System.out.println("--------------------------------------- Product List ---------------------------------------");
@@ -314,7 +314,7 @@ public class Product {
         new Scanner(System.in).nextLine();
     }
 
-    public void viewOneProduct() {
+    public static void viewOneProduct() {
 
         Scanner sc = new Scanner(System.in);
         String prodID;

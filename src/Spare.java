@@ -13,20 +13,26 @@ warehouse crud /
 warehouse & product/
 product crud/
 
+Supplier ViewAllSupplier(), get what product the supplier supply from arraylist
+Supplier addSupplier() enter no of product, do validation for negative input
 */
 
 
 /*
 baobei :
+
+until supplier 158
+
 add header and menu design /  IN MAIN
 add staff validate all input
 add space between word
 add header and design
 add subtitle for each menu / IN MAIN
+add rules for name, tel, email / IN SUPPLIER
 
 ******* have a function to display , find it!!
 
-for supplier method: add supplier
+for supplier method: add supplier  /
 - display supplier info to user before save
 - double confirm from the user
 

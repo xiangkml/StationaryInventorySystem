@@ -1,11 +1,6 @@
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import static java.lang.Character.isDigit;
 
 public class Main {
+
     public static void main(String[] args) {
 
         int loginChoice;
@@ -37,30 +32,217 @@ public class Main {
 
     }
 
-
     public static boolean secondMenu() {
 
-        secondMenuList();
-        int secondMenuInput = ExtraFunction.menuInput(5);
         boolean exitPage = false;
-        switch (secondMenuInput) {
-            case 1:
-                break;
 
-            case 2:
-                break;
+        do{
+            secondMenuList();
+            int secondMenuInput = ExtraFunction.menuInput(6);
+            switch (secondMenuInput) {
+                case 1:
+                    supplierEntry();
+                    break;
 
-            case 3:
-                break;
+                case 2:
+                    productEntry();
+                    break;
 
-            case 4:
-                break;
+                case 3:
+                    warehouseEntry();
+                    break;
 
-            default:
-                exitPage = true;
+                case 4:
+                    stockMngEntry();
+                    break;
 
-        }
+                case 5:
+                    summaryEntry();
+                    break;
+
+                default:
+                    exitPage = true;
+
+            }
+        }while(!exitPage);
+
         return exitPage;
+    }
+
+    public static void supplierEntry(){
+
+        int menuInput;
+        do{
+            supplierMenu();
+            menuInput = ExtraFunction.menuInput(5);
+
+            switch (menuInput) {
+                case 1:
+                    Supplier.addSupplier();
+                    break;
+
+                case 2:
+                    Supplier.editSupplier();
+                    break;
+
+                case 3:
+                    Supplier.deleteSupplier();
+                    break;
+
+                case 4:
+                    Supplier.viewSupplier();
+                    break;
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 5);
+
+    }
+
+    public static void productEntry(){
+        int menuInput;
+        do{
+            productMenu();
+            menuInput = ExtraFunction.menuInput(5);
+
+            switch (menuInput) {
+                case 1:
+                    Product.addProduct();
+                    break;
+
+                case 2:
+                    Product.editProduct();
+                    break;
+
+                case 3:
+                    Product.deleteProduct();
+                    break;
+
+                case 4:
+                    Product.viewProduct();
+                    break;
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 5);
+    }
+
+    public static void warehouseEntry(){
+        int menuInput;
+        do{
+            warehouseMenu();
+            menuInput = ExtraFunction.menuInput(5);
+
+            switch (menuInput) {
+                case 1:
+                    Warehouse.addWarehouse();
+                    break;
+
+                case 2:
+                    Warehouse.editWarehouse();
+                    break;
+
+                case 3:
+                    Warehouse.deleteWarehouse();
+                    break;
+
+                case 4:
+                    Warehouse.viewWarehouse();
+                    break;
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 5);
+    }
+
+    public static void stockMngEntry(){
+        int menuInput;
+        do{
+            whProdMenu();
+            menuInput = ExtraFunction.menuInput(7);
+
+            switch (menuInput) {
+                case 1:
+                    poEntry();
+                    break;
+
+                case 2:
+                    WhProd.goodsReceive();
+                    break;
+
+                case 3:
+                    WhProd.goodsReturn();
+                    break;
+
+                case 4:
+                    WhProd.stockTransfer();
+                    break;
+
+                case 5:
+                    WhProd.stockReturn();
+                    break;
+
+                case 6:
+                    WhProd.resetReorderLv();
+                    break;
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 5);
+    }
+
+    public static void poEntry(){
+        int menuInput;
+        do{
+            poMenu();
+            menuInput = ExtraFunction.menuInput(3);
+
+            switch (menuInput) {
+                case 1:
+                    // add po
+                    break;
+
+                case 2:
+                    // view po
+                    break;
+
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 3);
+    }
+
+    public static void summaryEntry(){
+        int menuInput;
+        do{
+            summaryReportMenu();
+            menuInput = ExtraFunction.menuInput(3);
+
+            switch (menuInput) {
+                case 1:
+                    // report for all branches
+                    break;
+
+                case 2:
+                    // report for one branches
+                    break;
+
+
+                default:
+                    return;
+
+            }
+        }while(menuInput != 3);
     }
 
     public static void mainMenu() {
@@ -78,7 +260,7 @@ public class Main {
     public static void secondMenuList() {
         displayHeader();
         System.out.println("|                                                         |");
-        System.out.println("|            What Part You Want To Proceed To?            |");
+        System.out.println("|           Which Part You Want To Proceed To?            |");
         System.out.println("|                                                         |");
         System.out.println("|               1. Supplier                               |");
         System.out.println("|               2. Product                                |");
@@ -98,7 +280,7 @@ public class Main {
         System.out.println("|              1. Add Supplier                            |");
         System.out.println("|              2. Edit Supplier                           |");
         System.out.println("|              3. Delete Supplier                         |");
-        System.out.println("|              4. Search & Display Supplier               |");
+        System.out.println("|              4. View Supplier                           |");
         System.out.println("|              5. Return to Previous Menu                 |");
         System.out.println("|                                                         |");
         System.out.println(" ========================================================= ");
@@ -128,7 +310,7 @@ public class Main {
         System.out.println("|               1. Add Product                            |");
         System.out.println("|               2. Edit Product                           |");
         System.out.println("|               3. Delete Product                         |");
-        System.out.println("|               4. Search & Display Product               |");
+        System.out.println("|               4. View Product                           |");
         System.out.println("|               5. Return to Previous Menu                |");
         System.out.println("|                                                         |");
         System.out.println(" ========================================================= ");

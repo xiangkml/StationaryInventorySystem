@@ -13,11 +13,12 @@ public class ExtraFunction {
                 System.out.print("Enter your choice: ");
                 inputOfMenu = sc.nextInt();
                 sc.nextLine();
-                if (!(inputOfMenu >= 1 && inputOfMenu <= endNum)) {
+                if ((inputOfMenu < 1) || (inputOfMenu > endNum)) {
                     System.out.println("Only enter numbers between 1 and " + endNum + ".");
                 }
-                else
+                else {
                     continueLoop = false;
+                }
             } catch (Exception e) {
                 System.out.println("Invalid Input.");
                 System.out.println("Only enter integer!");
