@@ -39,10 +39,6 @@ public class Supplier {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -130,7 +126,7 @@ public class Supplier {
         }
 
         if (!exitPage) {
-            boolean validInput;
+            boolean validInput = false;
             do {
                 System.out.println(" ");
                 inputIntRules();
@@ -138,9 +134,15 @@ public class Supplier {
                 try {
                     numOfSupplyProduct = sc.nextInt();
                     exitPage = (numOfSupplyProduct == -1);
-                    validInput = true;
+
+                    if(numOfSupplyProduct < 1){
+                        System.out.println("Number of Product Cannot less than 1 !");
+                        System.out.println("\nPlease Enter Valid Number of Product!\n");
+                    }else{
+                        validInput = true;
+                    }
+
                 } catch (Exception e) {
-                    validInput = false;
                     System.out.println("Invalid Input.");
                     System.out.println("Only enter integer!");
                     sc.nextLine();
@@ -443,32 +445,34 @@ public class Supplier {
                     continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
                 } while (continueEdit);
 
-            }
-
-            // information after edit
-            System.out.println("Supplier Information After Edited: ");
-            editSup.displaySup();
-            System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
-            confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
-            if (confirmationAfter) {
-                for (Supplier supplier : supplierList) {
-                    if (supID.equals(editSup.getId())) {
-                        supplier = editSup;
-                        break;
+                // information after edit
+                System.out.println("Supplier Information After Edited: ");
+                editSup.displaySup();
+                System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
+                confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
+                if (confirmationAfter) {
+                    for (Supplier supplier : supplierList) {
+                        if (supID.equals(editSup.getId())) {
+                            supplier = editSup;
+                            break;
+                        }
                     }
+                    writeSupplierFile(supplierList);
+                    System.out.println("Successfully Updated the Latest Supplier Information");
+
                 }
-                writeSupplierFile(supplierList);
-                System.out.println("Successfully Updated the Latest Supplier Information");
-                System.out.print("Press Enter to Continue...");
-                sc.nextLine();
+
             }
 
+
+        System.out.print("Press Enter to Continue...");
+        sc.nextLine();
         }
 
     public void editName() {
 
         System.out.println("Enter a new name for supplier [" + id + "]: ");
-        this.id = new Scanner(System.in).nextLine().trim();
+        this.setName(new Scanner(System.in).nextLine().trim());
 
     }
 
@@ -481,7 +485,7 @@ public class Supplier {
             String email = sc.nextLine().trim();
             validEmail = ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$");
             if (validEmail) {
-                this.email = email;
+                this.setEmail(email);
             } else {
                 System.out.println("Invalid email");
                 System.out.println("Please re-enter a valid email");
@@ -499,7 +503,7 @@ public class Supplier {
             String tel = sc.nextLine().trim();
             validTel = ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$");
             if (validTel) {
-                this.tel = tel;
+                this.setTel(tel);
             } else {
                 System.out.println("Invalid email");
                 System.out.println("Please re-enter a valid email");
@@ -510,7 +514,7 @@ public class Supplier {
     public void editAddress() {
 
         System.out.println("Enter a new address for supplier [" + id + "]: ");
-        this.address = new Scanner(System.in).nextLine().trim();
+        this.setAddress(new Scanner(System.in).nextLine().trim());
 
     }
 
