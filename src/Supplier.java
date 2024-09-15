@@ -93,7 +93,7 @@ public class Supplier {
                 exitPage = email.equals("-1");
 
                 if (!ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
-                    System.out.println("\n* Please Enter Valid Email Address! * \n");
+                    System.out.println("\n* Please Enter Valid Email Address! * ");
                     validInput = false;
                 }
             } while (!validInput);
@@ -101,7 +101,7 @@ public class Supplier {
         }
 
         if (!exitPage) {
-            System.out.println("\nEnter Supplier Address: ");
+            System.out.print("\nEnter Supplier Address: ");
             address = sc.nextLine().trim().toUpperCase();
             exitPage = address.equals("-1");
         }
@@ -110,9 +110,8 @@ public class Supplier {
             boolean validInput;
             do {
                 validInput = true;
-                System.out.println(" ");
                 telRules();
-                System.out.println("\nEnter Telephone Number: ");
+                System.out.print("\nEnter Telephone Number: ");
                 tel = sc.nextLine().trim();
                 if(tel.equals("-1")){
                     return;
@@ -368,11 +367,12 @@ public class Supplier {
         Supplier editSup = null;
         ArrayList<Supplier> supplierList;
 
-        System.out.println("----------- Edit Supplier -----------");
+        System.out.println("|                      Edit Supplier                      |");
+        System.out.println(" ========================================================= ");
         System.out.println("Enter '-1' to exit");
 
         do {
-            System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");
+            System.out.print("Enter the Supplier's ID that you wish to edit [SUP001]: ");
             supID = sc.nextLine().trim().toUpperCase();
             if (supID.equals("-1")) {
                 return;
@@ -390,9 +390,9 @@ public class Supplier {
         } while (!validID);
 
         // information before edit
-        System.out.println("Supplier Information Before Edited: ");
+        System.out.print("Supplier Information Before Edited: ");
         editSup.displaySup();
-        System.out.println("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]");
+        System.out.print("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]: ");
         confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
 
         if (confirmationBefore) {
@@ -432,14 +432,14 @@ public class Supplier {
                         return;
                 }
 
-                System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
+                System.out.print("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]: ");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
             } while (continueEdit);
 
             // information after edit
-            System.out.println("Supplier Information After Edited: ");
+            System.out.print("Supplier Information After Edited: ");
             editSup.displaySup();
-            System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
+            System.out.print("Do you sure you want to save this supplier information? [Y = YES || Others = NO]: ");
             confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
             if (confirmationAfter) {
                 for (Supplier supplier : supplierList) {
@@ -449,7 +449,7 @@ public class Supplier {
                     }
                 }
                 writeSupplierFile(supplierList);
-                System.out.println("Successfully Updated the Latest Supplier Information");
+                System.out.println("Successfully Updated the Latest Supplier Information!");
 
             }
 
@@ -461,7 +461,7 @@ public class Supplier {
 
     public void editName() {
 
-        System.out.println("Enter a new name for supplier [" + id + "]: ");
+        System.out.print("Enter a new name for supplier [" + id + "]: ");
         this.setName(new Scanner(System.in).nextLine().trim());
 
     }
@@ -471,14 +471,14 @@ public class Supplier {
         Scanner sc = new Scanner(System.in);
         boolean validEmail;
         do {
-            System.out.println("Enter a new email for supplier [" + id + "]: ");
+            System.out.print("Enter a new email for supplier [" + id + "]: ");
             String email = sc.nextLine().trim();
             validEmail = ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$");
             if (validEmail) {
                 this.setEmail(email);
             } else {
-                System.out.println("Invalid email");
-                System.out.println("Please re-enter a valid email");
+                System.out.println("* Invalid Email!! *");
+                System.out.println("* Please Re-enter a Valid Email! *");
             }
         } while (!validEmail);
 
@@ -489,21 +489,21 @@ public class Supplier {
         Scanner sc = new Scanner(System.in);
         boolean validTel;
         do {
-            System.out.println("Enter a new tel for supplier [" + id + "]: ");
+            System.out.print("Enter a new tel for supplier [" + id + "]: ");
             String tel = sc.nextLine().trim();
             validTel = ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$");
             if (validTel) {
                 this.setTel(tel);
             } else {
-                System.out.println("Invalid email");
-                System.out.println("Please re-enter a valid email");
+                System.out.println("* Invalid Telephone Number!! *");
+                System.out.println("* Please Re-enter a Valid Telephone Number! *");
             }
         } while (!validTel);
     }
 
     public void editAddress() {
 
-        System.out.println("Enter a new address for supplier [" + id + "]: ");
+        System.out.print("Enter a new address for supplier [" + id + "]: ");
         this.setAddress(new Scanner(System.in).nextLine().trim());
 
     }
@@ -516,7 +516,7 @@ public class Supplier {
         boolean validOldSKU = false, validNewSKU = false;
 
         do {
-            System.out.println("Enter the old Product SKU you wish to edit for supplier [" + id + "]: ");
+            System.out.print("Enter the old Product SKU you wish to edit for supplier [" + id + "]: ");
             oldSKU = sc.nextLine().trim().toUpperCase();
 
             for (Product prod : supplyProduct) {
@@ -528,7 +528,7 @@ public class Supplier {
             }
             if (validOldSKU) {
                 do {
-                    System.out.println("Enter the new Product SKU to replace it: ");
+                    System.out.print("Enter the new Product SKU to replace it: ");
                     newSKU = sc.nextLine().trim().toUpperCase();
                     ArrayList<Product> allProd = Product.readMasterProductFile();
                     for (Product prod : allProd) {
@@ -542,15 +542,15 @@ public class Supplier {
                     }
 
                     if (!validNewSKU) {
-                        System.out.println("Invalid Product SKU");
-                        System.out.println("Please re-enter a valid Product SKU");
+                        System.out.println("* Invalid Product SKU!! *");
+                        System.out.println("* Please Re-enter a Valid Product SKU! *");
                     }
 
                 } while (!validNewSKU);
 
             } else {
-                System.out.println("Invalid Product SKU");
-                System.out.println("Please re-enter a valid Product SKU");
+                System.out.println("* Invalid Product SKU!! *");
+                System.out.println("* Please Re-enter a Valid Product SKU! *");
             }
 
         } while (!validOldSKU);
@@ -684,8 +684,8 @@ public class Supplier {
         System.out.println("                  The Telephone Number Should Be:                     ");
         System.out.println(" 1. Cannot Start from '015'                                           ");
         System.out.println(" 2. If Start From '01x', Then Will only Followed by 7 Digits          ");
-        System.out.println(" 3. If Start From '011x', Then Will only Followed by 8 Digits         ");
-        System.out.println(" 4. Example Format : [01x-xxx xxxx | 01x-xxxx xxxx]                   ");
+        System.out.println(" 3. If Start From '011', Then Will only Followed by 8 Digits         ");
+        System.out.println(" 4. Example Format : [01x-xxx xxxx | 011-xxxx xxxx]                   ");
         System.out.println("                                                                      ");
         System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *    ");
         System.out.println("---------------------------------------------------------------------\n");

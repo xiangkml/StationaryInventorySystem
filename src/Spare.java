@@ -27,6 +27,7 @@ Supplier addSupplier() enter no of product, do validation for negative input /
 baobei :
 
 until supplier 158
+display supplier design
 
 add header and menu design /  IN MAIN
 add staff validate all input /
