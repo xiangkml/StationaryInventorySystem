@@ -74,12 +74,12 @@ public class Supplier {
         ArrayList<Product> supplyProduct = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
-        System.out.println(" =============================================== ");
-        System.out.println("|             Supplier Registration             |");
-        System.out.println(" =============================================== \n");
+        Main.displayHeader();
+        System.out.println("|                      Add Supplier                       |");
+        System.out.println(" ========================================================= ");
 
         nameRules();
-        System.out.println("Enter Supplier Name [Wong Ann Nee]: ");
+        System.out.print("Enter Supplier Name [Wong Ann Nee]: ");
         supName = sc.nextLine().trim();
         exitPage = supName.equals("-1");
 
@@ -87,14 +87,13 @@ public class Supplier {
             boolean validInput;
             do {
                 validInput = true;
-                System.out.println(" ");
                 emailRules();
-                System.out.println("\nEnter Supplier Email [thaikula520@gmail.com]: ");
+                System.out.print("Enter Supplier Email [thaikula520@gmail.com]: ");
                 email = sc.nextLine().trim();
                 exitPage = email.equals("-1");
 
                 if (!ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
-                    System.out.println("\nPlease Enter Valid Email Address!\n");
+                    System.out.println("\n* Please Enter Valid Email Address! * \n");
                     validInput = false;
                 }
             } while (!validInput);
@@ -657,47 +656,51 @@ public class Supplier {
     }
 
     public static void nameRules() {
-        System.out.println(" =================================================================== ");
-        System.out.println("|                         The Name Should Be:                        |");
-        System.out.println("| 1. Only Include characters                                         |");
-        System.out.println("| 2. Cannot Include Special Character(s) [@,!,?,#,...], exclude '/'  |");
-        System.out.println("| 3. Cannot Include Digit(s) [0,1,2,3,...]                           |");
-        System.out.println("|                                                                    |");
-        System.out.println("|          * Enter '-1' in Any Field If You Want to Exit *           |");
-        System.out.println(" =================================================================== ");
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                         The Name Should Be:                           ");
+        System.out.println(" 1. Only Include characters                                            ");
+        System.out.println(" 2. Cannot Include Special Character(s) [@,!,?,#,...], exclude '/'     ");
+        System.out.println(" 3. Cannot Include Digit(s) [0,1,2,3,...]                              ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
     public static void emailRules() {
-        System.out.println(" =================================================================== ");
-        System.out.println("|                        The Email Should Be:                        |");
-        System.out.println("| 1. Can Include character(s) and Digit(s)                           |");
-        System.out.println("| 2. Can Include Special Character(s) [_,-,.]                        |");
-        System.out.println("| 3. Must Include '@'                                                |");
-        System.out.println("|                                                                    |");
-        System.out.println("|          * Enter '-1' in Any Field If You Want to Exit *           |");
-        System.out.println(" =================================================================== ");
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                        The Email Should Be:                           ");
+        System.out.println(" 1. Can Include character(s) and Digit(s)                              ");
+        System.out.println(" 2. Can Include Special Character(s) [_,-,.]                           ");
+        System.out.println(" 3. Must Include '@'                                                   ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
     public static void telRules() {
-        System.out.println(" =================================================================== ");
-        System.out.println("|                  The Telephone Number Should Be:                   |");
-        System.out.println("| 1. Cannot Start from '015'                                         |");
-        System.out.println("| 2. If Start From '01x', Then Will only Followed by 7 Digits        |");
-        System.out.println("| 3. If Start From '011x', Then Will only Followed by 8 Digits       |");
-        System.out.println("| 4. Example Format : [01x-xxx xxxx | 01x-xxxx xxxx]                 |");
-        System.out.println("|                                                                    |");
-        System.out.println("|          * Enter '-1' in Any Field If You Want to Exit *           |");
-        System.out.println(" =================================================================== ");
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                  The Telephone Number Should Be:                     ");
+        System.out.println(" 1. Cannot Start from '015'                                           ");
+        System.out.println(" 2. If Start From '01x', Then Will only Followed by 7 Digits          ");
+        System.out.println(" 3. If Start From '011x', Then Will only Followed by 8 Digits         ");
+        System.out.println(" 4. Example Format : [01x-xxx xxxx | 01x-xxxx xxxx]                   ");
+        System.out.println("                                                                      ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *    ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
     public static void inputIntRules() {
-        System.out.println(" =================================================================== ");
-        System.out.println("|                       The Number Should Be:                        |");
-        System.out.println("| 1. Can Only Enter Integer                                          |");
-        System.out.println("| 2. Cannot Enter Negative Integer [-25,-431], except exit           |");
-        System.out.println("|                                                                    |");
-        System.out.println("|          * Enter '-1' in Any Field If You Want to Exit *           |");
-        System.out.println(" =================================================================== ");
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                       The Number Should Be:                           ");
+        System.out.println(" 1. Can Only Enter Integer                                             ");
+        System.out.println(" 2. Cannot Enter Negative Integer [-25,-431], except exit              ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
 

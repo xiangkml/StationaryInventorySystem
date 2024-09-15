@@ -51,15 +51,18 @@ public class Staff {
         ArrayList<Staff> staffList = readStaffFile();
         String id, pw;
 
-        System.out.println("----------- Login Page -----------");
+        Main.displayHeader();
+        System.out.println("|                       Login Page                        |");
+        System.out.println(" ========================================================= ");
 
         do {
-            System.out.println("Enter '-1' to exit");
+            stfIdRules();
             System.out.print("Enter your staff ID [STFxxx]: ");
             id = sc.nextLine().toUpperCase();
             if (id.equals("-1")) {
               validate = -1;
             } else {
+                stfPswdRules();
                 System.out.print("Enter your Password: ");
                 pw = sc.nextLine();
                 if (pw.equals("-1")) {
@@ -68,15 +71,15 @@ public class Staff {
                     for (Staff staff : staffList) {
                         if (staff.getId().equals(id) && staff.getPassword().equals(pw)) {
                             validate = 1;
-                            System.out.println("Successfully logged in!");
+                            System.out.println("Successfully logged in!!");
                             validLogin = true;
                             break;
                         }
                     }
 
                      if(validate != 1) {
-                        System.out.println("Invalid Username & Password");
-                        System.out.println("Please Enter Again");
+                        System.out.println("* Invalid Username & Password! *");
+                        System.out.println("* Please Enter Again! *");
                     }
                 }
             }
@@ -95,34 +98,39 @@ public class Staff {
         int characterNum = 0, digitNum = 0;
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("----------- Registration Page -----------");
-        System.out.println("------- [-1 for -> previous page] -------");
+        Main.displayHeader();
 
-        System.out.println("Enter your Full Name [THAI KU LA]: ");
+        System.out.println("|                    Registration Page                    |");
+        System.out.println(" ========================================================= ");
+
+        Supplier.nameRules();
+        System.out.print("Enter Your Full Name [THAI KU LA]: ");
         newStfName = sc.nextLine().toUpperCase().trim();
         if (newStfName.equals("-1"))
             return;
 
         do {
-            System.out.println("Enter your IC number [xxxxxx-xx-xxxx]: ");
+            stfIcRules();
+            System.out.print("Enter Your IC Number: ");
             newStfIc = sc.nextLine().trim();
             if (newStfIc.equals("-1"))
                 return;
             validIc = validateIC(newStfIc);
 
             if (!validIc) {
-                System.out.println("Invalid IC number");
-                System.out.println("Please Re-enter your Identity Card Number again!");
+                System.out.println("\n* Invalid IC Number!! *");
+                System.out.println("* Please Re-enter Your Identity Card Number Again! *");
             }
         } while (!validIc);
 
 
         do {
-            System.out.println("Setting your password [length:8-12, contains character & digit]: ");
+            stfPswdRules();
+            System.out.print("Set Your Password: ");
             newStfPw1 = sc.nextLine().trim();
             if (newStfPw1.equals("-1"))
                 return;
-            System.out.println("Please Re-enter your password again:");
+            System.out.print("Confirm Password: ");
             newStfPw2 = sc.nextLine().trim();
             if (newStfPw2.equals("-1"))
                 return;
@@ -141,18 +149,18 @@ public class Staff {
                     if ((digitNum != 0) && (characterNum != 0)) {
                         validPw = true;
                     } else {
-                        System.out.println("Your password must contain at least one digit and one character!");
+                        System.out.println("\n* Your password must contain at least one digit and one character! *");
                     }
 
                 } else {
-                    System.out.println("Your password are not same!");
+                    System.out.println("\n* Your password is not same! *");
                 }
 
             } else {
-                System.out.println("Error! Your password length is not fulfill the conditions.");
+                System.out.println("\n* Error! Your password length is not fulfill the conditions. *");
             }
             if (!validPw)
-                System.out.println("Please set your password again!");
+                System.out.println("Please Set Your Password Again!");
 
         } while (!validPw);
 
@@ -162,14 +170,16 @@ public class Staff {
         writeStaffFile(staffList);
 
         System.out.println("Successfully registered!");
-        System.out.println("----------- Staff Information -----------");
-        System.out.println("Staff ID: " + newStf.getId());
-        System.out.println("Staff Name: " + newStf.getName());
-        System.out.println("Staff IC: " + newStf.getIc());
-        System.out.println("Welcome to ThaiKuLa Company!");
-        System.out.println("Hope you have a nice day!");
-
-        System.out.println("Press Enter to continue...");
+        System.out.println(" ===================================================");
+        System.out.println("|                Staff Information                  |");
+        System.out.println(" ===================================================");
+        System.out.println(" Staff ID: " + newStf.getId());
+        System.out.println(" Staff Name: " + newStf.getName());
+        System.out.println(" Staff IC: " + newStf.getIc());
+        System.out.println("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
+        System.out.println("           Welcome to ThaiKuLa Company~");
+        System.out.println("            Hope you have a nice day!\n");
+        System.out.print("             Press Enter to continue...");
         sc.nextLine();
     }
 
@@ -252,5 +262,36 @@ public class Staff {
         return stf.size();
     }
 
+    public static void stfIdRules(){
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                      The Staff ID Should Be:                          ");
+        System.out.println(" 1. Start with 'STF'                                                   ");
+        System.out.println(" 2. Followed By 3 digits                                               ");
+        System.out.println(" 3. Total Length of Staff ID is 6                                      ");
+        System.out.println("                                                                       ");
+        System.out.println(" * Enter '-1' in Any Field If You Want to Exit to Previous Page *      ");
+        System.out.println("---------------------------------------------------------------------\n");
+    }
+
+    public static void stfPswdRules(){
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                   The Staff Password Should Be:                       ");
+        System.out.println(" 1. Length is from 8 to 12                                             ");
+        System.out.println(" 2. Must Contain At Least one digit and one character                  ");
+        System.out.println("                                                                       ");
+        System.out.println(" * Enter '-1' in Any Field If You Want to Exit to Previous Page *      ");
+        System.out.println("---------------------------------------------------------------------\n");
+    }
+
+    public static void stfIcRules(){
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                   The IC Number Should Be:                            ");
+        System.out.println(" 1. In Format 'xxxxxx-xx-xxxx'                                         ");
+        System.out.println(" 2. Can Only Enter digits (0-9) and '-'                                ");
+        System.out.println(" 3. Total Length of IC Number is 14                                    ");
+        System.out.println("                                                                       ");
+        System.out.println(" * Enter '-1' in Any Field If You Want to Exit to Previous Page *      ");
+        System.out.println("---------------------------------------------------------------------\n");
+    }
 
 }

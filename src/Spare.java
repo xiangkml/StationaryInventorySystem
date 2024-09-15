@@ -7,6 +7,7 @@ link stock receives with po
 list out the product instead of user input
 edit staff
 
+
 doing: let user set reorder lv/
 supplier crud /
 warehouse crud /
@@ -28,7 +29,7 @@ baobei :
 until supplier 158
 
 add header and menu design /  IN MAIN
-add staff validate all input
+add staff validate all input /
 add space between word
 add header and design
 add subtitle for each menu / IN MAIN
