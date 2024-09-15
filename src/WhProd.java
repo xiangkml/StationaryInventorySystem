@@ -601,8 +601,8 @@ public class WhProd extends Product {
     public void displayWhProd() {
         System.out.println("Warehouse ID: " + whId);
         System.out.println("Product SKU Code: " + prodSKU);
-        System.out.println("Product Name: " + prodName);
         System.out.println("Quantity: " + quantity);
+        System.out.println("Reorder Level: " + reorderLv);
     }
 
     public static ArrayList<WhProd> readWarehouseProductFile() {
@@ -633,7 +633,7 @@ public class WhProd extends Product {
             }
             scanFile.close();
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (read stock file):" + e.getMessage());
         }
         return prodList;
     }
@@ -647,17 +647,15 @@ public class WhProd extends Product {
                 writer.write('|');
                 writer.write(prod.getProductSKU());
                 writer.write('|');
-                writer.write(prod.getQuantity());
+                writer.write(Integer.toString(prod.getQuantity()));
                 writer.write('|');
-                writer.write(prod.getReorderLv());
+                writer.write(Integer.toString(prod.getReorderLv()));
                 writer.newLine();  // Write each item on a new line
             }
 
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (write stock file):" + e.getMessage());
         }
     }
 
 }
-// warehouseID , name , address
-// ProductList {sku,name,quantity,reorder level}

@@ -67,10 +67,6 @@ public class Supplier {
         return supplyProduct;
     }
 
-    public void setSupplyProduct(ArrayList<Product> supplyProduct) {
-        this.supplyProduct = supplyProduct;
-    }
-
     public static void addSupplier() {
         String supName, email = "", address = "", tel = "";
         boolean exitPage = false;
@@ -88,8 +84,9 @@ public class Supplier {
         exitPage = supName.equals("-1");
 
         if (!exitPage) {
-            boolean validInput = true;
+            boolean validInput;
             do {
+                validInput = true;
                 System.out.println(" ");
                 emailRules();
                 System.out.println("\nEnter Supplier Email [thaikula520@gmail.com]: ");
@@ -113,12 +110,14 @@ public class Supplier {
         if (!exitPage) {
             boolean validInput;
             do {
+                validInput = true;
                 System.out.println(" ");
                 telRules();
                 System.out.println("\nEnter Telephone Number: ");
                 tel = sc.nextLine().trim();
-                exitPage = tel.equals("-1");
-                validInput = true;
+                if(tel.equals("-1")){
+                    return;
+                }
                 if (!ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$")) {
                     validInput = false;
                 }
@@ -212,9 +211,6 @@ public class Supplier {
 
         System.out.println("----------- Delete Supplier -----------");
         System.out.println("Enter '-1' to exit");
-        if (sc.nextLine().equals("-1")) {
-            return;
-        }
 
         do {
             System.out.println("Enter the supplier's id that you wish to delete [SUP001]: ");
@@ -375,9 +371,6 @@ public class Supplier {
 
         System.out.println("----------- Edit Supplier -----------");
         System.out.println("Enter '-1' to exit");
-        if (sc.nextLine().equals("-1")) {
-            return;
-        }
 
         do {
             System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");

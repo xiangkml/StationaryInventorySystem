@@ -41,7 +41,7 @@ public class Warehouse {
     public static void addWarehouse() {
         String whName, whID = "", address = "";
         Scanner sc = new Scanner(System.in);
-        boolean validId = true;
+        boolean validId;
 
         System.out.println("----------- Warehouse Registration -----------");
         System.out.println("Enter '-1' to exit");
@@ -53,6 +53,7 @@ public class Warehouse {
         }
 
         do {
+            validId = true;
             System.out.println("Enter warehouse ID [JHR004]: ");
             whID = sc.nextLine().trim().toUpperCase();
             if (whID.equals("-1")) {
@@ -170,7 +171,7 @@ public class Warehouse {
             // design product listed
             System.out.println("--------------------------------------- Warehouse Product ---------------------------------------");
             for (WhProd whP : prodList) {
-                if(whP.getWhId().equals(wh.getWhID())){
+                if (whP.getWhId().equals(wh.getWhID())) {
                     System.out.println(whP.getProductSKU() + " " + whP.getProdName() + " " + whP.getQuantity() + " " + whP.getReorderLv());
                 }
             }
@@ -218,7 +219,7 @@ public class Warehouse {
                 ArrayList<WhProd> prodList = WhProd.readWarehouseProductFile();
 
                 for (WhProd whP : prodList) {
-                    if(whP.getWhId().equals(whID)){
+                    if (whP.getWhId().equals(whID)) {
                         System.out.println(whP.getProductSKU() + " " + whP.getProdName() + " " + whP.getQuantity() + " " + whP.getReorderLv());
                     }
                 }
@@ -264,7 +265,7 @@ public class Warehouse {
                 }
             }
 
-            if(!validID){
+            if (!validID) {
                 System.out.println("Invalid warehouse ID!");
                 System.out.println("Please re-enter warehouse's ID");
             }
@@ -354,7 +355,7 @@ public class Warehouse {
 
                 if (validID) {
                     this.setWhID(newID);
-                }else{
+                } else {
                     System.out.println("The id has been used.");
                     System.out.println("Please re-enter a valid ID");
                 }

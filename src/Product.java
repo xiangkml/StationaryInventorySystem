@@ -43,6 +43,7 @@ public class Product implements ProductInterface{
     public static void addProduct() {
         String prodName, prodSKU;
         Scanner sc = new Scanner(System.in);
+        ArrayList<Product> masterProduct = readMasterProductFile();
 
         System.out.println("----------- Add Product -----------");
         System.out.println("Enter '-1' to exit");
@@ -54,7 +55,9 @@ public class Product implements ProductInterface{
         }
 
         boolean validInput = true;
+
         do {
+            validInput = true;
             System.out.println("Enter product sku code [PLPEN001]: ");
             prodSKU = sc.nextLine().trim().toUpperCase();
             if (prodSKU.equals("-1")) {
@@ -65,6 +68,15 @@ public class Product implements ProductInterface{
                 System.out.println("Enter valid product sku code");
                 validInput = false;
             }
+
+            for(Product oldProd: masterProduct){
+                if(prodSKU.equals(oldProd.getProdSKU())){
+                    System.out.println("The product sku code is duplicated");
+                    System.out.println("Please re-enter a new sku code");
+                    validInput = false;
+                }
+            }
+
         } while (!validInput);
 
         Product newProduct = new Product(prodName, prodSKU);
@@ -73,7 +85,6 @@ public class Product implements ProductInterface{
         // double confirm from the user
 
         // if user confirm then process below
-        ArrayList<Product> masterProduct = readMasterProductFile();
         masterProduct.add(newProduct);
         writeMasterProductFile(masterProduct);
 
@@ -83,6 +94,7 @@ public class Product implements ProductInterface{
             WhProd newWhProd = new WhProd(w.getWhID(), prodSKU);
             whProduct.add(newWhProd);
         }
+        WhProd.writeWarehouseProductFile(whProduct);
 
         System.out.println("Successfully add a new product!");
         System.out.println("Press Enter to continue...");
@@ -101,9 +113,6 @@ public class Product implements ProductInterface{
 
         System.out.println("----------- Edit Product -----------");
         System.out.println("Enter '-1' to exit");
-        if (sc.nextLine().equals("-1")) {
-            return;
-        }
 
         do {
             System.out.println("Enter the product's id that you wish to edit [PLPEN001]: ");
@@ -156,7 +165,7 @@ public class Product implements ProductInterface{
                         return;
                 }
 
-                System.out.println("Do you want to continue edit this Warehouse information? [Y = YES || Others = NO]");
+                System.out.println("Do you want to continue edit this product information? [Y = YES || Others = NO]");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
             } while (continueEdit);
 
@@ -167,7 +176,6 @@ public class Product implements ProductInterface{
             confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
 
             if (confirmationAfter) {
-                prodList.add(editProduct);
                 writeMasterProductFile(prodList);
 
                 if (menuInput == 2) {
@@ -238,9 +246,6 @@ public class Product implements ProductInterface{
 
         System.out.println("----------- Delete Product -----------");
         System.out.println("Enter '-1' to exit");
-        if (sc.nextLine().equals("-1")) {
-            return;
-        }
 
         do {
             System.out.println("Enter the product's SKU that you wish to delete [OPPEN001]: ");
@@ -268,9 +273,11 @@ public class Product implements ProductInterface{
                 prodList.remove(prodDel);
                 writeMasterProductFile(prodList);
 
-                for(WhProd stock:stockList){
-                    if(stock.getProductSKU().equals(prodDel.getProdSKU())){
-                        stockList.remove(stock);
+               // for(WhProd stock:stockList){
+                for(int i = 0;i<stockList.size();i++){
+
+                    if(stockList.get(i).getProductSKU().equals(prodDel.getProdSKU())){
+                        stockList.remove(stockList.get(i));
                     }
                 }
                 WhProd.writeWarehouseProductFile(stockList);
@@ -332,9 +339,6 @@ public class Product implements ProductInterface{
 
         System.out.println("----------- View Specific Product Details -----------");
         System.out.println("Enter '-1' to exit");
-        if (sc.nextLine().equals("-1")) {
-            return;
-        }
 
         do {
             System.out.println("Enter the product's SKU that you wish to view [OPPEN001]: ");
@@ -406,9 +410,9 @@ public class Product implements ProductInterface{
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathName))) {
             for (Product prod : prodList) {
-                writer.write(prod.getProdSKU());
-                writer.write('|');
                 writer.write(prod.getProdName());
+                writer.write('|');
+                writer.write(prod.getProdSKU());
                 writer.newLine();  // Write each item on a new line
             }
 
