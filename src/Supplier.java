@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 public class Supplier {
     private String name, id, email, address, tel;
-    private ArrayList<String> supplyProduct = new ArrayList<>();
+    private ArrayList<Product> supplyProduct = new ArrayList<>();
 
-    public Supplier(String name, String email, String address, String tel, ArrayList<String> supplyProduct) {
+    public Supplier(String name, String email, String address, String tel, ArrayList<Product> supplyProduct) {
         this.name = name;
         this.id = String.format("SUP%03d", countSupplier() + 1);
         this.email = email;
@@ -18,7 +18,7 @@ public class Supplier {
         this.supplyProduct = supplyProduct;
     }
 
-    public Supplier(String name, String id, String email, String address, String tel, ArrayList<String> supplyProduct) {
+    public Supplier(String name, String id, String email, String address, String tel, ArrayList<Product> supplyProduct) {
         this.name = name;
         this.id = id;
         this.email = email;
@@ -63,11 +63,11 @@ public class Supplier {
         this.tel = tel;
     }
 
-    public ArrayList<String> getSupplyProduct() {
+    public ArrayList<Product> getSupplyProduct() {
         return supplyProduct;
     }
 
-    public void setSupplyProduct(ArrayList<String> supplyProduct) {
+    public void setSupplyProduct(ArrayList<Product> supplyProduct) {
         this.supplyProduct = supplyProduct;
     }
 
@@ -75,7 +75,7 @@ public class Supplier {
         String supName, email = "", address = "", tel = "";
         boolean exitPage = false;
         int numOfSupplyProduct = 0;
-        ArrayList<String> supplyProduct = new ArrayList<>();
+        ArrayList<Product> supplyProduct = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         System.out.println(" =============================================== ");
@@ -135,10 +135,10 @@ public class Supplier {
                     numOfSupplyProduct = sc.nextInt();
                     exitPage = (numOfSupplyProduct == -1);
 
-                    if(numOfSupplyProduct < 1){
+                    if (numOfSupplyProduct < 1) {
                         System.out.println("Number of Product Cannot less than 1 !");
                         System.out.println("\nPlease Enter Valid Number of Product!\n");
-                    }else{
+                    } else {
                         validInput = true;
                     }
 
@@ -165,7 +165,7 @@ public class Supplier {
                     for (Product prod : masterProduct) {
                         if (prod.getProdSKU().equals(skuCode)) {
                             validProd = true;
-                            supplyProduct.add(skuCode);
+                            supplyProduct.add(new Product(skuCode, prod.getProdName()));
                             break;
                         }
                     }
@@ -287,8 +287,8 @@ public class Supplier {
             // display all information for each supplier
             System.out.printf("| %02d. | %-6s | %-41s ", noSup, supplier.getId(), supplier.getName());
 
-            for (String prodSKU : supplier.getSupplyProduct()){
-                System.out.printf("| %-6s | %-25s |\n", prodSKU, "Prod Name"); //havent add product name
+            for (Product prod : supplier.getSupplyProduct()) {
+                System.out.printf("| %-6s | %-25s |\n", prod.getProdSKU(), prod.getProdName());
                 System.out.printf("|%5s|%8s|%43s", "", "", "");
             }
 
@@ -297,7 +297,6 @@ public class Supplier {
             noSup++;
         }
         System.out.println(" =============================================================================================== \n");
-
 
 
         System.out.println("            Successfully Display All the Supplier            ");
@@ -345,8 +344,8 @@ public class Supplier {
                 // display all information for each supplier
                 System.out.printf("| %-6s | %-41s ", viewSup.getId(), viewSup.getName());
 
-                for (String prodSKU : viewSup.getSupplyProduct()) {
-                    System.out.printf("| %-6s | %-25s |\n", prodSKU, "Prod Name"); //havent add product name
+                for (Product prod : viewSup.getSupplyProduct()) {
+                    System.out.printf("| %-6s | %-25s |\n", prod.getProdSKU(), prod.getProdName());
                     System.out.printf("|%8s|%43s", "", "");
 
 
@@ -358,116 +357,115 @@ public class Supplier {
 
 
             }
-        }while (!validID) ;
+        } while (!validID);
 
-            System.out.println("Successfully display supplier details");
-            System.out.println("Press Enter to continue...");
-            new Scanner(System.in).nextLine();
+        System.out.println("Successfully display supplier details");
+        System.out.println("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
 
     }
 
-    public static void editSupplier () {
+    public static void editSupplier() {
 
-            Scanner sc = new Scanner(System.in);
-            String supID;
-            boolean validID = false, confirmationBefore = false, confirmationAfter = false, continueEdit = false;
-            Supplier editSup = null;
-            ArrayList<Supplier> supplierList;
+        Scanner sc = new Scanner(System.in);
+        String supID;
+        boolean validID = false, confirmationBefore = false, confirmationAfter = false, continueEdit = false;
+        Supplier editSup = null;
+        ArrayList<Supplier> supplierList;
 
-            System.out.println("----------- Edit Supplier -----------");
-            System.out.println("Enter '-1' to exit");
-            if (sc.nextLine().equals("-1")) {
+        System.out.println("----------- Edit Supplier -----------");
+        System.out.println("Enter '-1' to exit");
+        if (sc.nextLine().equals("-1")) {
+            return;
+        }
+
+        do {
+            System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");
+            supID = sc.nextLine().trim().toUpperCase();
+            if (supID.equals("-1")) {
                 return;
             }
 
+            supplierList = readSupplierFile();
+            for (Supplier supplier : supplierList) {
+                if (supID.equals(supplier.getId())) {
+                    validID = true;
+                    editSup = supplier;
+                    break;
+                }
+            }
+
+        } while (!validID);
+
+        // information before edit
+        System.out.println("Supplier Information Before Edited: ");
+        editSup.displaySup();
+        System.out.println("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]");
+        confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
+
+        if (confirmationBefore) {
+
             do {
-                System.out.println("Enter the supplier's id that you wish to edit [SUP001]: ");
-                supID = sc.nextLine().trim().toUpperCase();
-                if (supID.equals("-1")) {
-                    return;
+                Main.editSupplierMenu();
+                int menuInput = ExtraFunction.menuInput(6);
+
+                switch (menuInput) {
+                    case 1:
+                        // edit name
+                        editSup.editName();
+                        break;
+
+                    case 2:
+                        //edit email
+                        editSup.editEmail();
+                        break;
+
+                    case 3:
+                        // edit tel
+                        editSup.editTel();
+                        break;
+
+                    case 4:
+                        // edit address
+                        editSup.editAddress();
+                        break;
+
+                    case 5:
+                        // edit supplied product
+                        editSup.editSuppliedProd();
+                        break;
+
+                    default:
+                        // return
+                        return;
                 }
 
-                supplierList = readSupplierFile();
+                System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
+                continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
+            } while (continueEdit);
+
+            // information after edit
+            System.out.println("Supplier Information After Edited: ");
+            editSup.displaySup();
+            System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
+            confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
+            if (confirmationAfter) {
                 for (Supplier supplier : supplierList) {
-                    if (supID.equals(supplier.getId())) {
-                        validID = true;
-                        editSup = supplier;
+                    if (supID.equals(editSup.getId())) {
+                        supplier = editSup;
                         break;
                     }
                 }
-
-            } while (!validID);
-
-            // information before edit
-            System.out.println("Supplier Information Before Edited: ");
-            editSup.displaySup();
-            System.out.println("Do you sure you want to edit this supplier information? [Y = YES || Others = NO]");
-            confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
-
-            if (confirmationBefore) {
-
-                do {
-                    Main.editSupplierMenu();
-                    int menuInput = ExtraFunction.menuInput(6);
-
-                    switch (menuInput) {
-                        case 1:
-                            // edit name
-                            editSup.editName();
-                            break;
-
-                        case 2:
-                            //edit email
-                            editSup.editEmail();
-                            break;
-
-                        case 3:
-                            // edit tel
-                            editSup.editTel();
-                            break;
-
-                        case 4:
-                            // edit address
-                            editSup.editAddress();
-                            break;
-
-                        case 5:
-                            // edit supplied product
-                            editSup.editSuppliedProd();
-                            break;
-
-                        default:
-                            // return
-                            return;
-                    }
-
-                    System.out.println("Do you want to continue edit this Supplier information? [Y = YES || Others = NO]");
-                    continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
-                } while (continueEdit);
-
-                // information after edit
-                System.out.println("Supplier Information After Edited: ");
-                editSup.displaySup();
-                System.out.println("Do you sure you want to save this supplier information? [Y = YES || Others = NO]");
-                confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
-                if (confirmationAfter) {
-                    for (Supplier supplier : supplierList) {
-                        if (supID.equals(editSup.getId())) {
-                            supplier = editSup;
-                            break;
-                        }
-                    }
-                    writeSupplierFile(supplierList);
-                    System.out.println("Successfully Updated the Latest Supplier Information");
-
-                }
+                writeSupplierFile(supplierList);
+                System.out.println("Successfully Updated the Latest Supplier Information");
 
             }
 
+        }
 
         System.out.print("Press Enter to Continue...");
         sc.nextLine();
-        }
+    }
 
     public void editName() {
 
@@ -522,16 +520,17 @@ public class Supplier {
 
         Scanner sc = new Scanner(System.in);
         String oldSKU, newSKU;
+        Product newProd = null, oldProd = null;
         boolean validOldSKU = false, validNewSKU = false;
-
 
         do {
             System.out.println("Enter the old Product SKU you wish to edit for supplier [" + id + "]: ");
             oldSKU = sc.nextLine().trim().toUpperCase();
 
-            for (String prodSKU : supplyProduct) {
-                if (prodSKU.equals(oldSKU)) {
+            for (Product prod : supplyProduct) {
+                if (prod.getProdSKU().equals(oldSKU)) {
                     validOldSKU = true;
+                    oldProd = prod;
                     break;
                 }
             }
@@ -543,8 +542,9 @@ public class Supplier {
                     for (Product prod : allProd) {
                         if (prod.getProdSKU().equals(newSKU)) {
                             validNewSKU = true;
-                            this.supplyProduct.remove(oldSKU);
-                            this.supplyProduct.add(newSKU);
+                            newProd = prod;
+                            this.supplyProduct.remove(oldProd);
+                            this.supplyProduct.add(newProd);
                             break;
                         }
                     }
@@ -572,30 +572,21 @@ public class Supplier {
         System.out.println("Supplier Address: " + address);
         System.out.println("Supplier Tel    : " + tel);
         System.out.println("Product Supplied: ");
-        for (String prod : supplyProduct) {
-            System.out.print(prod + ", ");
+        for (Product prod : supplyProduct) {
+            System.out.println(prod.getProdSKU() + " , " + prod.getProdName());
         }
         System.out.println("\b\b");
     }
 
-    public boolean validSupplierID() {
-        ArrayList<Supplier> supplierList = readSupplierFile();
-        boolean validID = false;
-        for (Supplier supplier : supplierList) {
-            if (id.equals(supplier.getId())) {
-                validID = true;
-                break;
-            }
-        }
-        return validID;
-    }
 
     public static ArrayList<Supplier> readSupplierFile() {
         String pathName = "supplier.txt";
 
         File file = new File(pathName);
         ArrayList<Supplier> supplierList = new ArrayList<>();
+        ArrayList<Product> productList = new ArrayList<>();
         ArrayList<String> productSkuList = new ArrayList<>();
+        ArrayList<Product> masterProd = Product.readMasterProductFile();
         Scanner scanFile;
         try {
             scanFile = new Scanner(file);
@@ -614,7 +605,18 @@ public class Supplier {
 
                     productSkuList.addAll(Arrays.asList(data).subList(5, data.length + 1));
 
-                    Supplier supplier = new Supplier(companyName, id, email, address, tel, productSkuList);
+                    //read product name from master product file
+                    for(String sku:productSkuList){
+
+                        for(Product p:masterProd){
+                            if(sku.equals(p.getProdSKU())){
+                                productList.add(new Product(p.getProdName(),p.getProdSKU()));
+                            }
+                        }
+
+                    }
+
+                    Supplier supplier = new Supplier(companyName, id, email, address, tel, productList);
                     supplierList.add(supplier);
                 } else {
                     System.out.println("Invalid data format: " + line);
@@ -643,8 +645,8 @@ public class Supplier {
                 writer.write('|');
                 writer.write(supplier.getTel());
                 writer.write('|');
-                for (String product : supplier.getSupplyProduct()) {
-                    writer.write(product);
+                for (Product product : supplier.getSupplyProduct()) {
+                    writer.write(product.getProdSKU());
                     writer.write('|');
                 }
                 writer.write('\b');
@@ -661,7 +663,7 @@ public class Supplier {
         return supplier.size();
     }
 
-    public static void nameRules(){
+    public static void nameRules() {
         System.out.println(" =================================================================== ");
         System.out.println("|                         The Name Should Be:                        |");
         System.out.println("| 1. Only Include characters                                         |");
@@ -672,7 +674,7 @@ public class Supplier {
         System.out.println(" =================================================================== ");
     }
 
-    public static void emailRules(){
+    public static void emailRules() {
         System.out.println(" =================================================================== ");
         System.out.println("|                        The Email Should Be:                        |");
         System.out.println("| 1. Can Include character(s) and Digit(s)                           |");
@@ -683,7 +685,7 @@ public class Supplier {
         System.out.println(" =================================================================== ");
     }
 
-    public static void telRules(){
+    public static void telRules() {
         System.out.println(" =================================================================== ");
         System.out.println("|                  The Telephone Number Should Be:                   |");
         System.out.println("| 1. Cannot Start from '015'                                         |");
@@ -695,7 +697,7 @@ public class Supplier {
         System.out.println(" =================================================================== ");
     }
 
-    public static void inputIntRules(){
+    public static void inputIntRules() {
         System.out.println(" =================================================================== ");
         System.out.println("|                       The Number Should Be:                        |");
         System.out.println("| 1. Can Only Enter Integer                                          |");
@@ -704,7 +706,6 @@ public class Supplier {
         System.out.println("|          * Enter '-1' in Any Field If You Want to Exit *           |");
         System.out.println(" =================================================================== ");
     }
-
 
 
 }

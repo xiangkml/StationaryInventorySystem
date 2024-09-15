@@ -331,7 +331,7 @@ public class Warehouse {
     public void editName() {
 
         System.out.println("Enter a new name for warehouse [" + whID + "]: ");
-        this.whID = new Scanner(System.in).nextLine().trim();
+        this.setWhName(new Scanner(System.in).nextLine().trim());
 
     }
 
@@ -353,7 +353,7 @@ public class Warehouse {
                 }
 
                 if (validID) {
-                    this.whID = newID;
+                    this.setWhID(newID);
                 }else{
                     System.out.println("The id has been used.");
                     System.out.println("Please re-enter a valid ID");
@@ -370,7 +370,7 @@ public class Warehouse {
     public void editAddress() {
 
         System.out.println("Enter a new address for warehouse [" + whID + "]: ");
-        this.address = new Scanner(System.in).nextLine().trim();
+        this.setAddress(new Scanner(System.in).nextLine().trim());
 
     }
 

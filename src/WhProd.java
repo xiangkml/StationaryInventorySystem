@@ -16,6 +16,8 @@ public class WhProd extends Product {
         this.reorderLv = reorderLv;
     }
 
+    public WhProd(){}
+
     public WhProd(String whID, String prodSKU) {
         super(prodSKU);
         this.whId = whID;
@@ -112,8 +114,8 @@ public class WhProd extends Product {
                 if (skuCode.equals("-1")) {
                     return;
                 }
-                for (String prod : sup.getSupplyProduct()) {
-                    if (prod.equals(skuCode)) {
+                for (Product prod : sup.getSupplyProduct()) {
+                    if (prod.getProdSKU().equals(skuCode)) {
                         validProd = true;
                         break;
                     }
@@ -227,8 +229,8 @@ public class WhProd extends Product {
                 if (skuCode.equals("-1")) {
                     return;
                 }
-                for (String prod : sup.getSupplyProduct()) {
-                    if (prod.equals(skuCode)) {
+                for (Product prod : sup.getSupplyProduct()) {
+                    if (prod.getProdSKU().equals(skuCode)) {
                         validProd = true;
                         break;
                     }
@@ -299,7 +301,9 @@ public class WhProd extends Product {
         WhProd source = null, destination = null;
         ArrayList<Warehouse> whList;
         ArrayList<WhProd> whProdList = readWarehouseProductFile();
-        ;
+
+        // Polymorphism
+        Product prodPoly = new WhProd();
 
         System.out.println("----------- Stock Transfer ----------");
         System.out.println("Enter '-1' to exit");
@@ -336,6 +340,7 @@ public class WhProd extends Product {
             for (Product prod : prodList) {
                 if (prod.getProdSKU().equals(sku)) {
                     validSKU = true;
+                    break;
                 }
             }
             if (!validSKU) {
@@ -411,7 +416,6 @@ public class WhProd extends Product {
         WhProd source = null, destination = null;
         ArrayList<Warehouse> whList;
         ArrayList<WhProd> whProdList = readWarehouseProductFile();
-        ;
 
         System.out.println("----------- Stock Return ----------");
         System.out.println("Enter '-1' to exit");
@@ -448,6 +452,7 @@ public class WhProd extends Product {
             for (Product prod : prodList) {
                 if (prod.getProdSKU().equals(sku)) {
                     validSKU = true;
+                    break;
                 }
             }
             if (!validSKU) {

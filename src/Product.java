@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Product {
+public class Product implements ProductInterface{
 
     protected String prodName, prodSKU;
 
@@ -191,7 +191,7 @@ public class Product {
     public void editName() {
 
         System.out.println("Enter a new name for product [" + prodSKU + "]: ");
-        this.prodName = new Scanner(System.in).nextLine().trim();
+        this.setProdName(new Scanner(System.in).nextLine().trim());
 
     }
 
@@ -213,7 +213,7 @@ public class Product {
                 }
 
                 if (validID) {
-                    this.prodSKU = newID;
+                    this.setProdSKU(newID);
                 } else {
                     System.out.println("The id has been used.");
                     System.out.println("Please re-enter a valid ID");
@@ -233,6 +233,7 @@ public class Product {
         boolean validID = false;
         Product prodDel = new Product();
         ArrayList<Product> prodList;
+        ArrayList<WhProd> stockList = WhProd.readWarehouseProductFile();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("----------- Delete Product -----------");
@@ -266,6 +267,14 @@ public class Product {
                 // if user confirm
                 prodList.remove(prodDel);
                 writeMasterProductFile(prodList);
+
+                for(WhProd stock:stockList){
+                    if(stock.getProductSKU().equals(prodDel.getProdSKU())){
+                        stockList.remove(stock);
+                    }
+                }
+                WhProd.writeWarehouseProductFile(stockList);
+
                 System.out.println("Successfully deleted the product");
                 System.out.println("Press Enter to continue...");
                 sc.nextLine();

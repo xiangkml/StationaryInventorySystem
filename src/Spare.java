@@ -13,11 +13,11 @@ warehouse crud /
 warehouse & product /
 product crud /
 
-supplier product change to product type list
+supplier product change to product type list /
 stock trsf and return check validation /
-add ui, polymorphism
+add ui, polymorphism /
 
-Supplier ViewAllSupplier(), get what product the supplier supply from arraylist
+Supplier ViewAllSupplier(), get what product the supplier supply from arraylist /
 Supplier addSupplier() enter no of product, do validation for negative input /
 */
 
