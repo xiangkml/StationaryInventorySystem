@@ -278,12 +278,13 @@ public class Supplier {
         ArrayList<Supplier> supplierList = readSupplierFile();
         for (Supplier supplier : supplierList) {
             // display all information for each supplier
-            System.out.printf("| %02d. | %-6s | %-41s ", noSup, supplier.getId(), supplier.getName());
+            System.out.printf("| %02d. | %-6s | %-41s |", noSup, supplier.getId(), supplier.getName());
 
             for (Product prod : supplier.getSupplyProduct()) {
-                System.out.printf("| %-6s | %-25s |\n", prod.getProdSKU(), prod.getProdName());
-                System.out.printf("|%5s|%8s|%43s", "", "", "");
+                System.out.printf(" %-6s | %-23s |\n", prod.getProdSKU(), prod.getProdName());
+                System.out.printf("|%5s|%8s|%43s|", "", "", "");
             }
+            System.out.printf("%36s|","");
 
             System.out.println(" ");
 
@@ -575,8 +576,7 @@ public class Supplier {
 
         File file = new File(pathName);
         ArrayList<Supplier> supplierList = new ArrayList<>();
-        ArrayList<Product> productList = new ArrayList<>();
-        ArrayList<String> productSkuList = new ArrayList<>();
+
         ArrayList<Product> masterProd = Product.readMasterProductFile();
         Scanner scanFile;
         try {
@@ -584,6 +584,8 @@ public class Supplier {
             scanFile.useDelimiter("\\|");
 
             while (scanFile.hasNextLine()) {
+                ArrayList<Product> productList = new ArrayList<>();
+                ArrayList<String> productSkuList = new ArrayList<>();
                 String line = scanFile.nextLine();
                 String[] data = line.split("\\|");
 
@@ -600,13 +602,12 @@ public class Supplier {
 
                     //read product name from master product file
                     for (String sku : productSkuList) {
-
                         for (Product p : masterProd) {
                             if (sku.equals(p.getProdSKU())) {
                                 productList.add(new Product(p.getProdName(), p.getProdSKU()));
+                                break;
                             }
                         }
-
                     }
 
                     Supplier supplier = new Supplier(supplierName, id, email, address, tel, productList);
@@ -705,7 +706,7 @@ public class Supplier {
     }
 
     public static void supIdRules() {
-        System.out.println("---------------------------------------------------------------------");
+        System.out.println("\n---------------------------------------------------------------------");
         System.out.println("                     The Supplier ID Should Be:                      ");
         System.out.println(" 1. Start With 'SUP'                                                 ");
         System.out.println(" 2. Followed by 7 Digits                                             ");
