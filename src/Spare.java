@@ -7,6 +7,13 @@ link stock receives with po
 list out the product instead of user input
 edit staff
 
+doing add purchase order...
+
+debug delete product /
+register password valid first enter, if valid then re-enter /
+supplier become supplier name change file , read and write /
+supplier validate tel /
+supplier validate number of product -1 cant return /
 
 doing: let user set reorder lv/
 supplier crud /
@@ -70,6 +77,12 @@ for warehouse method: viewOneWarehouse
                       ^
 same thing for product|
 
+
+
+for purchaseOrder method: add purchase order
+- add header,rules,-1 use to exit design
+- add rules for input
+
 */
 
 
@@ -82,6 +95,7 @@ same thing for product|
  5. same things apply to goods receives
  6. all branch can only perform the stock transfer and stock return between main warehouse and itself
  7. reorder level must at least 5
+ 8. when confirmation, -1 to exit doesn't function
 
 */
 

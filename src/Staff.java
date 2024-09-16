@@ -130,15 +130,11 @@ public class Staff {
             newStfPw1 = sc.nextLine().trim();
             if (newStfPw1.equals("-1"))
                 return;
-            System.out.print("Confirm Password: ");
-            newStfPw2 = sc.nextLine().trim();
-            if (newStfPw2.equals("-1"))
-                return;
 
             // validation password
             if (newStfPw1.length() >= 8 && newStfPw1.length() <= 12) {
 
-                if (newStfPw1.equals(newStfPw2)) {
+
                     for (char ch : newStfPw1.toCharArray()) {
                         if (Character.isDigit(ch))
                             digitNum++;
@@ -147,14 +143,21 @@ public class Staff {
                     }
 
                     if ((digitNum != 0) && (characterNum != 0)) {
-                        validPw = true;
+
+                        System.out.print("Confirm Password: ");
+                        newStfPw2 = sc.nextLine().trim();
+                        if (newStfPw2.equals("-1"))
+                            return;
+
+                        if (!(newStfPw1.equals(newStfPw2))) {
+                            System.out.println("\n* Your password is not same! *");
+                        }else{
+                            validPw = true;
+                        }
+
                     } else {
                         System.out.println("\n* Your password must contain at least one digit and one character! *");
                     }
-
-                } else {
-                    System.out.println("\n* Your password is not same! *");
-                }
 
             } else {
                 System.out.println("\n* Error! Your password length is not fulfill the conditions. *");
@@ -163,6 +166,7 @@ public class Staff {
                 System.out.println("Please Set Your Password Again!");
 
         } while (!validPw);
+
 
         Staff newStf = new Staff(newStfName, newStfIc, newStfPw1);
         ArrayList<Staff> staffList = readStaffFile();
@@ -212,7 +216,7 @@ public class Staff {
             }
             scanFile.close();
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (read staff file):" + e.getMessage());
         }
         return staffList;
     }
@@ -233,7 +237,7 @@ public class Staff {
             }
 
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (write staff file):" + e.getMessage());
         }
     }
 

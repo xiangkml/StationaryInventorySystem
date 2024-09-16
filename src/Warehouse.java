@@ -408,7 +408,7 @@ public class Warehouse {
             }
             scanFile.close();
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (read warehouse file):" + e.getMessage());
         }
         return warehouseList;
     }
@@ -427,7 +427,7 @@ public class Warehouse {
             }
 
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (write warehouse file):" + e.getMessage());
         }
     }
 

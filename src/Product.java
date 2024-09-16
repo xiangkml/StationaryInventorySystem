@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Product implements ProductInterface{
@@ -242,6 +243,7 @@ public class Product implements ProductInterface{
         Product prodDel = new Product();
         ArrayList<Product> prodList;
         ArrayList<WhProd> stockList = WhProd.readWarehouseProductFile();
+        ArrayList<Product> productDeleted = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("----------- Delete Product -----------");
@@ -273,13 +275,19 @@ public class Product implements ProductInterface{
                 prodList.remove(prodDel);
                 writeMasterProductFile(prodList);
 
-               // for(WhProd stock:stockList){
-                for(int i = 0;i<stockList.size();i++){
 
-                    if(stockList.get(i).getProductSKU().equals(prodDel.getProdSKU())){
-                        stockList.remove(stockList.get(i));
+             //  for(int i = 0;i<stockList.size();i++){
+             //      if(stockList.get(i).getProductSKU().equals(prodDel.getProdSKU())){
+             //          productDeleted.add(stockList.get(i));
+             //      }
+             //  }
+                for (Iterator<WhProd> iterator = stockList.iterator(); iterator.hasNext(); ) {
+                    WhProd item = iterator.next();
+                    if (item.getProductSKU().equals(prodDel.getProdSKU())) {
+                        iterator.remove();
                     }
                 }
+
                 WhProd.writeWarehouseProductFile(stockList);
 
                 System.out.println("Successfully deleted the product");
@@ -400,7 +408,7 @@ public class Product implements ProductInterface{
             }
             scanFile.close();
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (read master product file):" + e.getMessage());
         }
         return productList;
     }
@@ -417,7 +425,7 @@ public class Product implements ProductInterface{
             }
 
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (write master product file):" + e.getMessage());
         }
     }
 

@@ -69,8 +69,8 @@ public class Supplier {
 
     public static void addSupplier() {
         String supName, email = "", address = "", tel = "";
-        boolean exitPage = false;
         int numOfSupplyProduct = 0;
+        boolean validTel = false, validNum = false, validEmail = false;
         ArrayList<Product> supplyProduct = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
@@ -81,123 +81,122 @@ public class Supplier {
         nameRules();
         System.out.print("Enter Supplier Name [Wong Ann Nee]: ");
         supName = sc.nextLine().trim();
-        exitPage = supName.equals("-1");
-
-        if (!exitPage) {
-            boolean validInput;
-            do {
-                validInput = true;
-                emailRules();
-                System.out.print("Enter Supplier Email [thaikula520@gmail.com]: ");
-                email = sc.nextLine().trim();
-                exitPage = email.equals("-1");
-
-                if (!ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
-                    System.out.println("\n* Please Enter Valid Email Address! * ");
-                    validInput = false;
-                }
-            } while (!validInput);
-
+        if (supName.equals("-1")) {
+            return;
         }
 
-        if (!exitPage) {
-            System.out.print("\nEnter Supplier Address: ");
-            address = sc.nextLine().trim().toUpperCase();
-            exitPage = address.equals("-1");
+        do {
+            emailRules();
+            System.out.print("Enter Supplier Email [thaikula520@gmail.com]: ");
+            email = sc.nextLine().trim();
+            if (email.equals("-1")) {
+                return;
+            }
+
+            if (!ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+                System.out.println("\n* Please Enter Valid Email Address! * ");
+            } else {
+                validEmail = true;
+            }
+
+        } while (!validEmail);
+
+        System.out.print("\nEnter Supplier Address: ");
+        address = sc.nextLine().trim().toUpperCase();
+        if (address.equals("-1")) {
+            return;
         }
 
-        if (!exitPage) {
-            boolean validInput;
-            do {
-                validInput = true;
-                telRules();
-                System.out.print("\nEnter Telephone Number: ");
-                tel = sc.nextLine().trim();
-                if(tel.equals("-1")){
+        do {
+            telRules();
+            System.out.print("\nEnter Telephone Number: ");
+            tel = sc.nextLine().trim();
+            if (tel.equals("-1")) {
+                return;
+            }
+            if (!ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$")) {
+                System.out.println("\n* Please Enter Valid Phone Number! * ");
+            } else {
+                validTel = true;
+            }
+
+        } while (!validTel);
+
+        do {
+            System.out.println(" ");
+            inputIntRules();
+            System.out.println("\nEnter Number of Product: ");
+            try {
+                numOfSupplyProduct = sc.nextInt();
+                if (numOfSupplyProduct == -1) {
                     return;
                 }
-                if (!ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$")) {
-                    validInput = false;
+
+                if (numOfSupplyProduct < 1) {
+                    System.out.println("Number of Product Cannot less than 1 !");
+                    System.out.println("\nPlease Enter Valid Number of Product!\n");
+                } else {
+                    validNum = true;
                 }
-            } while (!validInput);
-        }
 
-        if (!exitPage) {
-            boolean validInput = false;
-            do {
-                System.out.println(" ");
-                inputIntRules();
-                System.out.println("\nEnter Number of Product: ");
-                try {
-                    numOfSupplyProduct = sc.nextInt();
-                    exitPage = (numOfSupplyProduct == -1);
-
-                    if (numOfSupplyProduct < 1) {
-                        System.out.println("Number of Product Cannot less than 1 !");
-                        System.out.println("\nPlease Enter Valid Number of Product!\n");
-                    } else {
-                        validInput = true;
-                    }
-
-                } catch (Exception e) {
-                    System.out.println("Invalid Input.");
-                    System.out.println("Only enter integer!");
-                    sc.nextLine();
-                }
-            } while (!validInput);
-        }
-
-        if (!exitPage) {
-            for (int i = 0; (i < numOfSupplyProduct) && (!exitPage); i++) {
-
-                boolean validProd = false;
-                String skuCode;
-
-                do {
-                    System.out.println("Enter product SKU code [OLBOK007]:");
-                    skuCode = sc.nextLine().trim();
-                    exitPage = (skuCode.equals("-1"));
-
-                    ArrayList<Product> masterProduct = Product.readMasterProductFile();
-                    for (Product prod : masterProduct) {
-                        if (prod.getProdSKU().equals(skuCode)) {
-                            validProd = true;
-                            supplyProduct.add(new Product(skuCode, prod.getProdName()));
-                            break;
-                        }
-                    }
-                    if (!validProd) {
-                        System.out.println("Invalid product SKU code");
-                        System.out.println("Please register new product before register a new supplier");
-                    }
-
-                } while ((!validProd) && (!exitPage));
-
-                if (!exitPage) {
-
-                    Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
-
-                    // display new supplier info
-                    // double confirm from the user
-                    System.out.println(" ========================================================= ");
-                    System.out.println("|        Confirmation for New Supplier Information        |");
-                    System.out.println(" ========================================================= \n");
-
-                    newSupplier.displaySup();
-
-                    // if user confirm then process below
-                    ArrayList<Supplier> supplierList = readSupplierFile();
-                    supplierList.add(newSupplier);
-                    writeSupplierFile(supplierList);
-
-                    System.out.println("Successfully registered a new supplier!");
-                    System.out.print("Press Enter to Continue...");
-                    sc.nextLine();
-                }
+            } catch (Exception e) {
+                System.out.println("Invalid Input.");
+                System.out.println("Only enter integer!");
+                sc.nextLine();
             }
-        }
+        } while (!validNum);
 
+
+        for (int i = 0; (i < numOfSupplyProduct); i++) {
+
+            boolean validProd = false;
+            String skuCode;
+
+            do {
+                System.out.println("Enter product " + (i + 1) + "SKU code [OLBOK007]:");
+                skuCode = sc.nextLine().trim();
+                if (skuCode.equals("-1")) {
+                    return;
+                }
+
+                ArrayList<Product> masterProduct = Product.readMasterProductFile();
+                for (Product prod : masterProduct) {
+                    if (prod.getProdSKU().equals(skuCode)) {
+                        validProd = true;
+                        supplyProduct.add(new Product(skuCode, prod.getProdName()));
+                        break;
+                    }
+                }
+                if (!validProd) {
+                    System.out.println("Invalid product SKU code");
+                    System.out.println("Please register new product before register a new supplier");
+                }
+
+            } while (!validProd);
+
+
+            Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
+
+            // display new supplier info
+            // double confirm from the user
+            System.out.println(" ========================================================= ");
+            System.out.println("|        Confirmation for New Supplier Information        |");
+            System.out.println(" ========================================================= \n");
+
+            newSupplier.displaySup();
+
+            // if user confirm then process below
+            ArrayList<Supplier> supplierList = readSupplierFile();
+            supplierList.add(newSupplier);
+            writeSupplierFile(supplierList);
+
+            System.out.println("Successfully registered a new supplier!");
+            System.out.print("Press Enter to Continue...");
+            sc.nextLine();
+
+        }
     }
+
 
     public static void deleteSupplier() {
 
@@ -589,7 +588,7 @@ public class Supplier {
                 String[] data = line.split("\\|");
 
                 if (data.length >= 6) { // Ensure the line has the expected number of fields
-                    String companyName = data[0];
+                    String supplierName = data[0];
                     String id = data[1];
                     String email = data[2];
                     String address = data[3];
@@ -598,17 +597,17 @@ public class Supplier {
                     productSkuList.addAll(Arrays.asList(data).subList(5, data.length + 1));
 
                     //read product name from master product file
-                    for(String sku:productSkuList){
+                    for (String sku : productSkuList) {
 
-                        for(Product p:masterProd){
-                            if(sku.equals(p.getProdSKU())){
-                                productList.add(new Product(p.getProdName(),p.getProdSKU()));
+                        for (Product p : masterProd) {
+                            if (sku.equals(p.getProdSKU())) {
+                                productList.add(new Product(p.getProdName(), p.getProdSKU()));
                             }
                         }
 
                     }
 
-                    Supplier supplier = new Supplier(companyName, id, email, address, tel, productList);
+                    Supplier supplier = new Supplier(supplierName, id, email, address, tel, productList);
                     supplierList.add(supplier);
                 } else {
                     System.out.println("Invalid data format: " + line);
@@ -617,7 +616,7 @@ public class Supplier {
             }
             scanFile.close();
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (read supplier file):" + e.getMessage());
         }
         return supplierList;
     }
@@ -646,7 +645,7 @@ public class Supplier {
             }
 
         } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
+            System.out.println("Error (write supplier file):" + e.getMessage());
         }
     }
 
