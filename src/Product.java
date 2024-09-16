@@ -46,59 +46,78 @@ public class Product implements ProductInterface{
         Scanner sc = new Scanner(System.in);
         ArrayList<Product> masterProduct = readMasterProductFile();
 
-        System.out.println("----------- Add Product -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                       Add Product                       |");
+        System.out.println(" ========================================================= ");
 
-        System.out.println("Enter product name [555 Notebook]: ");
+        prodNameRules();
+        System.out.print("Enter Product Name [555 Notebook]: ");
         prodName = sc.nextLine().trim();
         if (prodName.equals("-1")) {
             return;
         }
 
-        boolean validInput = true;
+        boolean validInput = true, confirmation = false;
 
         do {
             validInput = true;
-            System.out.println("Enter product sku code [PLPEN001]: ");
+            prodSKURules();
+            System.out.print("Enter Product SKU Code [PLPEN001]: ");
             prodSKU = sc.nextLine().trim().toUpperCase();
             if (prodSKU.equals("-1")) {
                 return;
             }
 
             if (!ExtraFunction.checkPattern(prodSKU, "^^[A-Z]{5}\\d{3}$")) {
-                System.out.println("Enter valid product sku code");
+                System.out.println("\n* Invalid Product SKU Code!! *");
+                System.out.println("* Please Enter Valid SKU Code! *");
                 validInput = false;
             }
 
             for(Product oldProd: masterProduct){
                 if(prodSKU.equals(oldProd.getProdSKU())){
-                    System.out.println("The product sku code is duplicated");
-                    System.out.println("Please re-enter a new sku code");
+                    System.out.println("\n* The Product SKU Code is Duplicated *");
+                    System.out.println("* Please Re-enter a New SKU Code *");
                     validInput = false;
                 }
             }
 
         } while (!validInput);
 
-        Product newProduct = new Product(prodName, prodSKU);
-
         // display new product info
         // double confirm from the user
+        Product newProduct = new Product(prodName, prodSKU);
+        System.out.println("\n -------------------------------------------------------- ");
+        System.out.println("|              Confirmation for New Product              |");
+        System.out.println(" -------------------------------------------------------- ");
+        newProduct.displayProduct();
 
-        // if user confirm then process below
-        masterProduct.add(newProduct);
-        writeMasterProductFile(masterProduct);
+        System.out.print("\nDo you sure the product information is correct? [Y = YES || Others = NO]: ");
+        confirmation = sc.next().trim().equalsIgnoreCase("Y");
+        sc.nextLine();
 
-        ArrayList<Warehouse> whList = Warehouse.readMasterWarehouseFile();
-        ArrayList<WhProd> whProduct = WhProd.readWarehouseProductFile();
-        for (Warehouse w : whList) {
-            WhProd newWhProd = new WhProd(w.getWhID(), prodSKU);
-            whProduct.add(newWhProd);
+        if (confirmation) {
+            // if user confirm then process below
+            masterProduct.add(newProduct);
+            writeMasterProductFile(masterProduct);
+
+            ArrayList<Warehouse> whList = Warehouse.readMasterWarehouseFile();
+            ArrayList<WhProd> whProduct = WhProd.readWarehouseProductFile();
+            for (Warehouse w : whList) {
+                WhProd newWhProd = new WhProd(w.getWhID(), prodSKU);
+                whProduct.add(newWhProd);
+            }
+            WhProd.writeWarehouseProductFile(whProduct);
+
+            System.out.println("\nSuccessfully Add a New Product!!!");
+
+        } else {
+            System.out.println("\n* Failed to Add New Product! *");
         }
-        WhProd.writeWarehouseProductFile(whProduct);
 
-        System.out.println("Successfully add a new product!");
-        System.out.println("Press Enter to continue...");
+
+
+        System.out.print("Press Enter to Continue...");
         sc.nextLine();
 
     }
@@ -112,11 +131,13 @@ public class Product implements ProductInterface{
         Product editProduct = null;
         ArrayList<Product> prodList = null;
 
-        System.out.println("----------- Edit Product -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                      Edit Product                       |");
+        System.out.println(" ========================================================= ");
 
         do {
-            System.out.println("Enter the product's id that you wish to edit [PLPEN001]: ");
+            prodSKURules();
+            System.out.print("Enter the Product SKU that You Wish to Edit [PLPEN001]: ");
             prodID = sc.nextLine().trim().toUpperCase();
             if (prodID.equals("-1")) {
                 return;
@@ -132,16 +153,18 @@ public class Product implements ProductInterface{
             }
 
             if (!validID) {
-                System.out.println("Invalid product sku code!");
-                System.out.println("Please re-enter product sku code");
+                System.out.println("\n* Invalid Product SKU Code!! *");
+                System.out.println("* Please Re-enter Product SKU Code! *");
             }
 
         } while (!validID);
 
         // information before edit
-        System.out.println("Product Information Before Edited: ");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("Product Information Before Edited: \n");
         editProduct.displayProduct();
-        System.out.println("Do you sure you want to edit this product information? [Y = YES || Others = NO]");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.print("Do you sure you want to edit this product information? [Y = YES || Others = NO]: ");
         confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
 
         if (confirmationBefore) {
@@ -166,14 +189,16 @@ public class Product implements ProductInterface{
                         return;
                 }
 
-                System.out.println("Do you want to continue edit this product information? [Y = YES || Others = NO]");
+                System.out.print("Do you want to continue edit this product information? [Y = YES || Others = NO]: ");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
             } while (continueEdit);
 
             // information after edit
-            System.out.println("Product Information After Edited: ");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("Product Information After Edited: \n");
             editProduct.displayProduct();
-            System.out.println("Do you sure you want to save this product information? [Y = YES || Others = NO]");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            System.out.print("Do you sure you want to save this product information? [Y = YES || Others = NO]: ");
             confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
 
             if (confirmationAfter) {
@@ -189,17 +214,17 @@ public class Product implements ProductInterface{
                     }
                 }
 
-                System.out.println("Successfully updated the latest product information");
+                System.out.println("* Successfully updated the latest product information!!! *");
             }
         }
 
-        System.out.println("Press Enter to continue...");
+        System.out.print("\nPress Enter to Continue...");
         sc.nextLine();
     }
 
     public void editName() {
 
-        System.out.println("Enter a new name for product [" + prodSKU + "]: ");
+        System.out.print("Enter a new name for product [" + prodSKU + "]: ");
         this.setProdName(new Scanner(System.in).nextLine().trim());
 
     }
@@ -207,9 +232,12 @@ public class Product implements ProductInterface{
     public void editSKU() {
 
         Scanner sc = new Scanner(System.in);
-        boolean validID = true;
+        boolean validID ;
+
         do {
-            System.out.println("Enter a new id for product [" + prodSKU + "]: ");
+            validID = true;
+
+            System.out.print("Enter a new SKU for product [" + prodSKU + "]: ");
             String newID = sc.nextLine().trim().toUpperCase();
             if (ExtraFunction.checkPattern(newID, "^[A-Z]{5}\\d{3}$")) {
 
@@ -224,13 +252,15 @@ public class Product implements ProductInterface{
                 if (validID) {
                     this.setProdSKU(newID);
                 } else {
-                    System.out.println("The id has been used.");
-                    System.out.println("Please re-enter a valid ID");
+                    validID = false;
+                    System.out.println("\n* The Product SKU has been used!! *");
+                    System.out.println("* Please Re-enter a Valid SKU! *");
                 }
 
             } else {
-                System.out.println("Invalid id format.");
-                System.out.println("Please re-enter a valid ID");
+                validID = false;
+                System.out.println("\n* Invalid Product SKU Format!! *");
+                System.out.println("* Please Re-enter a Valid SKU! *");
             }
         } while (!validID);
 
@@ -239,18 +269,20 @@ public class Product implements ProductInterface{
     public static void deleteProduct() {
 
         String prodSKU;
-        boolean validID = false;
+        boolean validID = false, confirmation = false;
         Product prodDel = new Product();
         ArrayList<Product> prodList;
         ArrayList<WhProd> stockList = WhProd.readWarehouseProductFile();
         ArrayList<Product> productDeleted = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("----------- Delete Product -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                     Delete Product                      |");
+        System.out.println(" ========================================================= ");
 
         do {
-            System.out.println("Enter the product's SKU that you wish to delete [OPPEN001]: ");
+            prodSKURules();
+            System.out.print("Enter the Product's SKU that you wish to delete [OPPEN001]: ");
             prodSKU = sc.nextLine().trim().toUpperCase();
             if (prodSKU.equals("-1")) {
                 return;
@@ -265,37 +297,48 @@ public class Product implements ProductInterface{
                 }
             }
             if (!validID) {
-                System.out.println("Invalid product SKU Code");
-                System.out.println("Please re-enter a valid product SKU Code");
+                System.out.println("\n* Invalid Product SKU Code!! *");
+                System.out.println("* Please Re-enter a Valid Product SKU Code! *");
             } else {
                 // display product information that need to be deleted
                 // double confirm from user
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.println("Product Information Wanted to be Deleted:\n");
+                System.out.println("Product SKU Code: " + prodDel.getProdSKU());
+                System.out.println("Product Name: " + prodDel.getProdName());
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-                // if user confirm
-                prodList.remove(prodDel);
-                writeMasterProductFile(prodList);
+                System.out.print("\nDo you sure want to delete this product? [Y = YES || Others = NO]: ");
+                confirmation = sc.next().trim().equalsIgnoreCase("Y");
+                sc.nextLine();
 
+                if (confirmation) {
+                    // if user confirm
+                    prodList.remove(prodDel);
+                    writeMasterProductFile(prodList);
 
-             //  for(int i = 0;i<stockList.size();i++){
-             //      if(stockList.get(i).getProductSKU().equals(prodDel.getProdSKU())){
-             //          productDeleted.add(stockList.get(i));
-             //      }
-             //  }
-                for (Iterator<WhProd> iterator = stockList.iterator(); iterator.hasNext(); ) {
-                    WhProd item = iterator.next();
-                    if (item.getProductSKU().equals(prodDel.getProdSKU())) {
-                        iterator.remove();
+                    for (Iterator<WhProd> iterator = stockList.iterator(); iterator.hasNext(); ) {
+                        WhProd item = iterator.next();
+                        if (item.getProductSKU().equals(prodDel.getProdSKU())) {
+                            iterator.remove();
+                        }
                     }
+
+                    WhProd.writeWarehouseProductFile(stockList);
+
+                    System.out.println("\nSuccessfully Delete the Product!!!");
+
+
+                } else {
+                    System.out.println("\n* Failed to Delete the Product! *");
                 }
 
-                WhProd.writeWarehouseProductFile(stockList);
-
-                System.out.println("Successfully deleted the product");
-                System.out.println("Press Enter to continue...");
-                sc.nextLine();
             }
 
         } while ((!validID));
+
+        System.out.print("Press Enter to Continue...");
+        sc.nextLine();
 
     }
 
@@ -325,16 +368,24 @@ public class Product implements ProductInterface{
 
     public static void viewAllProduct() {
         ArrayList<Product> prodList = readMasterProductFile();
+        int noProd = 1;
 
-        System.out.println("--------------------------------------- Product List ---------------------------------------");
+        System.out.println("\n =================================================================== ");
+        System.out.println("|                         Product List                              |");
+        System.out.println(" =================================================================== ");
 
         for (Product prod : prodList) {
-            // display all information for each product
-            System.out.println(prod.getProdSKU() + " " + prod.getProdName());
-        }
 
-        System.out.println("Successfully display all the product detail");
-        System.out.println("Press Enter to continue...");
+            // display all information for each product
+            System.out.printf("| %02d. | %-6s | %-48s |\n", noProd, prod.getProdSKU(), prod.getProdName());
+
+            noProd++;
+        }
+        System.out.println(" =================================================================== ");
+
+
+        System.out.println("\n         Successfully display all the Product Detail!!");
+        System.out.print("                Press Enter to Continue...");
         new Scanner(System.in).nextLine();
     }
 
@@ -345,11 +396,13 @@ public class Product implements ProductInterface{
         boolean validID = false;
         ArrayList<Product> prodList;
 
-        System.out.println("----------- View Specific Product Details -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|              View Specific Product Details              |");
+        System.out.println(" ========================================================= \n");
 
         do {
-            System.out.println("Enter the product's SKU that you wish to view [OPPEN001]: ");
+            prodSKURules();
+            System.out.print("Enter the Product's SKU that you wish to view [OPPEN001]: ");
             prodID = sc.nextLine().trim().toUpperCase();
             if (prodID.equals("-1")) {
                 return;
@@ -358,27 +411,31 @@ public class Product implements ProductInterface{
             for (Product prod : prodList) {
                 if (prodID.equals(prod.getProdSKU())) {
                     validID = true;
-                    System.out.println(prod.getProdSKU() + " " + prod.getProdName());
+                    System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    System.out.printf("     Product Details for Product '%6s'\n\n", prod.getProdSKU());
+                    System.out.println(" Product SKU: " + prod.getProdSKU() +
+                                       "\n Product Name: "+ prod.getProdName());
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                     break;
                 }
             }
 
             if (!validID) {
-                System.out.println("Invalid product SKU Code");
-                System.out.println("Please re-enter a valid product SKU Code");
+                System.out.println("\n* Invalid Product SKU Code!! *");
+                System.out.println("* Please Re-enter a Valid Product SKU Code! *");
             }
 
         } while (!validID);
 
-        System.out.println("Successfully display the product details");
-        System.out.println("Press Enter to continue...");
+        System.out.println("\nSuccessfully display the Product Details!!!\n");
+        System.out.print("Press Enter to Continue...");
         new Scanner(System.in).nextLine();
 
     }
 
     public void displayProduct() {
         System.out.println("Product SKU Code: " + prodSKU);
-        System.out.println("Product Name: " + prodName);
+        System.out.println("Product Name    : " + prodName);
     }
 
     public static ArrayList<Product> readMasterProductFile() {
@@ -427,6 +484,31 @@ public class Product implements ProductInterface{
         } catch (Exception e) {
             System.out.println("Error (write master product file):" + e.getMessage());
         }
+    }
+
+    public static void prodNameRules() {
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                    The Product Name Should Be:                        ");
+        System.out.println(" 1. Check if the name is correct before press 'Enter'                  ");
+        System.out.println(" 2. Avoid containing special character [@,#,$,...], especially '|'     ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
+    }
+
+    public static void prodSKURules() {
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                      The Product SKU Should Be:                       ");
+        System.out.println(" 1. Start With Brand Name (Short Form), 2 characters                   ");
+        System.out.println(" 2. Followed By Type of the product (Short Form), 3 characters         ");
+        System.out.println(" 3. Followed By 3 digits                                               ");
+        System.out.println(" 4. Total Length of Product SKU is 8                                   ");
+        System.out.println(" 5. In Format [XXXXXxxx]                                               ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
 }

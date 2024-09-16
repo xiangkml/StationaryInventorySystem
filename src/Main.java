@@ -26,7 +26,10 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Thank you for using ThaiKuLa Warehouse Management System !");
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    System.out.println("Thank You for Using ThaiKuLa Warehouse Management System!!!");
+                    System.out.println("                Hope You Have a Nice Day~~");
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                     return;
             }
         }

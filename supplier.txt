@@ -1,2 +1,2 @@
-Ding Dong|SUP001|dingdong@gmail.com|Jalan Setapak,87000 Kuala Lumpur|016-278 6900|PLPEN001|FBBOK002|CFRUL007
-Tang Tang|SUP002|tantan@gmail.com|Jalan Langkawi,85200 Kuala Lumpur|017-558 2000|OPBOK009|PLPEN001
+ding ding|SUP001|123@321|Jalan Setapak,87000 Kuala Lumpur|012-123 1234|FBBOK002|CFRUL007|NBBOK001|
+Tang Tang|SUP002|tantan@gmail.com|Jalan Langkawi,85200 Kuala Lumpur|017-558 2000|OPBOK009|PLPEN001|

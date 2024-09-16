@@ -71,15 +71,15 @@ public class Staff {
                     for (Staff staff : staffList) {
                         if (staff.getId().equals(id) && staff.getPassword().equals(pw)) {
                             validate = 1;
-                            System.out.println("Successfully logged in!!");
+                            System.out.println("\nSuccessfully logged in!!!");
                             validLogin = true;
                             break;
                         }
                     }
 
                      if(validate != 1) {
-                        System.out.println("* Invalid Username & Password! *");
-                        System.out.println("* Please Enter Again! *");
+                        System.out.println("* Invalid Username & Password!! *");
+                        System.out.println("* Please Enter Again! *\n");
                     }
                 }
             }
