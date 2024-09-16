@@ -368,10 +368,10 @@ public class Supplier {
 
         System.out.println("|                      Edit Supplier                      |");
         System.out.println(" ========================================================= ");
-        System.out.println("Enter '-1' to exit");
 
         do {
-            System.out.print("Enter the Supplier's ID that you wish to edit [SUP001]: ");
+            supIdRules();
+            System.out.print("Enter the Supplier's ID that you wish to edit [SUPxxx]: ");
             supID = sc.nextLine().trim().toUpperCase();
             if (supID.equals("-1")) {
                 return;
@@ -594,7 +594,9 @@ public class Supplier {
                     String address = data[3];
                     String tel = data[4];
 
-                    productSkuList.addAll(Arrays.asList(data).subList(5, data.length + 1));
+                    for(int i= 5 ;i< data.length;i++){
+                        productSkuList.add(data[i]);
+                    }
 
                     //read product name from master product file
                     for (String sku : productSkuList) {
@@ -698,6 +700,18 @@ public class Supplier {
         System.out.println(" 2. Cannot Enter Negative Integer [-25,-431], except exit              ");
         System.out.println("                                                                       ");
         System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
+    }
+
+    public static void supIdRules() {
+        System.out.println("---------------------------------------------------------------------");
+        System.out.println("                     The Supplier ID Should Be:                      ");
+        System.out.println(" 1. Start With 'SUP'                                                 ");
+        System.out.println(" 2. Followed by 7 Digits                                             ");
+        System.out.println(" 3. Total Length of Supplier ID is 6                                 ");
+        System.out.println("                                                                      ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *    ");
         System.out.println("---------------------------------------------------------------------\n");
 
     }
