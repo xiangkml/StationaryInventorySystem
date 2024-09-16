@@ -70,7 +70,7 @@ public class Supplier {
     public static void addSupplier() {
         String supName, email = "", address = "", tel = "";
         int numOfSupplyProduct = 0;
-        boolean validTel = false, validNum = false, validEmail = false;
+        boolean validTel = false, validNum = false, validEmail = false, confirmation;
         ArrayList<Product> supplyProduct = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
@@ -155,7 +155,7 @@ public class Supplier {
             Product.prodSKURules();
             do {
                 System.out.print("Enter Product " + (i + 1) + " SKU Code [OLBOK007]:");
-                skuCode = sc.nextLine().trim();
+                skuCode = sc.nextLine().trim().toUpperCase();
                 if (skuCode.equals("-1")) {
                     return;
                 }
@@ -164,7 +164,7 @@ public class Supplier {
                 for (Product prod : masterProduct) {
                     if (prod.getProdSKU().equals(skuCode)) {
                         validProd = true;
-                        supplyProduct.add(new Product(skuCode, prod.getProdName()));
+                        supplyProduct.add(new Product(prod.getProdName(), prod.getProdSKU()));
                         break;
                     }
                 }
@@ -175,27 +175,37 @@ public class Supplier {
 
             } while (!validProd);
 
+        }
 
-            Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
+        Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
 
-            // display new supplier info
-            // double confirm from the user
-            System.out.println(" ========================================================= ");
-            System.out.println("|        Confirmation for New Supplier Information        |");
-            System.out.println(" ========================================================= \n");
+        // display new supplier info
+        // double confirm from the user
+        System.out.println(" ========================================================= ");
+        System.out.println("|        Confirmation for New Supplier Information        |");
+        System.out.println(" ========================================================= \n");
 
-            newSupplier.displaySup();
+        newSupplier.displaySup();
+
+        System.out.print("\nDo you sure want to add this Supplier ? [Y = YES || Others = NO]: ");
+        confirmation = sc.next().trim().equalsIgnoreCase("Y");
+        sc.nextLine();
+
+        if (confirmation) {
 
             // if user confirm then process below
             ArrayList<Supplier> supplierList = readSupplierFile();
             supplierList.add(newSupplier);
             writeSupplierFile(supplierList);
 
-            System.out.println("Successfully registered a new supplier!");
-            System.out.print("Press Enter to Continue...");
-            sc.nextLine();
+            System.out.println("\nSuccessfully Add the Supplier!!!");
+        } else {
+            System.out.println("\n* Failed to Add the Supplier! *");
 
         }
+
+        System.out.print("Press Enter to Continue...");
+        sc.nextLine();
     }
 
 
@@ -247,7 +257,7 @@ public class Supplier {
                         // if user confirm
                         supplierList.remove(supDel);
                         writeSupplierFile(supplierList);
-                        System.out.println("\nSuccessfully deleted the supplier!!!");
+                        System.out.println("\nSuccessfully Deleted the Supplier!!!");
                     } else {
                         System.out.println("\n* Failed to Delete the Supplier! *");
                     }
@@ -302,7 +312,7 @@ public class Supplier {
                 System.out.printf(" %-6s | %-23s |\n", prod.getProdSKU(), prod.getProdName());
                 System.out.printf("|%5s|%8s|%43s|", "", "", "");
             }
-            System.out.printf("%36s|","");
+            System.out.printf("%36s|", "");
 
             System.out.println(" ");
 
@@ -346,12 +356,16 @@ public class Supplier {
 
             if (validID) {
                 // display information for supplier
-                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                System.out.printf("               Information for Supplier %6s\n", viewSup.getId());
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.printf("               Information for Supplier %6s\n\n", viewSup.getId());
                 viewSup.displaySup();
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
+            } else {
+                System.out.println("\n* Failed to View Supplier Information List!! *");
+                System.out.println("* Please Re-enter a Valid Supplier ID! *");
             }
+
         } while (!validID);
 
         System.out.println("Successfully Display Supplier Details!!");
@@ -387,6 +401,13 @@ public class Supplier {
                     editSup = supplier;
                     break;
                 }
+            }
+
+            if (!validID) {
+
+                System.out.println("\n* Invalid Supplier ID!! *");
+                System.out.println("* Please Re-enter a Valid Supplier ID! *");
+
             }
 
         } while (!validID);
@@ -577,7 +598,7 @@ public class Supplier {
         System.out.println("Supplier Tel    : " + tel);
         System.out.print("\nProduct Supplied: ");
         for (Product prod : supplyProduct) {
-            System.out.printf("%6s , %s\n%18s",  prod.getProdSKU(), prod.getProdName(),"");
+            System.out.printf("%6s , %s\n%18s", prod.getProdSKU(), prod.getProdName(), "");
         }
         System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
     }
@@ -608,7 +629,7 @@ public class Supplier {
                     String address = data[3];
                     String tel = data[4];
 
-                    for(int i= 5 ;i< data.length;i++){
+                    for (int i = 5; i < data.length; i++) {
                         productSkuList.add(data[i]);
                     }
 
@@ -651,11 +672,13 @@ public class Supplier {
                 writer.write('|');
                 writer.write(supplier.getTel());
                 writer.write('|');
-                for (Product product : supplier.getSupplyProduct()) {
-                    writer.write(product.getProdSKU());
+
+                for (int i = 0; i < supplier.getSupplyProduct().size() - 1; i++) {
+                    writer.write(supplier.getSupplyProduct().get(i).getProdSKU());
                     writer.write('|');
                 }
-                writer.write('\b');
+                writer.write(supplier.getSupplyProduct().get(supplier.getSupplyProduct().size() - 1).getProdSKU());
+
                 writer.newLine();  // Write each item on a new line
             }
 

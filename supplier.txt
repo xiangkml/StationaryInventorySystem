@@ -1,2 +1,3 @@
-ding ding|SUP001|123@321|Jalan Setapak,87000 Kuala Lumpur|012-123 1234|FBBOK002|CFRUL007|NBBOK001|
-Tang Tang|SUP002|tantan@gmail.com|Jalan Langkawi,85200 Kuala Lumpur|017-558 2000|OPBOK009|PLPEN001|
+ding ding|SUP001|123abc@gmail.com|Jalan Setapak,87000 Kuala Lumpur|012-123 1234|FBBOK002|CFRUL007|NBBOK001
+Tang Tang|SUP002|tantan@gmail.com|Jalan Langkawi,85200 Kuala Lumpur|017-558 2000|OPBOK009|PLPEN001
+ANNY WONG WONG|SUP003|anny1230@gmail.com|123 TS|012-123 4567|PLPEN001|NBBOK001|OPBOK009

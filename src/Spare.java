@@ -8,15 +8,16 @@ list out the product instead of user input
 edit staff
 
 doing add purchase order...
-debug product edit SKU
-debug staff ID and pswd, seperate validation
-supplier, add supplier, no of product
-supplier, add supplier, confirmation
-supplier, view sup info, view specific sup info, if enter invalid supID no invalid input msg come out
-supplier, edit sup, enter supID but no invalid input msg
-if got time: supplier, edit sup prod supplied, if the supplier originally supply 3 prods and after this can only supply 2 prods, in edit function only can change from old prod sku to new prod sku, cannot inc or dec prod supplied
-debug display supplier /
+debug product edit SKU /
+debug staff ID and pswd, seperate validation /
+supplier, add supplier, no of product have problem /
+supplier, add supplier, confirmation /
+supplier, view sup info, view specific sup info, if enter invalid supID no invalid input msg come out /
+supplier, edit sup, enter supID but no invalid input msg /
 
+if got time: supplier, edit sup prod supplied, if the supplier originally supply 3 prods and after this can only supply 2 prods, in edit function only can change from old prod sku to new prod sku, cannot inc or dec prod supplied
+
+debug display supplier /
 debug delete product /
 register password valid first enter, if valid then re-enter /
 supplier become supplier name change file , read and write /
@@ -40,6 +41,8 @@ Supplier addSupplier() enter no of product, do validation for negative input /
 
 /*
 baobei :
+
+test product confirmation
 
 until supplier 158
 display supplier design

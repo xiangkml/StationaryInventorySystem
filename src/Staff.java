@@ -45,7 +45,7 @@ public class Staff {
     public boolean login() {
 
         int validate = 0;
-        boolean validLogin = false;
+        boolean validLogin = false, validId;
 
         Scanner sc = new Scanner(System.in);
         ArrayList<Staff> staffList = readStaffFile();
@@ -56,12 +56,32 @@ public class Staff {
         System.out.println(" ========================================================= ");
 
         do {
-            stfIdRules();
-            System.out.print("Enter your staff ID [STFxxx]: ");
-            id = sc.nextLine().toUpperCase();
-            if (id.equals("-1")) {
-              validate = -1;
-            } else {
+            do {
+                validId = false;
+                stfIdRules();
+                System.out.print("Enter your staff ID [STFxxx]: ");
+                id = sc.nextLine().toUpperCase();
+                if (id.equals("-1")) {
+                    validate = -1;
+                    validId = true;
+                } else {
+                    for (Staff stf : staffList) {
+                        if (stf.getId().equals(id)) {
+                            validId = true;
+                            break;
+                        }
+                    }
+
+                    if (!validId) {
+                        System.out.println("\n* Invalid Staff ID!! *");
+                        System.out.println("* Please Re-enter a Valid Staff ID! *\n");
+                    }
+                }
+
+            } while (!validId);
+
+            if (validate != -1) {
+
                 stfPswdRules();
                 System.out.print("Enter your Password: ");
                 pw = sc.nextLine();
@@ -77,9 +97,9 @@ public class Staff {
                         }
                     }
 
-                     if(validate != 1) {
-                        System.out.println("* Invalid Username & Password!! *");
-                        System.out.println("* Please Enter Again! *\n");
+                    if (validate != 1) {
+                        System.out.println("\n* Invalid Password!! *");
+                        System.out.println("* Please Re-enter a Valid Password! *\n");
                     }
                 }
             }
@@ -87,7 +107,6 @@ public class Staff {
         } while (validate == 0);
 
         return validLogin;
-
     }
 
     public static void register() {
@@ -135,29 +154,29 @@ public class Staff {
             if (newStfPw1.length() >= 8 && newStfPw1.length() <= 12) {
 
 
-                    for (char ch : newStfPw1.toCharArray()) {
-                        if (Character.isDigit(ch))
-                            digitNum++;
-                        if (Character.isLetter(ch))
-                            characterNum++;
-                    }
+                for (char ch : newStfPw1.toCharArray()) {
+                    if (Character.isDigit(ch))
+                        digitNum++;
+                    if (Character.isLetter(ch))
+                        characterNum++;
+                }
 
-                    if ((digitNum != 0) && (characterNum != 0)) {
+                if ((digitNum != 0) && (characterNum != 0)) {
 
-                        System.out.print("Confirm Password: ");
-                        newStfPw2 = sc.nextLine().trim();
-                        if (newStfPw2.equals("-1"))
-                            return;
+                    System.out.print("Confirm Password: ");
+                    newStfPw2 = sc.nextLine().trim();
+                    if (newStfPw2.equals("-1"))
+                        return;
 
-                        if (!(newStfPw1.equals(newStfPw2))) {
-                            System.out.println("\n* Your password is not same! *");
-                        }else{
-                            validPw = true;
-                        }
-
+                    if (!(newStfPw1.equals(newStfPw2))) {
+                        System.out.println("\n* Your password is not same! *");
                     } else {
-                        System.out.println("\n* Your password must contain at least one digit and one character! *");
+                        validPw = true;
                     }
+
+                } else {
+                    System.out.println("\n* Your password must contain at least one digit and one character! *");
+                }
 
             } else {
                 System.out.println("\n* Error! Your password length is not fulfill the conditions. *");
@@ -266,7 +285,7 @@ public class Staff {
         return stf.size();
     }
 
-    public static void stfIdRules(){
+    public static void stfIdRules() {
         System.out.println("\n---------------------------------------------------------------------");
         System.out.println("                      The Staff ID Should Be:                          ");
         System.out.println(" 1. Start with 'STF'                                                   ");
@@ -277,7 +296,7 @@ public class Staff {
         System.out.println("---------------------------------------------------------------------\n");
     }
 
-    public static void stfPswdRules(){
+    public static void stfPswdRules() {
         System.out.println("\n---------------------------------------------------------------------");
         System.out.println("                   The Staff Password Should Be:                       ");
         System.out.println(" 1. Length is from 8 to 12                                             ");
@@ -287,7 +306,7 @@ public class Staff {
         System.out.println("---------------------------------------------------------------------\n");
     }
 
-    public static void stfIcRules(){
+    public static void stfIcRules() {
         System.out.println("\n---------------------------------------------------------------------");
         System.out.println("                   The IC Number Should Be:                            ");
         System.out.println(" 1. In Format 'xxxxxx-xx-xxxx'                                         ");

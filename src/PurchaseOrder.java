@@ -73,12 +73,14 @@ public class PurchaseOrder {
         this.numOfPurchaseProd = numOfPurchaseProd;
     }
 
-    public void addPurchaseOrder() {
+    public static void addPurchaseOrder() {
 
         Scanner sc = new Scanner(System.in);
         String supId;
         boolean validNum = false;
+        int numOfPurchaseProd = 0;
         ArrayList<WhProd> purchaseProd = new ArrayList<>();
+        WhProd orderProd = null;
 
         //header and rules, -1 use to exit
 
@@ -125,13 +127,13 @@ public class PurchaseOrder {
                 }
 
                 ArrayList<Supplier> supplierList = Supplier.readSupplierFile();
-                for(Supplier supplier : supplierList){
-                    if(supplier.getId().equals(supId)){
+                for (Supplier supplier : supplierList) {
+                    if (supplier.getId().equals(supId)) {
                         ArrayList<Product> supplierProd = supplier.getSupplyProduct();
-                        for(Product product : supplierProd){
-                            if(product.getProdSKU().equals(skuCode)){
+                        for (Product product : supplierProd) {
+                            if (product.getProdSKU().equals(skuCode)) {
                                 validProd = true;
-                                purchaseProd.add(new WhProd(skuCode, 0, product.getProdName()));
+                                orderProd = new WhProd(skuCode, 0, product.getProdName());
                                 break;
                             }
                         }
@@ -149,7 +151,7 @@ public class PurchaseOrder {
             do {
 
                 try {
-                    System.out.println("For [ " + purchaseProd.get(i).getProductSKU() + " ]");
+                    System.out.println("For [ " + orderProd.getProductSKU() + " ]");
                     System.out.println("Enter quantity that you want to order: ");
                     quantity = sc.nextInt();
                     sc.nextLine();
@@ -163,7 +165,7 @@ public class PurchaseOrder {
                         System.out.println("Please enter again");
                     } else {
                         validQtt = true;
-                        purchaseProd.get(i).setQuantity(quantity);
+                        orderProd.setQuantity(quantity);
                     }
 
                 } catch (Exception e) {
@@ -176,18 +178,19 @@ public class PurchaseOrder {
 
             // display the product that need to order
             System.out.println("Product " + (i + 1) + ":");
-            System.out.println("SKU: " + purchaseProd.get(i).getProductSKU());
-            System.out.println("Name: " + purchaseProd.get(i).getProdName());
-            System.out.println("Quantity: " + purchaseProd.get(i).getQuantity());
+            System.out.println("SKU: " + orderProd.getProductSKU());
+            System.out.println("Name: " + orderProd.getProdName());
+            System.out.println("Quantity: " + orderProd.getQuantity());
             System.out.println(" ");
             // double confirm from user
-            System.out.println("Do you sure you want to order this product from the supplier [ "+supId+" ] ?");
+            System.out.println("Do you sure you want to order this product from the supplier [ " + supId + " ] ?");
             System.out.println("[ Y = Yes || Others = No ]");
             boolean confirm = sc.nextLine().toUpperCase().trim().equals("Y");
 
-            if(confirm){
-
+            if (confirm) {
+                purchaseProd.add(orderProd);
             }
+        }
 
 //            Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
 //
@@ -208,7 +211,7 @@ public class PurchaseOrder {
 //            System.out.print("Press Enter to Continue...");
 //            sc.nextLine();
 
-        }
+
 
     }
 

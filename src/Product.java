@@ -180,7 +180,7 @@ public class Product implements ProductInterface{
                         break;
 
                     case 2:
-                        //edit id
+                        //edit sku
                         editProduct.editSKU();
                         break;
 
@@ -204,15 +204,14 @@ public class Product implements ProductInterface{
             if (confirmationAfter) {
                 writeMasterProductFile(prodList);
 
-                if (menuInput == 2) {
-                    ArrayList<WhProd> whProdList = WhProd.readWarehouseProductFile();
+                ArrayList<WhProd> whProdList = WhProd.readWarehouseProductFile();
 
-                    for (WhProd w : whProdList) {
-                        if (prodID.equals(w.getProdSKU())) {
-                            w.setProdSKU(editProduct.getProdSKU());
-                        }
+                for (WhProd w : whProdList) {
+                    if (prodID.equals(w.getProdSKU())) {
+                        w.setProdSKU(editProduct.getProdSKU());
                     }
                 }
+                WhProd.writeWarehouseProductFile(whProdList);
 
                 System.out.println("* Successfully updated the latest product information!!! *");
             }
