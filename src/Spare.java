@@ -8,7 +8,7 @@ list out the product instead of user input
 edit staff
 
 doing add purchase order...
-debug display supplier
+debug display supplier /
 
 debug delete product /
 register password valid first enter, if valid then re-enter /
