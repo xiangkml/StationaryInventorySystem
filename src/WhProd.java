@@ -54,6 +54,10 @@ public class WhProd extends Product {
         return whId;
     }
 
+    public void setWhId(String whId) {
+        this.whId = whId;
+    }
+
     public String getProductSKU() {
         return super.getProdSKU();
     }
@@ -596,6 +600,112 @@ public class WhProd extends Product {
         System.out.println("Press Enter to continue...");
         sc.nextLine();
 
+    }
+
+    public static void summaryReportAll(){
+
+        ArrayList<WhProd> whProdList = readWarehouseProductFile();
+        ArrayList<Warehouse> warehouseList = Warehouse.readMasterWarehouseFile();
+
+        System.out.println("Summary Report");
+        for(Warehouse wh : warehouseList){
+            ArrayList<WhProd> reorderList = new ArrayList<>();
+            ArrayList<WhProd> normalList = new ArrayList<>();
+            for (WhProd whProd : whProdList) {
+
+                if(wh.getWhID().equals(whProd.getWhId())){
+                    if(whProd.getQuantity() - whProd.getReorderLv() <= 0){
+                        reorderList.add(whProd);
+                    }else{
+                        normalList.add(whProd);
+                    }
+                }
+
+            }
+
+            System.out.println("Product Needs to Reorder:");
+            System.out.printf("%-13s%-12s%-20s%-10s%-13s\n","Warehouse ID","Product SKU","Product Name","Quantity","Reorder Level");
+            for(WhProd whProd : reorderList){
+                System.out.printf("%-13s%-12s%-20s%-10d%-13d\n",whProd.getWhId(),whProd.getProductSKU(),whProd.getProdName(),whProd.getQuantity(),whProd.getReorderLv());
+            }
+
+            System.out.println("Product In Normal Status:");
+            System.out.printf("%-12s%-20s%-10s%-13s\n","Product SKU","Product Name","Quantity","Reorder Level");
+            for(WhProd whProd : normalList){
+                System.out.printf("%-13s%-12s%-20s%-10d%-13d\n",whProd.getWhId(),whProd.getProductSKU(),whProd.getProdName(),whProd.getQuantity(),whProd.getReorderLv());
+            }
+        }
+
+        System.out.println("Successfully Generate Report");
+        System.out.println("Press Enter to continue...");
+        new Scanner(System.in).nextLine();
+
+    }
+
+    public static void summaryReportOne(){
+
+        Scanner sc = new Scanner(System.in);
+        boolean validID = false;
+        String warehouseID = null;
+        ArrayList<WhProd> whProdList = readWarehouseProductFile();
+        ArrayList<Warehouse> warehouseList = Warehouse.readMasterWarehouseFile();
+
+        // header
+        // -1 to exist
+
+        do{
+            System.out.println("Enter Warehouse's ID that You Wish to Generate the Report: [KUL001]");
+            warehouseID = sc.nextLine().trim().toUpperCase();
+            if(warehouseID.equals("-1")){
+                return;
+            }
+            for(Warehouse wh : warehouseList){
+                if(warehouseID.equals(wh.getWhID())){
+                    validID = true;
+                    break;
+                }
+            }
+            if(!validID){
+                System.out.println("Invalid Warehouse ID");
+                System.out.println("Please re-enter again");
+            }
+        }while(!validID);
+
+        System.out.println("Summary Report");
+        for(Warehouse wh : warehouseList){
+            if(wh.getWhID().equals(warehouseID)){
+                ArrayList<WhProd> reorderList = new ArrayList<>();
+                ArrayList<WhProd> normalList = new ArrayList<>();
+                for (WhProd whProd : whProdList) {
+
+                    if(wh.getWhID().equals(whProd.getWhId())){
+                        if(whProd.getQuantity() - whProd.getReorderLv() <= 0){
+                            reorderList.add(whProd);
+                        }else{
+                            normalList.add(whProd);
+                        }
+                    }
+
+                }
+
+                System.out.println("Product Needs to Reorder:");
+                System.out.printf("%-13s%-12s%-20s%-10s%-13s\n","Warehouse ID","Product SKU","Product Name","Quantity","Reorder Level");
+                for(WhProd whProd : reorderList){
+                    System.out.printf("%-13s%-12s%-20s%-10d%-13d\n",whProd.getWhId(),whProd.getProductSKU(),whProd.getProdName(),whProd.getQuantity(),whProd.getReorderLv());
+                }
+
+                System.out.println("Product In Normal Status:");
+                System.out.printf("%-12s%-20s%-10s%-13s\n","Product SKU","Product Name","Quantity","Reorder Level");
+                for(WhProd whProd : normalList){
+                    System.out.printf("%-13s%-12s%-20s%-10d%-13d\n",whProd.getWhId(),whProd.getProductSKU(),whProd.getProdName(),whProd.getQuantity(),whProd.getReorderLv());
+                }
+            }
+
+        }
+
+        System.out.println("Successfully Generate Report");
+        System.out.println("Press Enter to continue...");
+        sc.nextLine();
     }
 
     public void displayWhProd() {

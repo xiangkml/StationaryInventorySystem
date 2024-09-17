@@ -208,7 +208,6 @@ public class Supplier {
         sc.nextLine();
     }
 
-
     public static void deleteSupplier() {
 
         String supID;
@@ -306,13 +305,13 @@ public class Supplier {
         ArrayList<Supplier> supplierList = readSupplierFile();
         for (Supplier supplier : supplierList) {
             // display all information for each supplier
-            System.out.printf("| %02d. | %-6s | %-41s |", noSup, supplier.getId(), supplier.getName());
+            System.out.printf("| %02d. | %-6s | %-29s |", noSup, supplier.getId(), supplier.getName());
 
             for (Product prod : supplier.getSupplyProduct()) {
-                System.out.printf(" %-6s | %-23s |\n", prod.getProdSKU(), prod.getProdName());
-                System.out.printf("|%5s|%8s|%43s|", "", "", "");
+                System.out.printf(" %-6s | %-35s |\n", prod.getProdSKU(), prod.getProdName());
+                System.out.printf("|%5s|%8s|%31s|", "", "", "");
             }
-            System.out.printf("%36s|", "");
+            System.out.printf("%48s|", "");
 
             System.out.println(" ");
 
@@ -602,7 +601,6 @@ public class Supplier {
         }
         System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
     }
-
 
     public static ArrayList<Supplier> readSupplierFile() {
         String pathName = "supplier.txt";

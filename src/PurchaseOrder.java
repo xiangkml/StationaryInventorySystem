@@ -1,5 +1,11 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class PurchaseOrder {
 
@@ -15,6 +21,7 @@ public class PurchaseOrder {
         this.year = year;
         this.purchaseProd = purchaseProd;
         this.numOfPurchaseProd = numOfPurchaseProd;
+        this.poNo = String.format("PO%03d", countPo() + 1);
     }
 
     public String getPoNo() {
@@ -81,6 +88,7 @@ public class PurchaseOrder {
         int numOfPurchaseProd = 0;
         ArrayList<WhProd> purchaseProd = new ArrayList<>();
         WhProd orderProd = null;
+        int year, month, day;
 
         //header and rules, -1 use to exit
 
@@ -189,38 +197,201 @@ public class PurchaseOrder {
 
             if (confirm) {
                 purchaseProd.add(orderProd);
+                System.out.println("Successfully Add Product into Purchase Order");
+            }else{
+                System.out.println("Failed to Add Product into Purchase Order");
             }
         }
 
-//            Supplier newSupplier = new Supplier(supName, email, address, tel, supplyProduct);
-//
-//            // display new supplier info
-//            // double confirm from the user
-//            System.out.println(" ========================================================= ");
-//            System.out.println("|        Confirmation for New Supplier Information        |");
-//            System.out.println(" ========================================================= \n");
-//
-//            newSupplier.displaySup();
-//
-//            // if user confirm then process below
-//            ArrayList<Supplier> supplierList = readSupplierFile();
-//            supplierList.add(newSupplier);
-//            writeSupplierFile(supplierList);
-//
-//            System.out.println("Successfully registered a new supplier!");
-//            System.out.print("Press Enter to Continue...");
-//            sc.nextLine();
+        //get date
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        year  = localDate.getYear();
+        month = localDate.getMonthValue();
+        day   = localDate.getDayOfMonth();
 
+        PurchaseOrder newPO = new PurchaseOrder(supId,day,month,year,purchaseProd,numOfPurchaseProd);
+        // display new purchase order information
+        // double confirm from the user
 
+        System.out.println(" ========================================================= ");
+        System.out.println("|          Confirmation for New Purchase Order           |");
+        System.out.println(" ========================================================= \n");
+
+        newPO.displayPO();
+
+        System.out.print("\nDo you sure the warehouse information is correct? [Y = YES || Others = NO]: ");
+        boolean confirmation = sc.next().trim().equalsIgnoreCase("Y");
+        sc.nextLine();
+
+        if (confirmation) {
+            // if user confirm then process below
+            ArrayList<PurchaseOrder> poList = readPurchaseOrderFile();
+            poList.add(newPO);
+            writePurchaseOrderFile(poList);
+
+            System.out.println("Successfully Send the Purchase Order!");
+
+        }else{
+            System.out.println("Failed to Send the Purchase Order");
+        }
+
+        System.out.print("Press Enter to Continue...");
+        sc.nextLine();
 
     }
 
-    public static void displayPO() {
-        System.out.println("PO No");
+    public static void viewPOhistory() {
+
+        Scanner sc = new Scanner(System.in);
+        String poID;
+        boolean validID = false;
+        PurchaseOrder viewPo = null;
+        ArrayList<PurchaseOrder> poList = readPurchaseOrderFile();
+
+        Main.displayHeader();
+        System.out.println("|               View Purchase Order History               |");
+        System.out.println(" ========================================================= ");
+
+        do {
+            System.out.print("Enter the Purchase Order's Number that you wish to view [PO001]: ");
+            poID = sc.nextLine().trim().toUpperCase();
+            if (poID.equals("-1")) {
+                return;
+            }
+            poList = readPurchaseOrderFile();
+            for (PurchaseOrder po : poList) {
+                if (poID.equals(po.getPoNo())) {
+                    validID = true;
+                    viewPo = po;
+                    break;
+                }
+            }
+
+            if (validID) {
+                // display information for purchase order
+                System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.printf("                 Information for Purchase Order %6s\n\n", viewPo.getPoNo());
+
+                // display po
+
+
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            }
+
+
+        } while (!validID);
+
+        System.out.println("Successfully Display the Purchase Order Details!!!");
+        System.out.print("Press Enter to Continue...");
+        new Scanner(System.in).nextLine();
+
     }
 
-    // private int countPo() {
-    //     ArrayList<Staff> stf = readPurchaseOrderFile();
-    //     return stf.size();
-    // }
+    public void displayPO() {
+        System.out.println("Purchase Order Number: "+poNo);
+        System.out.println("Date: "+day+"/"+month+"/"+year);
+        System.out.println("Order From: "+supID);
+        System.out.println("Number of Product:"+numOfPurchaseProd);
+        for(WhProd prod : purchaseProd){
+            System.out.println("Product SKU: "+prod.getProductSKU());
+            // display sku name quantity
+        }
+
+    }
+
+     private int countPo() {
+         ArrayList<PurchaseOrder> po = readPurchaseOrderFile();
+         return po.size();
+     }
+
+    public static ArrayList<PurchaseOrder> readPurchaseOrderFile() {
+        String pathName = "purchase_order.txt";
+
+        File file = new File(pathName);
+        ArrayList<PurchaseOrder> poList = new ArrayList<>();
+
+        ArrayList<Product> masterProd = Product.readMasterProductFile();
+        Scanner scanFile;
+        try {
+            scanFile = new Scanner(file);
+            scanFile.useDelimiter("\\|");
+
+            while (scanFile.hasNextLine()) {
+                ArrayList<WhProd> productList = new ArrayList<>();
+                String line = scanFile.nextLine();
+                String[] data = line.split("\\|");
+
+                if (data.length >= 8) { // Ensure the line has the expected number of fields
+                    String poNum = data[0];
+                    String supId = data[1];
+                    int day = Integer.parseInt(data[2]);
+                    int month = Integer.parseInt(data[3]);
+                    int year = Integer.parseInt(data[4]);
+                    int numProduct = Integer.parseInt(data[5]);
+
+                    for (int i = 6; i < data.length; i=i+2) {
+                        productList.add(new WhProd(data[i],Integer.parseInt(data[i+1]),null));
+                    }
+
+                    //read product name from master product file
+                    for (WhProd whP : productList) {
+                        for (Product p : masterProd) {
+                            if (whP.getProdSKU().equals(p.getProdSKU())) {
+                               whP.setProdName(p.getProdName());
+                                break;
+                            }
+                        }
+                    }
+
+                    PurchaseOrder newPO = new PurchaseOrder(supId,day,month,year,productList,numProduct);
+                    poList.add(newPO);
+                } else {
+                    System.out.println("Invalid data format: " + line);
+                }
+
+            }
+            scanFile.close();
+        } catch (Exception e) {
+            System.out.println("Error (read purchase file):" + e.getMessage());
+        }
+        return poList;
+    }
+
+    public static void writePurchaseOrderFile(ArrayList<PurchaseOrder> poList) {
+        String pathName = "purchase_order.txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathName))) {
+            for (PurchaseOrder po : poList) {
+                writer.write(po.getPoNo());
+                writer.write('|');
+                writer.write(po.getSupID());
+                writer.write('|');
+                writer.write(Integer.toString(po.getDay()));
+                writer.write('|');
+                writer.write(Integer.toString(po.getMonth()));
+                writer.write('|');
+                writer.write(Integer.toString(po.getYear()));
+                writer.write('|');
+                writer.write(Integer.toString(po.getNumOfPurchaseProd()));
+                writer.write('|');
+
+                for (int i = 0; i < po.getPurchaseProd().size() - 1; i++) {
+                    writer.write(po.getPurchaseProd().get(i).getProdSKU());
+                    writer.write('|');
+                    writer.write(Integer.toString(po.getPurchaseProd().get(i).getQuantity()));
+                    writer.write('|');
+                }
+                writer.write(po.getPurchaseProd().get(po.getPurchaseProd().size() - 1).getProdSKU());
+                writer.write('|');
+                writer.write(Integer.toString(po.getPurchaseProd().get(po.getPurchaseProd().size() - 1).getQuantity()));
+
+                writer.newLine();  // Write each item on a new line
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error (write purchase order file):" + e.getMessage());
+        }
+    }
+
 }

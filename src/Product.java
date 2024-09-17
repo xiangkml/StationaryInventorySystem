@@ -488,7 +488,7 @@ public class Product implements ProductInterface{
     public static void prodNameRules() {
         System.out.println("\n---------------------------------------------------------------------");
         System.out.println("                    The Product Name Should Be:                        ");
-        System.out.println(" 1. Check if the name is correct before press 'Enter'                  ");
+        System.out.println(" 1. Check if the name is correct before pressing 'Enter'               ");
         System.out.println(" 2. Avoid containing special character [@,#,$,...], especially '|'     ");
         System.out.println("                                                                       ");
         System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");

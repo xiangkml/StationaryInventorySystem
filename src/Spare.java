@@ -44,8 +44,8 @@ baobei :
 
 test product confirmation
 
-until supplier 158
-display supplier design
+until supplier 158 /
+display supplier design /
 
 add header and menu design /  IN MAIN
 add staff validate all input /
@@ -60,14 +60,14 @@ for supplier method: add supplier  /
 - display supplier info to user before save
 - double confirm from the user
 
-for supplier method: delete supplier
+for supplier method: delete supplier /
 - display supplier info to user before delete
 - double confirm from the user
 
-for supplier method: viewAllSupplier
+for supplier method: viewAllSupplier /
 - display all supplier info
 
-for supplier method: viewOneSupplier
+for supplier method: viewOneSupplier /
 - display supplier info
 
 for warehouse method: add warehouse
@@ -93,6 +93,17 @@ same thing for product|
 for purchaseOrder method: add purchase order
 - add header,rules,-1 use to exit design
 - add rules for input
+- design input
+
+for purchaseOrder method: displayPO
+- design
+
+for summary report all
+- design
+
+for summary report one
+- header
+-design
 
 */
 

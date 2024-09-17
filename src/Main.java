@@ -212,10 +212,12 @@ public class Main {
             switch (menuInput) {
                 case 1:
                     // add po
+                    PurchaseOrder.addPurchaseOrder();
                     break;
 
                 case 2:
                     // view po
+                    PurchaseOrder.viewPOhistory();
                     break;
 
 
