@@ -7,7 +7,22 @@ link stock receives with po
 list out the product instead of user input
 edit staff
 
-doing add purchase order...
+checking function
+add supplier/
+
+checking confirmation and design
+supplier /
+product /
+warehouse c/ dx
+whProd c/ dx
+staff no confirmation / design /
+purchase order c/ dx
+summary dx
+
+
+
+
+doing add purchase order/
 debug product edit SKU /
 debug staff ID and pswd, seperate validation /
 supplier, add supplier, no of product have problem /

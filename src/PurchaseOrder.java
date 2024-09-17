@@ -28,56 +28,28 @@ public class PurchaseOrder {
         return poNo;
     }
 
-    public void setPoNo(String poNo) {
-        this.poNo = poNo;
-    }
-
     public String getSupID() {
         return supID;
-    }
-
-    public void setSupID(String supID) {
-        this.supID = supID;
     }
 
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     public int getMonth() {
         return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
     }
 
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     public ArrayList<WhProd> getPurchaseProd() {
         return purchaseProd;
     }
 
-    public void setPurchaseProd(ArrayList<WhProd> purchaseProd) {
-        this.purchaseProd = purchaseProd;
-    }
-
     public int getNumOfPurchaseProd() {
         return numOfPurchaseProd;
-    }
-
-    public void setNumOfPurchaseProd(int numOfPurchaseProd) {
-        this.numOfPurchaseProd = numOfPurchaseProd;
     }
 
     public static void addPurchaseOrder() {

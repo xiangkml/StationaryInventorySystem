@@ -223,7 +223,7 @@ public class Supplier {
         do {
             supIdRules();
             System.out.print("Enter the Supplier's ID that you wish to delete [SUP001]: ");
-            supID = sc.nextLine().trim();
+            supID = sc.nextLine().trim().toUpperCase();
             exitPage = supID.equals("-1");
 
             if (!exitPage) {
@@ -491,7 +491,11 @@ public class Supplier {
 
         supIdRules();
         System.out.print("Enter a New Name for Supplier '" + id + "': ");
-        this.setName(new Scanner(System.in).nextLine().trim());
+        String name = new Scanner(System.in).nextLine().trim();
+        if(name.equals("-1")){
+            return;
+        }
+        this.setName(name);
 
     }
 
@@ -503,6 +507,9 @@ public class Supplier {
             emailRules();
             System.out.print("Enter a New Email for Supplier '" + id + "': ");
             String email = sc.nextLine().trim();
+            if(email.equals("-1")){
+                return;
+            }
             validEmail = ExtraFunction.checkPattern(email, "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$");
             if (validEmail) {
                 this.setEmail(email);
@@ -522,6 +529,9 @@ public class Supplier {
             telRules();
             System.out.print("Enter a New Telephone Number for Supplier '" + id + "': ");
             String tel = sc.nextLine().trim();
+            if(tel.equals("-1")){
+                return;
+            }
             validTel = ExtraFunction.checkPattern(tel, "^01[02-46-9]-[0-9]{3} [0-9]{4}$|^011-[0-9]{4} [0-9]{4}$");
             if (validTel) {
                 this.setTel(tel);
@@ -535,7 +545,11 @@ public class Supplier {
     public void editAddress() {
 
         System.out.print("\nEnter a New Address for Supplier '" + id + "': ");
-        this.setAddress(new Scanner(System.in).nextLine().trim());
+        String newAddress = new Scanner(System.in).nextLine().trim();
+        if(newAddress.equals("-1")){
+            return;
+        }
+        this.setAddress(newAddress);
 
     }
 
@@ -550,6 +564,9 @@ public class Supplier {
             Product.prodSKURules();
             System.out.print("Enter the Old Product SKU you wish to edit for Supplier '" + id + "': ");
             oldSKU = sc.nextLine().trim().toUpperCase();
+            if(oldSKU.equals("-1")){
+                return;
+            }
 
             for (Product prod : supplyProduct) {
                 if (prod.getProdSKU().equals(oldSKU)) {
@@ -562,6 +579,9 @@ public class Supplier {
                 do {
                     System.out.print("Enter the New Product SKU to replace it: ");
                     newSKU = sc.nextLine().trim().toUpperCase();
+                    if(newSKU.equals("-1")){
+                        return;
+                    }
                     ArrayList<Product> allProd = Product.readMasterProductFile();
                     for (Product prod : allProd) {
                         if (prod.getProdSKU().equals(newSKU)) {

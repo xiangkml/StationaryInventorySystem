@@ -68,7 +68,7 @@ public class Product implements ProductInterface{
                 return;
             }
 
-            if (!ExtraFunction.checkPattern(prodSKU, "^^[A-Z]{5}\\d{3}$")) {
+            if (!ExtraFunction.checkPattern(prodSKU, "^[A-Z]{5}\\d{3}$")) {
                 System.out.println("\n* Invalid Product SKU Code!! *");
                 System.out.println("* Please Enter Valid SKU Code! *");
                 validInput = false;
@@ -213,7 +213,7 @@ public class Product implements ProductInterface{
                 }
                 WhProd.writeWarehouseProductFile(whProdList);
 
-                System.out.println("* Successfully updated the latest product information!!! *");
+                System.out.println("Successfully updated the latest product information!!!");
             }
         }
 
@@ -223,6 +223,7 @@ public class Product implements ProductInterface{
 
     public void editName() {
 
+        prodNameRules();
         System.out.print("Enter a new name for product [" + prodSKU + "]: ");
         this.setProdName(new Scanner(System.in).nextLine().trim());
 
@@ -236,10 +237,10 @@ public class Product implements ProductInterface{
         do {
             validID = true;
 
+            prodSKURules();
             System.out.print("Enter a new SKU for product [" + prodSKU + "]: ");
             String newID = sc.nextLine().trim().toUpperCase();
             if (ExtraFunction.checkPattern(newID, "^[A-Z]{5}\\d{3}$")) {
-
                 ArrayList<Product> prodList = readMasterProductFile();
                 for (Product p : prodList) {
                     if (newID.equals(p.getProdSKU())) {
@@ -272,7 +273,6 @@ public class Product implements ProductInterface{
         Product prodDel = new Product();
         ArrayList<Product> prodList;
         ArrayList<WhProd> stockList = WhProd.readWarehouseProductFile();
-        ArrayList<Product> productDeleted = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         Main.displayHeader();
