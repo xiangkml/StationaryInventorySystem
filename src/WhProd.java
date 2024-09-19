@@ -407,11 +407,13 @@ public class WhProd extends Product {
         ArrayList<Warehouse> whList;
         ArrayList<WhProd> whProdList = readWarehouseProductFile();
 
-        System.out.println("----------- Stock Return ----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                      Stock Return                       |");
+        System.out.println(" ========================================================= \n");
 
         do {
-            System.out.println("Enter the warehouse id that you need to return the stock to main warehouse [KLG002]:");
+            Warehouse.whIdRules();
+            System.out.print("Enter the Warehouse ID that you need to return the stock to main warehouse [KLG002]: ");
             warehouse = sc.nextLine().toUpperCase().trim();
             if (warehouse.equals("-1")) {
                 return;
@@ -426,13 +428,14 @@ public class WhProd extends Product {
             }
 
             if (!validWh) {
-                System.out.println("Do not have this warehouse!");
-                System.out.println("Please re-enter again");
+                System.out.println("\n* This Warehouse Does Not Exist!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
         } while (!validWh);
 
         do {
-            System.out.println("Enter the product sku code that you wish to return [PBRUL001]: ");
+            Product.prodSKURules();
+            System.out.print("Enter the Product SKU Code that you wish to return [PBRUL001]: ");
             sku = sc.nextLine().toUpperCase().trim();
             if (sku.equals("-1")) {
                 return;
@@ -446,14 +449,15 @@ public class WhProd extends Product {
                 }
             }
             if (!validSKU) {
-                System.out.println("Do not have this product !");
-                System.out.println("Please re-enter again");
+                System.out.println("\n* This Product Does Not Exist!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
         } while (!validSKU);
 
         do {
             try {
-                System.out.println("Enter the quantity of product that you wish to return [Integer]: ");
+                Supplier.inputIntRules();
+                System.out.print("Enter the Quantity of Product that you wish to return: ");
                 qtt = sc.nextInt();
                 if (qtt == -1) {
                     return;
@@ -470,26 +474,29 @@ public class WhProd extends Product {
                     }
                 }
                 if (source.getQuantity() < qtt) {
-                    System.out.println("Do not have enough product to be transferred!");
-                    System.out.println("Please re-enter again!");
+                    System.out.println("\n* Do not have enough product to be transferred!! *");
+                    System.out.println("* Please Re-enter Again! *\n");
                 } else {
                     validQtt = true;
                 }
             } catch (Exception e) {
-                System.out.println("Enter Integer Only.");
-                System.out.println("Please re-enter again!");
+                System.out.println("\n* You Can Only Enter Integer!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
         } while (!validQtt);
 
-        System.out.println("----------- Confirmation -----------");
+        System.out.println("\n ----------------------------------------------------------- ");
+        System.out.println("|                 Confirmation Stock Return                 |");
+        System.out.println(" ----------------------------------------------------------- ");
         System.out.println("From :");
         source.displayWhProd();
-        System.out.println("To :");
+        System.out.println("\nTo :");
         destination.displayWhProd();
         System.out.println("Transfer Quantity: " + qtt);
 
-        System.out.println("Do you sure the return information is correct? [Y = YES || Others = NO]");
+        System.out.print("Do you sure the return information is correct? [Y = YES || Others = NO]: ");
         confirmation = sc.next().trim().equalsIgnoreCase("Y");
+        sc.nextLine();
 
         if (confirmation) {
             whProdList.remove(source);
@@ -499,12 +506,12 @@ public class WhProd extends Product {
             whProdList.add(source);
             whProdList.add(destination);
             writeWarehouseProductFile(whProdList);
-            System.out.println("Successfully perform stock return.");
+            System.out.println("\nSuccessfully Perform Stock Return!!");
         } else {
-            System.out.println("Failed to perform stock return.");
+            System.out.println("\n* Failed to Perform Stock Return!! *");
         }
 
-        System.out.println("Press Enter to continue...");
+        System.out.print("Press Enter to Continue...");
         sc.nextLine();
 
     }
@@ -518,11 +525,13 @@ public class WhProd extends Product {
         boolean validWh = false, validLv = false;
         String whId;
 
-        System.out.println("----------- Reset Reorder Level -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                   Reset Reorder Level                   |");
+        System.out.println(" ========================================================= ");
 
         do {
-            System.out.println("Enter warehouse id:");
+            Warehouse.whIdRules();
+            System.out.print("Enter Warehouse ID: ");
             whId = sc.nextLine().toUpperCase().trim();
             if (whId.equals("-1")) {
                 return;
@@ -535,13 +544,14 @@ public class WhProd extends Product {
                 }
             }
             if (!validWh) {
-                System.out.println("Do not have this warehouse !");
-                System.out.println("Please re-enter again");
+                System.out.println("\n* This Warehouse Does Not Exist!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
         } while (!validWh);
 
-        System.out.println("----------- Product List -----------");
-        System.out.printf("%5s %8s %-20s %8s %13s\n", "Index", "SKU", "Name", "Quantity", "Reorder Level");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("                               Product List:                               \n");
+        System.out.printf(" %5s   %-8s   %-25s   %8s   %13s\n", "Index", "SKU", "Name", "Quantity", "Reorder Level");
 
 
         int prodIndex = 0, prodEdit, reorderLv;
@@ -550,39 +560,41 @@ public class WhProd extends Product {
             if (whProd.getWhId().equals(whId)) {
                 prodIndex++;
                 productList.add(whProd);
-                System.out.printf("%05d. %8s %-20s %8d %13d", prodIndex, whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+                System.out.printf(" %1s%02d.    %8s   %-25s   %-8d   %-13d\n", "", prodIndex, whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
 
             }
         }
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-        System.out.println("Which product you want to reset it reorder level?");
-        System.out.println("[Reorder Level must at least 5]");
+        Supplier.inputIntRules();
+        System.out.println("Please Enter the Index Number for the Product you want to reset its reorder level.");
         prodEdit = ExtraFunction.menuInput(prodIndex);
 
         do {
-            System.out.println("Set new reorder level: ");
+            reorderLevelRules();
+            System.out.print("Set New Reorder Level: ");
             reorderLv = sc.nextInt();
+            sc.nextLine();
             try {
                 if (reorderLv == -1) {
                     return;
                 }
                 if (reorderLv >= 5) {
                     productList.get(prodEdit - 1).setReorderLv(reorderLv);
-                    System.out.println("Successfully updated reorder level");
+                    System.out.println("\nSuccessfully Updated Reorder Level!!");
                     validLv = true;
                 } else {
-                    System.out.println("Failed to update reorder level");
-                    System.out.println("The reorder level must at least 5");
-                    System.out.println("Please re-enter again");
+                    System.out.println("\n* Failed to Update Reorder Level!! *");
+                    System.out.println("* The Reorder Level Must At Least 5! Please Re-enter Again! *\n");
                 }
             } catch (Exception e) {
-                System.out.println("Enter Integer Only.");
-                System.out.println("Please re-enter again");
+                System.out.println("\n* You Can Only Enter Integer!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
 
         } while (!validLv);
 
-        System.out.println("Press Enter to continue...");
+        System.out.print("Press Enter to Continue...");
         sc.nextLine();
 
     }
@@ -602,7 +614,10 @@ public class WhProd extends Product {
             }
         }
 
-        System.out.println("Summary Report");
+        System.out.println("\n ============================================================================================ ");
+        System.out.println("|                                       Summary Report                                       |");
+        System.out.println("|============================================================================================|");
+
         for (Warehouse wh : warehouseList) {
             ArrayList<WhProd> reorderList = new ArrayList<>();
             ArrayList<WhProd> normalList = new ArrayList<>();
@@ -618,21 +633,28 @@ public class WhProd extends Product {
 
             }
 
-            System.out.println("Product Needs to Reorder:");
-            System.out.printf("%-13s%-12s%-30s%-10s%-13s\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
-            for (WhProd whProd : reorderList) {
-                System.out.printf("%-13s%-12s%-20s%-10d%-13d\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
-            }
+            System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+            System.out.println("|--------------------------------------------------------------------------------------------|");  //94 cols
 
-            System.out.println("Product In Normal Status:");
-            System.out.printf("%-12s%-20s%-30s%-13s\n", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+            System.out.println("|                                 Product Needs to Reorder:                                  |");
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            for (WhProd whProd : reorderList) {
+                System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+            }
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+            System.out.println("|                                 Product In Normal Status:                                  |");
+            System.out.println("|--------------------------------------------------------------------------------------------|");
+
+            //System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
             for (WhProd whProd : normalList) {
-                System.out.printf("%-13s%-12s%-20s%-10d%-13d\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+                System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
             }
         }
+        System.out.println(" ============================================================================================\n ");
 
-        System.out.println("Successfully Generate Report");
-        System.out.println("Press Enter to continue...");
+        System.out.println("                          Successfully Generate Report!!");
+        System.out.print("                            Press Enter to Continue...");
         new Scanner(System.in).nextLine();
 
     }
@@ -648,6 +670,10 @@ public class WhProd extends Product {
 
         // header
         // -1 to exist
+        Main.displayHeader();
+        System.out.println("|           Generate Report for Specific Branch           |");
+        System.out.println(" ========================================================= ");
+
 
         for(WhProd whProd : whProdList){
             for(Product product : productList){
@@ -659,7 +685,8 @@ public class WhProd extends Product {
         }
 
         do {
-            System.out.println("Enter Warehouse's ID that You Wish to Generate the Report: [KUL001]");
+            Warehouse.whIdRules();
+            System.out.print("Enter Warehouse's ID that You Wish to Generate the Report [KUL001]: ");
             warehouseID = sc.nextLine().trim().toUpperCase();
             if (warehouseID.equals("-1")) {
                 return;
@@ -671,12 +698,15 @@ public class WhProd extends Product {
                 }
             }
             if (!validID) {
-                System.out.println("Invalid Warehouse ID");
-                System.out.println("Please re-enter again");
+                System.out.println("\n* Invalid Warehouse ID!! *");
+                System.out.println("* Please Re-enter Again! *\n");
             }
         } while (!validID);
 
-        System.out.println("Summary Report");
+        System.out.println("\n ============================================================================================ ");
+        System.out.printf("|                              Summary Report for Branch %s                              |\n", warehouseID);
+        System.out.println("|============================================================================================|");
+
         for (Warehouse wh : warehouseList) {
             if (wh.getWhID().equals(warehouseID)) {
                 ArrayList<WhProd> reorderList = new ArrayList<>();
@@ -693,23 +723,32 @@ public class WhProd extends Product {
 
                 }
 
-                System.out.println("Product Needs to Reorder:");
-                System.out.printf("%-13s%-12s%-30s%-10s%-13s\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+                System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+                System.out.println("|--------------------------------------------------------------------------------------------|");  //94 cols
+                System.out.println("|                                 Product Needs to Reorder:                                  |");
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+
+                //System.out.printf("%-13s%-12s%-30s%-10s%-13s\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
                 for (WhProd whProd : reorderList) {
-                    System.out.printf("%-13s%-12s%-30s%-10d%-13d\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+                    System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
                 }
 
-                System.out.println("Product In Normal Status:");
-                System.out.printf("%-12s%-20s%-10s%-13s\n", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                System.out.println("|                                 Product In Normal Status:                                  |");
+                System.out.println("|--------------------------------------------------------------------------------------------|");
+                //System.out.printf("%-12s%-20s%-10s%-13s\n", "Product SKU", "Product Name", "Quantity", "Reorder Level");
                 for (WhProd whProd : normalList) {
-                    System.out.printf("%-13s%-12s%-30s%-10d%-13d\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+                    System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
                 }
             }
 
         }
+        System.out.println(" ============================================================================================\n ");
 
-        System.out.println("Successfully Generate Report");
-        System.out.println("Press Enter to continue...");
+        System.out.println("                             Successfully Generate Report!!");
+        System.out.print("                               Press Enter to Continue...");
         sc.nextLine();
     }
 
@@ -771,6 +810,18 @@ public class WhProd extends Product {
         } catch (Exception e) {
             System.out.println("Error (write stock file):" + e.getMessage());
         }
+    }
+
+    public static void reorderLevelRules() {
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                     The Reorder Level Should Be:                      ");
+        System.out.println(" 1. Can Only Enter Integer                                             ");
+        System.out.println(" 2. Must At Least 5                                                    ");
+        System.out.println(" 3. Cannot Enter Negative Integer [-25,-431], except exit              ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
 }

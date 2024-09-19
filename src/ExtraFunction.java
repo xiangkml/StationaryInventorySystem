@@ -14,14 +14,14 @@ public class ExtraFunction {
                 inputOfMenu = sc.nextInt();
                 sc.nextLine();
                 if ((inputOfMenu < 1) || (inputOfMenu > endNum)) {
-                    System.out.println("Only enter numbers between 1 and " + endNum + ".");
+                    System.out.println("\n* Only Enter Numbers between 1 and " + endNum + ". *\n");
                 }
                 else {
                     continueLoop = false;
                 }
             } catch (Exception e) {
-                System.out.println("Invalid Input.");
-                System.out.println("Only enter integer!");
+                System.out.println("\n* Invalid Input!! *");
+                System.out.println("* You Can Only Enter Integer! *\n");
                 sc.nextLine();
             }
         } while (continueLoop);
