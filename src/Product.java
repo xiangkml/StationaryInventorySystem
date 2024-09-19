@@ -189,16 +189,17 @@ public class Product implements ProductInterface{
                         return;
                 }
 
-                System.out.print("Do you want to continue edit this product information? [Y = YES || Others = NO]: ");
+                System.out.print("Do you want to continue edit this Product Information? [Y = YES || Others = NO]: ");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
             } while (continueEdit);
 
             // information after edit
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println("Product Information After Edited: \n");
+            System.out.println("                        Product Information After Edited: \n");
             editProduct.displayProduct();
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-            System.out.print("Do you sure you want to save this product information? [Y = YES || Others = NO]: ");
+
+            System.out.print("Do you sure you want to save this Product Information? [Y = YES || Others = NO]: ");
             confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
 
             if (confirmationAfter) {
@@ -213,7 +214,7 @@ public class Product implements ProductInterface{
                 }
                 WhProd.writeWarehouseProductFile(whProdList);
 
-                System.out.println("Successfully updated the latest product information!!!");
+                System.out.println("Successfully Updated the Latest Product Information!!!");
             }
         }
 
@@ -225,7 +226,11 @@ public class Product implements ProductInterface{
 
         prodNameRules();
         System.out.print("Enter a new name for product [" + prodSKU + "]: ");
-        this.setProdName(new Scanner(System.in).nextLine().trim());
+        String name = new Scanner(System.in).nextLine().trim();
+        if(name.equals("-1")){
+            return;
+        }
+        this.setProdName(name);
 
     }
 
@@ -240,6 +245,9 @@ public class Product implements ProductInterface{
             prodSKURules();
             System.out.print("Enter a new SKU for product [" + prodSKU + "]: ");
             String newID = sc.nextLine().trim().toUpperCase();
+            if(newID.equals("-1")){
+                return;
+            }
             if (ExtraFunction.checkPattern(newID, "^[A-Z]{5}\\d{3}$")) {
                 ArrayList<Product> prodList = readMasterProductFile();
                 for (Product p : prodList) {

@@ -3,12 +3,12 @@
 page and word design
 forgot pw function
 display rules for each input
-link stock receives with po
+link stock receives with po /
 list out the product instead of user input
 edit staff
 
 checking function
-add supplier/
+small details haven't check for
 
 checking confirmation and design
 supplier /
@@ -29,6 +29,11 @@ supplier, add supplier, no of product have problem /
 supplier, add supplier, confirmation /
 supplier, view sup info, view specific sup info, if enter invalid supID no invalid input msg come out /
 supplier, edit sup, enter supID but no invalid input msg /
+
+edit warehouse, warehouse name, if enter '-1', cant exit but change the warehouse name to -1 /
+for edit XXXXX, if enter '-1' cant exit (warehouse done)
+add po, how many product want to order (if exceed the no of product supplied by supplier, should be invalid)
+
 
 if got time: supplier, edit sup prod supplied, if the supplier originally supply 3 prods and after this can only supply 2 prods, in edit function only can change from old prod sku to new prod sku, cannot inc or dec prod supplied
 
@@ -56,6 +61,8 @@ Supplier addSupplier() enter no of product, do validation for negative input /
 
 /*
 baobei :
+
+pw rules add can contain special character
 
 test product confirmation
 

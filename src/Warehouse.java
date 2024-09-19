@@ -132,7 +132,7 @@ public class Warehouse {
 
         String whID;
         Warehouse whDel = null;
-        boolean validID = false, confirmation = false;
+        boolean validID = false, confirmation ;
         ArrayList<Warehouse> whList;
         Scanner sc = new Scanner(System.in);
 
@@ -195,7 +195,6 @@ public class Warehouse {
             }
 
         } while ((!validID));
-
 
         System.out.print("Press Enter to Continue...");
         sc.nextLine();
@@ -319,7 +318,10 @@ public class Warehouse {
                 System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
-
+            else{
+                System.out.println("\n* Invalid Warehouse ID!! *");
+                System.out.println("* Please Re-enter Warehouse's ID! *\n");
+            }
 
         } while (!validID);
 
@@ -337,11 +339,13 @@ public class Warehouse {
         Warehouse editWh = null, oriWh = null;
         ArrayList<Warehouse> whList;
 
-        System.out.println("----------- Edit Warehouse -----------");
-        System.out.println("Enter '-1' to exit");
+        Main.displayHeader();
+        System.out.println("|                     Edit Warehouse                      |");
+        System.out.println(" ========================================================= ");
 
         do {
-            System.out.println("Enter the warehouse's id that you wish to edit [KLG001]: ");
+            whIdRules();
+            System.out.print("Enter the Warehouse's ID that you wish to edit [KLG001]: ");
             whID = sc.nextLine().trim().toUpperCase();
             if (whID.equals("-1")) {
                 return;
@@ -358,16 +362,19 @@ public class Warehouse {
             }
 
             if (!validID) {
-                System.out.println("Invalid warehouse ID!");
-                System.out.println("Please re-enter warehouse's ID");
+                System.out.println("\n* Invalid Warehouse ID!! *");
+                System.out.println("* Please Re-enter Warehouse's ID! *\n");
             }
 
         } while (!validID);
 
         // information before edit
-        System.out.println("Warehouse Information Before Edited: ");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("                  Warehouse Information Before Edited: \n");
         editWh.displayWh();
-        System.out.println("Do you sure you want to edit this warehouse information? [Y = YES || Others = NO]");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+        System.out.print("Do you sure you want to edit this Warehouse Information? [Y = YES || Others = NO]: ");
         confirmationBefore = sc.nextLine().toUpperCase().trim().equals("Y");
 
         if (confirmationBefore) {
@@ -397,13 +404,17 @@ public class Warehouse {
                         return;
                 }
 
-                System.out.println("Do you want to continue edit this Warehouse information? [Y = YES || Others = NO]");
+                System.out.print("Do you want to continue edit this Warehouse Information? [Y = YES || Others = NO]: ");
                 continueEdit = sc.nextLine().toUpperCase().trim().equals("Y");
             } while (continueEdit);
+
             // information after edit
-            System.out.println("Warehouse Information After Edited: ");
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("                 Warehouse Information After Edited: \n");
             editWh.displayWh();
-            System.out.println("Do you sure you want to save this warehouse information? [Y = YES || Others = NO]");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+            System.out.print("Do you sure you want to save this Warehouse Information? [Y = YES || Others = NO]: ");
             confirmationAfter = sc.nextLine().toUpperCase().trim().equals("Y");
 
             if (confirmationAfter) {
@@ -424,18 +435,26 @@ public class Warehouse {
                 }
                 WhProd.writeWarehouseProductFile(whProdList);
 
-                System.out.println("Successfully updated the latest warehouse information");
+                System.out.println("Successfully Updated the Latest Warehouse Information!!");
+            }
+            else{
+                System.out.println("Failed to Edit the Warehouse Information");
             }
         }
 
-        System.out.println("Press Enter to continue...");
+        System.out.print("Press Enter to Continue...");
         sc.nextLine();
     }
 
     public void editName() {
 
-        System.out.println("Enter a new name for warehouse [" + whID + "]: ");
-        this.setWhName(new Scanner(System.in).nextLine().trim());
+        whNameRules();
+        System.out.print("Enter a New Name for Warehouse '" + whID + "': ");
+        String name =  new Scanner(System.in).nextLine().trim();
+        if(name.equals("-1")){
+            return;
+        }
+        this.setWhName(name);
 
     }
 
@@ -445,8 +464,12 @@ public class Warehouse {
         boolean validID ;
         do {
             validID = true;
-            System.out.println("Enter a new id for warehouse [" + whID + "]: ");
+            whIdRules();
+            System.out.print("Enter a New ID for Warehouse '" + whID + "': ");
             String newID = sc.nextLine().trim().toUpperCase();
+            if(newID.equals("-1")){
+                return;
+            }
             if (ExtraFunction.checkPattern(newID, "^[A-Z]{3}\\d{3}$")) {
 
                 ArrayList<Warehouse> whList = readMasterWarehouseFile();
@@ -460,13 +483,13 @@ public class Warehouse {
                 if (validID) {
                     this.setWhID(newID);
                 } else {
-                    System.out.println("The id has been used.");
-                    System.out.println("Please re-enter a valid ID");
+                    System.out.println("\n* The Warehouse ID has been Used!! *");
+                    System.out.println("* Please Re-enter a Valid Warehouse ID! *\n");
                 }
 
             } else {
-                System.out.println("Invalid id format.");
-                System.out.println("Please re-enter a valid ID");
+                System.out.println("\n* Invalid Warehouse ID Format!! *");
+                System.out.println("* Please Re-enter a Valid ID! *\n");
             }
         } while (!validID);
 
@@ -474,8 +497,12 @@ public class Warehouse {
 
     public void editAddress() {
 
-        System.out.println("Enter a new address for warehouse [" + whID + "]: ");
-        this.setAddress(new Scanner(System.in).nextLine().trim());
+        System.out.print("Enter a New Address for Warehouse '" + whID + "': ");
+        String address = new Scanner(System.in).nextLine().trim();
+        if(address.equals("-1")){
+            return;
+        }
+        this.setAddress(address);
 
     }
 
@@ -537,7 +564,7 @@ public class Warehouse {
 
     public static void whNameRules() {
         System.out.println("\n---------------------------------------------------------------------");
-        System.out.println("                     The WareHouse Name Should Be:                     ");
+        System.out.println("                  The WareHouse Name Should Be:                        ");
         System.out.println(" 1. Check if the name is correct before pressing 'Enter'               ");
         System.out.println(" 2. Avoid containing special character [@,#,$,...], especially '|'     ");
         System.out.println("                                                                       ");

@@ -1,3 +1,4 @@
 KUL001|Warehouse Kuala Lumpur|No.11 Jalan Kuala Lumpur 56700 Kuala Lumpur
 KLG002|Warehouse Klang|No.30 Jalan Dream Big Big 11300 Klang City
 PHG003|Warehouse Pahang| No.12 Jalan Kuantan 12300 Bentong
+TAR002|Warehouse Tarumt|Jalan 666 Tarumt Main Gate Panas

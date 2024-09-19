@@ -23,6 +23,15 @@ public class PurchaseOrder {
         this.numOfPurchaseProd = numOfPurchaseProd;
         this.poNo = String.format("PO%03d", countPo() + 1);
     }
+    public PurchaseOrder(String poNo,String supID, int day, int month, int year, ArrayList<WhProd> purchaseProd, int numOfPurchaseProd) {
+        this.supID = supID;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.purchaseProd = purchaseProd;
+        this.numOfPurchaseProd = numOfPurchaseProd;
+        this.poNo = poNo;
+    }
 
     public String getPoNo() {
         return poNo;
@@ -56,23 +65,48 @@ public class PurchaseOrder {
 
         Scanner sc = new Scanner(System.in);
         String supId;
-        boolean validNum = false;
+        boolean validNum = false,validSup = false;
         int numOfPurchaseProd = 0;
         ArrayList<WhProd> purchaseProd = new ArrayList<>();
+        ArrayList<Supplier> suppliers = Supplier.readSupplierFile();
         WhProd orderProd = null;
         int year, month, day;
 
-        //header and rules, -1 use to exit
+        Main.displayHeader();
+        System.out.println("|                   Add Purchase Order                    |");
+        System.out.println(" ========================================================= \n");
 
-        System.out.println("Enter supplier's Id that you wish to order from: [SUP001]");
-        supId = sc.nextLine();
-        if (supId.equals("-1")) {
-            return;
-        }
+        do{
+            Supplier.supIdRules();
+            System.out.print("Enter Supplier's ID that you wish to order from [SUP001]: ");
+            supId = sc.nextLine().trim().toUpperCase();
+            if (supId.equals("-1")) {
+                return;
+            }
+
+            if(ExtraFunction.checkPattern(supId,"^SUP\\d{3}$")){
+                for(Supplier s : suppliers){
+                    if(supId.equals(s.getId())){
+                        validSup = true;
+                        break;
+                    }
+                }
+                if(!validSup){
+                    System.out.println("\n* Don,t have this Supplier!! *");
+                    System.out.println("* Please Enter Again! *\n");
+
+                }
+            }else{
+                System.out.println("\n* Invalid Supplier ID!! *");
+                System.out.println("* Please Enter Valid Supplier ID! *");
+            }
+
+        }while(!validSup);
 
         do {
             try {
-                System.out.println("How many product you want to order : [Integer]");
+                Supplier.inputIntRules();
+                System.out.print("How many Product(s) you want to order: ");
                 numOfPurchaseProd = sc.nextInt();
                 sc.nextLine();
                 if (numOfPurchaseProd == -1) {
@@ -80,15 +114,15 @@ public class PurchaseOrder {
                 }
 
                 if (numOfPurchaseProd < 1) {
-                    System.out.println("Number of Product must at least 1!");
-                    System.out.println("Please enter again");
+                    System.out.println("\n* Number of Product Must At Least 1!! *");
+                    System.out.println("* Please Enter Again! *\n");
                 } else {
                     validNum = true;
                 }
 
             } catch (Exception e) {
-                System.out.println("Invalid Input.");
-                System.out.println("Only enter integer!");
+                System.out.println("\n* Invalid Input!! *");
+                System.out.println("* Can Only Enter Integer! *\n");
                 sc.nextLine();
             }
         } while (!validNum);
@@ -100,8 +134,9 @@ public class PurchaseOrder {
             int quantity;
 
             do {
-                System.out.println("Enter product " + (i + 1) + " SKU code [OLBOK007]:");
-                skuCode = sc.nextLine().trim();
+                Product.prodSKURules();
+                System.out.print("Enter Product " + (i + 1) + " SKU Code [OLBOK007]: ");
+                skuCode = sc.nextLine().trim().toUpperCase();
                 if (skuCode.equals("-1")) {
                     return;
                 }
@@ -117,13 +152,14 @@ public class PurchaseOrder {
                                 break;
                             }
                         }
+                        break;
                     }
 
                 }
 
                 if (!validProd) {
-                    System.out.println("Invalid product SKU code");
-                    System.out.println("Please register new product for the supplier before order");
+                    System.out.println("\n* Invalid Product SKU Code!! *");
+                    System.out.println("* Please register new product for the supplier before order! *\n");
                 }
 
             } while (!validProd);
@@ -131,8 +167,9 @@ public class PurchaseOrder {
             do {
 
                 try {
-                    System.out.println("For [ " + orderProd.getProductSKU() + " ]");
-                    System.out.println("Enter quantity that you want to order: ");
+                    System.out.println("\n#   For '" + orderProd.getProductSKU() + "'   #");
+                    Supplier.inputIntRules();
+                    System.out.print("Enter Quantity that you want to order: ");
                     quantity = sc.nextInt();
                     sc.nextLine();
 
@@ -141,16 +178,16 @@ public class PurchaseOrder {
                     }
 
                     if (quantity < 1) {
-                        System.out.println("Product Quantity must at least 1!");
-                        System.out.println("Please enter again");
+                        System.out.println("\n* Product Quantity Must At Least 1!! *");
+                        System.out.println("* Please Enter Again! *\n");
                     } else {
                         validQtt = true;
                         orderProd.setQuantity(quantity);
                     }
 
                 } catch (Exception e) {
-                    System.out.println("Invalid Input.");
-                    System.out.println("Only enter integer!");
+                    System.out.println("\n* Invalid Input!! *");
+                    System.out.println("* Can Only Enter Integer! *\n");
                     sc.nextLine();
                 }
 
@@ -158,20 +195,21 @@ public class PurchaseOrder {
 
             // display the product that need to order
             System.out.println("Product " + (i + 1) + ":");
-            System.out.println("SKU: " + orderProd.getProductSKU());
-            System.out.println("Name: " + orderProd.getProdName());
-            System.out.println("Quantity: " + orderProd.getQuantity());
+            System.out.println("Product SKU: " + orderProd.getProductSKU());
+            System.out.println("Product Name: " + orderProd.getProdName());
+            System.out.println("Product Quantity: " + orderProd.getQuantity());
             System.out.println(" ");
+
             // double confirm from user
-            System.out.println("Do you sure you want to order this product from the supplier [ " + supId + " ] ?");
-            System.out.println("[ Y = Yes || Others = No ]");
+            System.out.print("Do you sure you want to order this product from the supplier '" + supId + "'? [ Y = Yes || Others = No ]: ");
             boolean confirm = sc.nextLine().toUpperCase().trim().equals("Y");
 
             if (confirm) {
                 purchaseProd.add(orderProd);
-                System.out.println("Successfully Add Product into Purchase Order");
+                System.out.println("\nSuccessfully Add Product into Purchase Order!!");
             }else{
-                System.out.println("Failed to Add Product into Purchase Order");
+                numOfPurchaseProd--;
+                System.out.println("\n* Failed to Add Product into Purchase Order! *");
             }
         }
 
@@ -186,13 +224,15 @@ public class PurchaseOrder {
         // display new purchase order information
         // double confirm from the user
 
-        System.out.println(" ========================================================= ");
+        System.out.println("\n ========================================================= ");
         System.out.println("|          Confirmation for New Purchase Order           |");
         System.out.println(" ========================================================= \n");
 
         newPO.displayPO();
 
-        System.out.print("\nDo you sure the warehouse information is correct? [Y = YES || Others = NO]: ");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        System.out.print("\nDo you sure the Purchase Order Information is correct? [Y = YES || Others = NO]: ");
         boolean confirmation = sc.next().trim().equalsIgnoreCase("Y");
         sc.nextLine();
 
@@ -202,10 +242,10 @@ public class PurchaseOrder {
             poList.add(newPO);
             writePurchaseOrderFile(poList);
 
-            System.out.println("Successfully Send the Purchase Order!");
+            System.out.println("\n\nSuccessfully Send the Purchase Order!!!");
 
         }else{
-            System.out.println("Failed to Send the Purchase Order");
+            System.out.println("\n* Failed to Send the Purchase Order!! *");
         }
 
         System.out.print("Press Enter to Continue...");
@@ -226,6 +266,7 @@ public class PurchaseOrder {
         System.out.println(" ========================================================= ");
 
         do {
+            poNoRules();
             System.out.print("Enter the Purchase Order's Number that you wish to view [PO001]: ");
             poID = sc.nextLine().trim().toUpperCase();
             if (poID.equals("-1")) {
@@ -243,12 +284,14 @@ public class PurchaseOrder {
             if (validID) {
                 // display information for purchase order
                 System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                System.out.printf("                 Information for Purchase Order %6s\n\n", viewPo.getPoNo());
-
+                System.out.printf("                 Information for Purchase Order '%5s'\n\n", viewPo.getPoNo());
                 // display po
-
-
+                viewPo.displayPO();
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            }
+            else {
+                System.out.println("\n* Invalid Purchase Order Number!! *");
+                System.out.println("* Please Re-enter a Valid Purchase Order Number! *");
             }
 
 
@@ -265,11 +308,12 @@ public class PurchaseOrder {
         System.out.println("Date: "+day+"/"+month+"/"+year);
         System.out.println("Order From: "+supID);
         System.out.println("Number of Product:"+numOfPurchaseProd);
+        System.out.print("Product SKU: ");
         for(WhProd prod : purchaseProd){
-            System.out.println("Product SKU: "+prod.getProductSKU());
             // display sku name quantity
+            System.out.printf("%s , %-25s , %d\n%13s", prod.getProductSKU(),prod.getProdName(),prod.getQuantity(), "");
         }
-
+        System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b");
     }
 
      private int countPo() {
@@ -316,7 +360,7 @@ public class PurchaseOrder {
                         }
                     }
 
-                    PurchaseOrder newPO = new PurchaseOrder(supId,day,month,year,productList,numProduct);
+                    PurchaseOrder newPO = new PurchaseOrder(poNum,supId,day,month,year,productList,numProduct);
                     poList.add(newPO);
                 } else {
                     System.out.println("Invalid data format: " + line);
@@ -364,6 +408,18 @@ public class PurchaseOrder {
         } catch (Exception e) {
             System.out.println("Error (write purchase order file):" + e.getMessage());
         }
+    }
+
+    public static void poNoRules() {
+        System.out.println("\n---------------------------------------------------------------------");
+        System.out.println("                 The Purchase Order Number Should Be:                  ");
+        System.out.println(" 1. Start With 'PO'                                                   ");
+        System.out.println(" 2. Followed by 3 Digits                                               ");
+        System.out.println(" 3. Total Length of Supplier ID is 5                                   ");
+        System.out.println("                                                                       ");
+        System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
+        System.out.println("---------------------------------------------------------------------\n");
+
     }
 
 }

@@ -237,10 +237,12 @@ public class Main {
             switch (menuInput) {
                 case 1:
                     // report for all branches
+                    WhProd.summaryReportAll();
                     break;
 
                 case 2:
                     // report for one branches
+                    WhProd.summaryReportOne();
                     break;
 
 
