@@ -233,8 +233,7 @@ public class WhProd extends Product {
                         if (whProd.getQuantity() < qtt) {
                             System.out.println("\n* You don't have enough products to be returned!! *");
                             System.out.println("* Please Re-enter Again! *\n");
-                        }
-                        else {
+                        } else {
                             validQtt = true;
                             System.out.println("\n -------------------------------------------------------- ");
                             System.out.println("|                Confirmation Goods Return                | ");
@@ -344,23 +343,28 @@ public class WhProd extends Product {
                 if (qtt == -1) {
                     return;
                 }
-                for (WhProd whProd : whProdList) {
-                    if (whProd.getProductSKU().equals(sku)) {
-                        if (whProd.getWhId().equals("KUL001")) {
-                            source = whProd;
-                        }
+                if (qtt <= 0) {
+                    System.out.println("\n* Quantity Must At Least 1!! *");
+                } else {
+                    for (WhProd whProd : whProdList) {
+                        if (whProd.getProductSKU().equals(sku)) {
+                            if (whProd.getWhId().equals("KUL001")) {
+                                source = whProd;
+                            }
 
-                        if (whProd.getWhId().equals(warehouse)) {
-                            destination = whProd;
+                            if (whProd.getWhId().equals(warehouse)) {
+                                destination = whProd;
+                            }
                         }
                     }
+                    if (source.getQuantity() < qtt) {
+                        System.out.println("\n* Do not have enough product to be transferred!! *");
+                        System.out.println("* Please Re-enter Again! \n*");
+                    } else {
+                        validQtt = true;
+                    }
                 }
-                if (source.getQuantity() < qtt) {
-                    System.out.println("\n* Do not have enough product to be transferred!! *");
-                    System.out.println("* Please Re-enter Again! \n*");
-                } else {
-                    validQtt = true;
-                }
+
             } catch (Exception e) {
                 System.out.println("\n* You Can Only Enter Integer!! *");
                 System.out.println("* Please Re-enter Again! *\n");
@@ -462,7 +466,11 @@ public class WhProd extends Product {
                 if (qtt == -1) {
                     return;
                 }
-                for (WhProd whProd : whProdList) {
+                if (qtt <= 0) {
+                    System.out.println("\n* Quantity Must At Least 1!! *");
+                }
+                else{
+                    for (WhProd whProd : whProdList) {
                     if (whProd.getProductSKU().equals(sku)) {
                         if (whProd.getWhId().equals("KUL001")) {
                             destination = whProd;
@@ -473,12 +481,13 @@ public class WhProd extends Product {
                         }
                     }
                 }
-                if (source.getQuantity() < qtt) {
-                    System.out.println("\n* Do not have enough product to be transferred!! *");
-                    System.out.println("* Please Re-enter Again! *\n");
-                } else {
-                    validQtt = true;
-                }
+                    if (source.getQuantity() < qtt) {
+                        System.out.println("\n* Do not have enough product to be transferred!! *");
+                        System.out.println("* Please Re-enter Again! *\n");
+                    } else {
+                        validQtt = true;
+                    }}
+
             } catch (Exception e) {
                 System.out.println("\n* You Can Only Enter Integer!! *");
                 System.out.println("* Please Re-enter Again! *\n");
@@ -524,6 +533,15 @@ public class WhProd extends Product {
         ArrayList<Warehouse> warehouseList = Warehouse.readMasterWarehouseFile();
         boolean validWh = false, validLv = false;
         String whId;
+        ArrayList<Product> prodList = Product.readMasterProductFile();
+        for (WhProd wh : whProdList) {
+            for (Product prod : prodList) {
+                if (wh.getProdSKU().equals(prod.getProdSKU())) {
+                    wh.setProdName(prod.getProdName());
+                    break;
+                }
+            }
+        }
 
         Main.displayHeader();
         System.out.println("|                   Reset Reorder Level                   |");
@@ -582,6 +600,7 @@ public class WhProd extends Product {
                 if (reorderLv >= 5) {
                     productList.get(prodEdit - 1).setReorderLv(reorderLv);
                     System.out.println("\nSuccessfully Updated Reorder Level!!");
+                    writeWarehouseProductFile(productList);
                     validLv = true;
                 } else {
                     System.out.println("\n* Failed to Update Reorder Level!! *");
@@ -605,9 +624,9 @@ public class WhProd extends Product {
         ArrayList<Warehouse> warehouseList = Warehouse.readMasterWarehouseFile();
         ArrayList<Product> productList = Product.readMasterProductFile();
 
-        for(WhProd whProd : whProdList){
-            for(Product product : productList){
-                if(whProd.getProdSKU().equals(product.getProdSKU())){
+        for (WhProd whProd : whProdList) {
+            for (Product product : productList) {
+                if (whProd.getProdSKU().equals(product.getProdSKU())) {
                     whProd.setProdName(product.getProdName());
                     break;
                 }
@@ -618,39 +637,36 @@ public class WhProd extends Product {
         System.out.println("|                                       Summary Report                                       |");
         System.out.println("|============================================================================================|");
 
-        for (Warehouse wh : warehouseList) {
-            ArrayList<WhProd> reorderList = new ArrayList<>();
-            ArrayList<WhProd> normalList = new ArrayList<>();
-            for (WhProd whProd : whProdList) {
+        ArrayList<WhProd> reorderList = new ArrayList<>();
+        ArrayList<WhProd> normalList = new ArrayList<>();
+        for (WhProd whProd : whProdList) {
 
-                if (wh.getWhID().equals(whProd.getWhId())) {
-                    if (whProd.getQuantity() - whProd.getReorderLv() <= 0) {
-                        reorderList.add(whProd);
-                    } else {
-                        normalList.add(whProd);
-                    }
-                }
-
+            if (whProd.getQuantity() - whProd.getReorderLv() <= 0) {
+                reorderList.add(whProd);
+            } else {
+                normalList.add(whProd);
             }
 
-            System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
-            System.out.println("|--------------------------------------------------------------------------------------------|");  //94 cols
-
-            System.out.println("|                                 Product Needs to Reorder:                                  |");
-            System.out.println("|--------------------------------------------------------------------------------------------|");
-            for (WhProd whProd : reorderList) {
-                System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
-            }
-            System.out.println("|--------------------------------------------------------------------------------------------|");
-            System.out.println("|--------------------------------------------------------------------------------------------|");
-            System.out.println("|                                 Product In Normal Status:                                  |");
-            System.out.println("|--------------------------------------------------------------------------------------------|");
-
-            //System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
-            for (WhProd whProd : normalList) {
-                System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
-            }
         }
+
+        System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+        System.out.println("|--------------------------------------------------------------------------------------------|");  //94 cols
+
+        System.out.println("|                                 Product Needs to Reorder:                                  |");
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        for (WhProd whProd : reorderList) {
+            System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+        }
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+        System.out.println("|                                 Product In Normal Status:                                  |");
+        System.out.println("|--------------------------------------------------------------------------------------------|");
+
+        //System.out.printf("| %-13s | %-12s | %-30s | %-10s | %-13s |\n", "Warehouse ID", "Product SKU", "Product Name", "Quantity", "Reorder Level");
+        for (WhProd whProd : normalList) {
+            System.out.printf("| %-13s | %-12s | %-30s | %-10d | %-13d |\n", whProd.getWhId(), whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+        }
+
         System.out.println(" ============================================================================================\n ");
 
         System.out.println("                          Successfully Generate Report!!");
@@ -675,9 +691,9 @@ public class WhProd extends Product {
         System.out.println(" ========================================================= ");
 
 
-        for(WhProd whProd : whProdList){
-            for(Product product : productList){
-                if(whProd.getProdSKU().equals(product.getProdSKU())){
+        for (WhProd whProd : whProdList) {
+            for (Product product : productList) {
+                if (whProd.getProdSKU().equals(product.getProdSKU())) {
                     whProd.setProdName(product.getProdName());
                     break;
                 }

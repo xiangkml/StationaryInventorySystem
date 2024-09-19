@@ -13,7 +13,7 @@ small details haven't check for
 stock transfer and return, for quantity field, can enter neg int???
 reset reorder level, when display product list, no name for product
 reser reorder level, after enter new reorder level, didn't update in file
-sum report havent done
+sum report havent done /
 
 
 checking confirmation and design
