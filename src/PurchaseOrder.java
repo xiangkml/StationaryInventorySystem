@@ -224,9 +224,9 @@ public class PurchaseOrder {
         // display new purchase order information
         // double confirm from the user
 
-        System.out.println("\n ========================================================= ");
+        System.out.println("\n ======================================================== ");
         System.out.println("|          Confirmation for New Purchase Order           |");
-        System.out.println(" ========================================================= \n");
+        System.out.println(" ======================================================== \n");
 
         newPO.displayPO();
 
@@ -311,7 +311,7 @@ public class PurchaseOrder {
         System.out.print("Product SKU: ");
         for(WhProd prod : purchaseProd){
             // display sku name quantity
-            System.out.printf("%s , %-25s , %d\n%13s", prod.getProductSKU(),prod.getProdName(),prod.getQuantity(), "");
+            System.out.printf("%s , %-30s , %d\n%13s", prod.getProductSKU(),prod.getProdName(),prod.getQuantity(), "");
         }
         System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b");
     }
