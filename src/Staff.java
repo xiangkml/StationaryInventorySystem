@@ -301,6 +301,7 @@ public class Staff {
         System.out.println("                   The Staff Password Should Be:                       ");
         System.out.println(" 1. Length is from 8 to 12                                             ");
         System.out.println(" 2. Must Contain At Least one digit and one character                  ");
+        System.out.println(" 3. Can Contain Any Special Character(s), exclude '|'                  ");
         System.out.println("                                                                       ");
         System.out.println(" * Enter '-1' in Any Field If You Want to Exit to Previous Page *      ");
         System.out.println("---------------------------------------------------------------------\n");

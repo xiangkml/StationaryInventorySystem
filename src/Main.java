@@ -4,8 +4,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        WhProd.summaryReportAll();
-
         int loginChoice;
         boolean validateLogin = false;
         boolean exitFromNextMenu = false;

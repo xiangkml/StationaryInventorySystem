@@ -15,6 +15,13 @@ reset reorder level, when display product list, no name for product
 reser reorder level, after enter new reorder level, didn't update in file
 sum report havent done /
 
+sum report - according to warehouse id
+stock transfer and return, cannot to or back to warehouse KUL001, double data
+goods receive - 2nd prod didn't update
+goods return - after return, does not decrease in warehouse
+data - too less for supplier, got product but supplier dont have
+data - klg to 3 , phg to 2
+
 
 checking confirmation and design
 supplier /
@@ -146,6 +153,8 @@ for summary report one
  6. all branch can only perform the stock transfer and stock return between main warehouse and itself
  7. reorder level must at least 5
  8. when confirmation, -1 to exit doesn't function
+
+
 
 */
 

@@ -66,8 +66,6 @@ public class WhProd extends Product {
     public static void goodsReceive() {
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<WhProd> whProdList = WhProd.readWarehouseProductFile();
-
         String poNo;
         ArrayList<PurchaseOrder> poList = PurchaseOrder.readPurchaseOrderFile();
         boolean poValid = false;
@@ -102,13 +100,14 @@ public class WhProd extends Product {
         } while (!poValid);
 
         for (WhProd prod : viewPO.getPurchaseProd()) {
-
+            ArrayList<WhProd> whProdList = WhProd.readWarehouseProductFile();
             boolean validQtt = false;
 
             do {
                 try {
                     int receiveQtt;
-                    System.out.print("Enter the Received Quantity for '" + prod.getProdSKU() + "' :");
+                    Supplier.inputIntRules();
+                    System.out.print("Enter the Received Quantity for '" + prod.getProdSKU() + "': ");
                     receiveQtt = scanner.nextInt();
                     scanner.nextLine();
 
@@ -116,15 +115,15 @@ public class WhProd extends Product {
                         return;
                     }
 
-                    if (receiveQtt < 0) {
-                        System.out.println("\n* Quantity Should Not Less Than 0! *");
+                    if (receiveQtt <= 0) {
+                        System.out.println("\n* Quantity Should Greater Than 0! *");
                         System.out.println("* Please Re-enter Again! *\n");
                     } else {
                         boolean confirmation;
                         validQtt = true;
-                        System.out.println("\n -------------------------------------------------------- ");
-                        System.out.println("|               Confirmation Goods Receive               | ");
-                        System.out.println(" -------------------------------------------------------- \n");
+                        System.out.println("\n ---------------------------------------------------------------------------- ");
+                        System.out.println("|                         Confirmation Goods Receive                         | ");
+                        System.out.println(" ---------------------------------------------------------------------------- \n");
                         System.out.print("Do you sure you wants to received " + receiveQtt + " product '" + prod.getProdSKU() + "' [ Y = Yes || Others = No ]: ");
                         confirmation = scanner.nextLine().equalsIgnoreCase("Y");
 
@@ -134,8 +133,9 @@ public class WhProd extends Product {
                                     if (p.getWhId().equals("KUL001")) {
                                         p.setQuantity(p.getQuantity() + receiveQtt);
                                         System.out.println("\nSuccessfully Receive the Goods!!");
+                                        break;
                                     }
-                                    break;
+
                                 }
                             }
                             WhProd.writeWarehouseProductFile(whProdList);
@@ -163,10 +163,8 @@ public class WhProd extends Product {
         ArrayList<Supplier> supplyList = Supplier.readSupplierFile();
         ArrayList<WhProd> whProdList = WhProd.readWarehouseProductFile();
         String supID;
-        WhProd goodsBefore = null;
         Supplier sup = null;
-        int numProd = 0;
-        boolean validSup = false, validNum = false;
+        boolean validSup = false;
 
         Main.displayHeader();
         System.out.println("|                      Goods Return                       |");
@@ -227,41 +225,45 @@ public class WhProd extends Product {
                 if (qtt == -1) {
                     return;
                 }
-                for (WhProd whProd : whProdList) {
-                    if ((whProd.getWhId().equals("KUL001")) && (whProd.getProductSKU().equals(skuCode))) {
+                if (qtt <= 0) {
+                    System.out.println("\n* Quantity Should Greater Than 1! *");
+                    System.out.println("* Please Re-enter Again! *\n");
+                } else {
+                    for (WhProd whProd : whProdList) {
+                        if ((whProd.getWhId().equals("KUL001")) && (whProd.getProductSKU().equals(skuCode))) {
 
-                        if (whProd.getQuantity() < qtt) {
-                            System.out.println("\n* You don't have enough products to be returned!! *");
-                            System.out.println("* Please Re-enter Again! *\n");
-                        } else {
-                            validQtt = true;
-                            System.out.println("\n -------------------------------------------------------- ");
-                            System.out.println("|                Confirmation Goods Return                | ");
-                            System.out.println(" -------------------------------------------------------- \n");
-                            System.out.print("Do you sure you wants to return " + qtt + " product '" + whProd.getProdSKU() + "' [ Y = Yes || Others = No ]: ");
-                            confirmation = scanner.nextLine().equalsIgnoreCase("Y");
-
-                            if (confirmation) {
-                                for (WhProd p : whProdList) {
-                                    if (p.getProdSKU().equals(whProd.getProdSKU())) {
-                                        if (p.getWhId().equals("KUL001")) {
-                                            p.setQuantity(p.getQuantity() - qtt);
-                                            System.out.println("\nSuccessfully Return the Goods!!");
-                                        }
-                                        break;
-                                    }
-                                }
-                                WhProd.writeWarehouseProductFile(whProdList);
+                            if (whProd.getQuantity() < qtt) {
+                                System.out.println("\n* You don't have enough products to be returned!! *");
+                                System.out.println("* Please Re-enter Again! *\n");
                             } else {
-                                System.out.println("\n* Failed to Return the Goods!! *");
+                                validQtt = true;
+                                System.out.println("\n ----------------------------------------------------------------------------- ");
+                                System.out.println("|                          Confirmation Goods Return                          | ");
+                                System.out.println(" ----------------------------------------------------------------------------- \n");
+                                System.out.print("Do you sure you wants to return " + qtt + " product '" + whProd.getProdSKU() + "' [ Y = Yes || Others = No ]: ");
+                                confirmation = scanner.nextLine().equalsIgnoreCase("Y");
+
+                                if (confirmation) {
+                                    for (WhProd p : whProdList) {
+                                        if (p.getProdSKU().equals(whProd.getProdSKU())) {
+                                            if (p.getWhId().equals("KUL001")) {
+                                                p.setQuantity(p.getQuantity() - qtt);
+                                                System.out.println("\nSuccessfully Return the Goods!!");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    WhProd.writeWarehouseProductFile(whProdList);
+                                } else {
+                                    System.out.println("\n* Failed to Return the Goods!! *");
+                                }
+                                break;
                             }
 
                         }
-                        break;
+
                     }
-
                 }
-
             } catch (Exception e) {
                 System.out.println("\n* You Can Only Enter Integer!! *");
                 System.out.println("* Please Re-enter Again! *\n");
@@ -299,19 +301,24 @@ public class WhProd extends Product {
             if (warehouse.equals("-1")) {
                 return;
             }
+            if(warehouse.equals("KUL001")){
+                System.out.println("\n* You Can't Transfer Stock To Main Warehouse!! *");
+                System.out.println("* Please Re-enter Again! *\n");
+            }else{
+                whList = Warehouse.readMasterWarehouseFile();
+                for (Warehouse wh : whList) {
+                    if (wh.getWhID().equals(warehouse)) {
+                        validWh = true;
+                        break;
+                    }
+                }
 
-            whList = Warehouse.readMasterWarehouseFile();
-            for (Warehouse wh : whList) {
-                if (wh.getWhID().equals(warehouse)) {
-                    validWh = true;
-                    break;
+                if (!validWh) {
+                    System.out.println("\n* Do not have this warehouse to be transferred!! *");
+                    System.out.println("* Please Re-enter Again! *\n");
                 }
             }
 
-            if (!validWh) {
-                System.out.println("\n* Do not have this warehouse to be transferred!! *");
-                System.out.println("* Please Re-enter Again! *\n");
-            }
         } while (!validWh);
 
         do {
@@ -340,6 +347,7 @@ public class WhProd extends Product {
                 Supplier.inputIntRules();
                 System.out.print("Enter the Quantity of product that you wish to transfer: ");
                 qtt = sc.nextInt();
+                sc.nextLine();
                 if (qtt == -1) {
                     return;
                 }
@@ -382,6 +390,7 @@ public class WhProd extends Product {
 
         System.out.print("Do you sure the transfer information is correct? [Y = YES || Others = NO]: ");
         confirmation = sc.next().trim().equalsIgnoreCase("Y");
+        sc.nextLine();
 
         if (confirmation) {
             whProdList.remove(source);
@@ -422,18 +431,22 @@ public class WhProd extends Product {
             if (warehouse.equals("-1")) {
                 return;
             }
-
-            whList = Warehouse.readMasterWarehouseFile();
-            for (Warehouse wh : whList) {
-                if (wh.getWhID().equals(warehouse)) {
-                    validWh = true;
-                    break;
-                }
-            }
-
-            if (!validWh) {
-                System.out.println("\n* This Warehouse Does Not Exist!! *");
+            if(warehouse.equals("KUL001")){
+                System.out.println("\n* You Can't Return Stock From Main Warehouse!! *");
                 System.out.println("* Please Re-enter Again! *\n");
+            }else {
+                whList = Warehouse.readMasterWarehouseFile();
+                for (Warehouse wh : whList) {
+                    if (wh.getWhID().equals(warehouse)) {
+                        validWh = true;
+                        break;
+                    }
+                }
+
+                if (!validWh) {
+                    System.out.println("\n* This Warehouse Does Not Exist!! *");
+                    System.out.println("* Please Re-enter Again! *\n");
+                }
             }
         } while (!validWh);
 
@@ -463,11 +476,13 @@ public class WhProd extends Product {
                 Supplier.inputIntRules();
                 System.out.print("Enter the Quantity of Product that you wish to return: ");
                 qtt = sc.nextInt();
+                sc.nextLine();
                 if (qtt == -1) {
                     return;
                 }
                 if (qtt <= 0) {
                     System.out.println("\n* Quantity Must At Least 1!! *");
+                    System.out.println("* Please Re-enter Again! *\n");
                 }
                 else{
                     for (WhProd whProd : whProdList) {
@@ -503,7 +518,7 @@ public class WhProd extends Product {
         destination.displayWhProd();
         System.out.println("Transfer Quantity: " + qtt);
 
-        System.out.print("Do you sure the return information is correct? [Y = YES || Others = NO]: ");
+        System.out.print("\nDo you sure the return information is correct? [Y = YES || Others = NO]: ");
         confirmation = sc.next().trim().equalsIgnoreCase("Y");
         sc.nextLine();
 
@@ -533,6 +548,7 @@ public class WhProd extends Product {
         ArrayList<Warehouse> warehouseList = Warehouse.readMasterWarehouseFile();
         boolean validWh = false, validLv = false;
         String whId;
+
         ArrayList<Product> prodList = Product.readMasterProductFile();
         for (WhProd wh : whProdList) {
             for (Product prod : prodList) {
@@ -567,22 +583,21 @@ public class WhProd extends Product {
             }
         } while (!validWh);
 
-        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("                               Product List:                               \n");
-        System.out.printf(" %5s   %-8s   %-25s   %8s   %13s\n", "Index", "SKU", "Name", "Quantity", "Reorder Level");
+        System.out.printf(" %5s   %-8s   %-30s   %8s   %13s\n", "Index", "SKU", "Name", "Quantity", "Reorder Level");
 
 
         int prodIndex = 0, prodEdit, reorderLv;
-        boolean validNum = false;
         for (WhProd whProd : whProdList) {
             if (whProd.getWhId().equals(whId)) {
                 prodIndex++;
                 productList.add(whProd);
-                System.out.printf(" %1s%02d.    %8s   %-25s   %-8d   %-13d\n", "", prodIndex, whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
+                System.out.printf(" %1s%02d.    %8s   %-30s   %-8d   %-13d\n", "", prodIndex, whProd.getProductSKU(), whProd.getProdName(), whProd.getQuantity(), whProd.getReorderLv());
 
             }
         }
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         Supplier.inputIntRules();
         System.out.println("Please Enter the Index Number for the Product you want to reset its reorder level.");
@@ -598,9 +613,18 @@ public class WhProd extends Product {
                     return;
                 }
                 if (reorderLv >= 5) {
-                    productList.get(prodEdit - 1).setReorderLv(reorderLv);
+
+                    for(WhProd allProd : whProdList){
+                        if(allProd.getWhId().equals( productList.get(prodEdit - 1).getWhId())){
+                            if(allProd.getProdSKU().equals( productList.get(prodEdit - 1).getProdSKU())){
+                                allProd.setReorderLv(reorderLv);
+                                break;
+                            }
+
+                        }
+                    }
+                    writeWarehouseProductFile(whProdList);
                     System.out.println("\nSuccessfully Updated Reorder Level!!");
-                    writeWarehouseProductFile(productList);
                     validLv = true;
                 } else {
                     System.out.println("\n* Failed to Update Reorder Level!! *");
