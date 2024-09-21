@@ -489,7 +489,7 @@ public class Supplier {
 
     public void editName() {
 
-        supIdRules();
+        nameRules();
         System.out.print("Enter a New Name for Supplier '" + id + "': ");
         String name = new Scanner(System.in).nextLine().trim();
         if(name.equals("-1")){
