@@ -577,7 +577,7 @@ public class Warehouse {
         System.out.println("                      The WareHouse ID Should Be:                      ");
         System.out.println(" 1. Start With 3 Characters                                            ");
         System.out.println(" 3. Followed By 3 digits                                               ");
-        System.out.println(" 4. Total Length of Product SKU is 6                                   ");
+        System.out.println(" 4. Total Length of Warehouse ID is 6                                  ");
         System.out.println(" 5. In Format [XXXxxx]                                                 ");
         System.out.println("                                                                       ");
         System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");

@@ -415,7 +415,7 @@ public class PurchaseOrder {
         System.out.println("                 The Purchase Order Number Should Be:                  ");
         System.out.println(" 1. Start With 'PO'                                                   ");
         System.out.println(" 2. Followed by 3 Digits                                               ");
-        System.out.println(" 3. Total Length of Supplier ID is 5                                   ");
+        System.out.println(" 3. Total Length of Purchase Order Number is 5                         ");
         System.out.println("                                                                       ");
         System.out.println("  * Enter '-1' in Any Field If You Want to Exit to Previous Page *     ");
         System.out.println("---------------------------------------------------------------------\n");
